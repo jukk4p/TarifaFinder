@@ -42,7 +42,7 @@ type TariffResults = TariffOutput;
 
 const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
   const tariffs = results;
-  const trophyColors = ["text-yellow-400", "text-slate-300", "text-orange-400"];
+  const trophyColors = ["text-yellow-400", "text-slate-300", "text-orange-400", "text-zinc-500"];
   
   if (tariffs.length === 0) {
     return null;
@@ -56,7 +56,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
           ¡Aquí tienes tus resultados!
         </CardTitle>
         <CardDescription>
-          Estas son las 3 tarifas más baratas para tu consumo. {currentBill && currentBill > 0 ? "También te mostramos el ahorro estimado." : "Haz clic para ver la oferta."}
+          Estas son las 4 tarifas más baratas para tu consumo. {currentBill && currentBill > 0 ? "También te mostramos el ahorro estimado." : "Haz clic para ver la oferta."}
         </CardDescription>
       </CardHeader>
       <CardContent>
