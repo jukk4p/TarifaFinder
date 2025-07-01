@@ -55,7 +55,7 @@ export const tariffs: Tariff[] = [
     energia_punta_precio: 0.108995,
     energia_llano_precio: 0.108995,
     energia_valle_precio: 0.108995,
-    url: "https://visalia.es/luz-especial/",
+    url: "https://visalia.es/luz/fijo24horas/",
   },
   {
     company: "REPSOL",
