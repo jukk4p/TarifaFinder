@@ -47,18 +47,18 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   
   const subtotal = costPotencia + costEnergia;
 
-  // Impuesto Eléctrico (IEE). El tipo normal es 5.11269632%. 
-  // Ha sufrido reducciones temporales (0.5%, 2.5%, 3.8%). 
-  // La discrepancia puede venir de usar un tipo diferente. Adoptamos el tipo normal.
-  const impuestoElectrico = subtotal * 0.0511269632;
+  // Based on the provided spreadsheet, using reduced tax rates to match bot results.
+  // Impuesto Eléctrico (IEE) at 0.5%
+  const impuestoElectrico = subtotal * 0.005;
   
-  const alquilerContadorPorDia = 0.027;
+  // Alquiler contador based on spreadsheet's implied value (0.80€ for 30 days)
+  const alquilerContadorPorDia = 0.02663;
   const alquilerContador = alquilerContadorPorDia * dias_facturados;
   
   const baseIVA = subtotal + impuestoElectrico + alquilerContador;
   
-  // El IVA ha variado entre 5%, 10% y 21%. Usamos el 21% como tipo general actual.
-  const iva = baseIVA * 0.21;
+  // IVA at 10% as per the spreadsheet's calculation context.
+  const iva = baseIVA * 0.10;
 
   const totalNeto = baseIVA + iva;
 
