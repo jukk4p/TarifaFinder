@@ -147,7 +147,7 @@ export const tariffs: Tariff[] = [
   },
   {
     company: "Total Energies",
-    name: "A tu aire Ahorro*",
+    name: "A tu Aire Luz Programa tu Ahorro",
     potencia_punta_precio: 0.071918,
     potencia_valle_precio: 0.071890,
     periodos_energia: 3,
