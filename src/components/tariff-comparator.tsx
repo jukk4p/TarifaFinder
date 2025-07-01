@@ -24,8 +24,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Badge } from '@/components/ui/badge';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy, Sparkles, Gift, Euro } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro } from 'lucide-react';
 
 const formSchema = z.object({
   DÍAS_FACTURADOS: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -42,8 +41,8 @@ type TariffResults = TariffOutput;
 
 const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
   const tariffs = results;
-  const trophyColors = ["text-yellow-400", "text-slate-300", "text-orange-400", "text-zinc-500"];
-  
+  const numberEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣"];
+
   if (tariffs.length === 0) {
     return null;
   }
@@ -53,52 +52,41 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
       <CardHeader>
         <CardTitle className="text-accent flex items-center gap-2">
           <Sparkles className="h-6 w-6" />
-          ¡Aquí tienes tus resultados!
+          Resultados de la Comparación
         </CardTitle>
-        <CardDescription>
-          Estas son las 4 tarifas más baratas para tu consumo. {currentBill && currentBill > 0 ? "También te mostramos el ahorro estimado." : "Haz clic para ver la oferta."}
-        </CardDescription>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-4">
+        <p className="mb-6 text-muted-foreground">
+          Según los datos que has facilitado, estas son las cuatro ofertas más económicas:
+        </p>
+        <div className="space-y-6">
           {tariffs.map(({ company, name, url, cost }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
             return (
-              <li key={index} className="transition-transform duration-300 hover:scale-[1.02]">
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-background transition-colors group-hover:bg-primary/10`}>
-                      <Trophy className={`h-7 w-7 shrink-0 transition-colors ${trophyColors[index]}`} />
-                  </div>
-                  <div className="flex-grow">
-                    <p className="text-sm font-medium text-muted-foreground">{company}</p>
-                    <p className="text-lg font-semibold text-foreground">{name}</p>
-                     {savings !== null && (
-                      <p className={`mt-1 text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
-                        {savings > 0 ? `Ahorro estimado: ${savings.toFixed(2)}€` : `Coste extra: ${Math.abs(savings).toFixed(2)}€`}
-                      </p>
-                    )}
-                  </div>
-                  <div className="ml-auto flex shrink-0 items-center gap-4 text-right">
-                    <div>
-                        <p className="text-xl font-bold text-foreground">{cost.toFixed(2)}€</p>
-                        <p className="text-xs text-muted-foreground">/mes estimado</p>
-                    </div>
-                    <Badge variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"} className="w-12 justify-center py-2 text-lg">
-                      #{index + 1}
-                    </Badge>
-                  </div>
-                </a>
-              </li>
-            )
+              <div key={index}>
+                <p className="font-semibold text-lg flex items-start">
+                  <span className="mr-3 text-2xl">{numberEmojis[index]}</span>
+                  <span className="mt-1">{company} con su tarifa {name}</span>
+                </p>
+                <div className="pl-10 space-y-1 mt-1">
+                  <p className="text-muted-foreground">
+                    Coste estimado: <span className="font-semibold text-foreground">{cost.toFixed(2)} €</span>
+                  </p>
+                  {savings !== null && (
+                    <p className={`text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
+                      {savings > 0 ? `Ahorro estimado: ${savings.toFixed(2)}€` : `Coste extra: ${Math.abs(savings).toFixed(2)}€`}
+                    </p>
+                  )}
+                  <p className="text-muted-foreground">
+                    Enlace a la tarifa: <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">(Ver oferta)</a>
+                  </p>
+                </div>
+              </div>
+            );
           })}
-        </ul>
+        </div>
       </CardContent>
-      <CardFooter className="pt-4">
+      <CardFooter className="pt-6 border-t border-white/10 mt-6">
         <p className="w-full text-center text-xs text-muted-foreground">
           📌 El importe incluye término de potencia y de energía para el período indicado.
         </p>
