@@ -62,6 +62,20 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
 
   const totalNeto = baseIVA + iva;
 
+  // Special calculation for PVPC tariff based on the provided Excel formula
+  // =SI(COINCIDIR(E$17;$A69:$A$72;0)=4;MAX(E55-E57;0);E55)
+  // This implies that for the PVPC tariff, the total energy cost (including taxes) is deducted
+  // from the final bill, with a floor at 0.
+  if (tariff.company === "COMERCIALIZADORAS DE REFERENCIA") {
+    const energiaImpuestoElectrico = costEnergia * 0.005;
+    const energiaBaseIVA = costEnergia + energiaImpuestoElectrico;
+    const energiaIVA = energiaBaseIVA * 0.10;
+    const costeEnergiaConImpuestos = energiaBaseIVA + energiaIVA;
+    
+    const finalCost = Math.max(totalNeto - costeEnergiaConImpuestos, 0);
+    return finalCost;
+  }
+
   return totalNeto;
 }
 
