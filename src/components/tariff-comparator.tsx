@@ -28,21 +28,20 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy, Sparkles, Gift, Euro } from 'lucide-react';
 
 const formSchema = z.object({
-  dias_facturados: z.coerce.number().int().positive("Debe ser un número positivo"),
-  potencia_punta_kW_P1: z.coerce.number().positive("Debe ser un número positivo"),
-  potencia_valle_kW_P2: z.coerce.number().positive("Debe ser un número positivo"),
-  energia_punta_kWh_P1: z.coerce.number().positive("Debe ser un número positivo"),
-  energia_llano_kWh_P2: z.coerce.number().positive("Debe ser un número positivo"),
-  energia_valle_kWh_P3: z.coerce.number().positive("Debe ser un número positivo"),
+  DÍAS_FACTURADOS: z.coerce.number().int().positive("Debe ser un número positivo"),
+  POTENCIA_P1_kW: z.coerce.number().positive("Debe ser un número positivo"),
+  POTENCIA_P2_kW: z.coerce.number().positive("Debe ser un número positivo"),
+  ENERGÍA_P1_kWh: z.coerce.number().positive("Debe ser un número positivo"),
+  ENERGÍA_P2_kWh: z.coerce.number().positive("Debe ser un número positivo"),
+  ENERGÍA_P3_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   importe_factura_actual: z.coerce.number().positive("Debe ser un número positivo").optional(),
 });
 
-type TariffInput = z.infer<typeof formSchema>;
+type FormInput = z.infer<typeof formSchema>;
 type TariffResults = TariffOutput;
 
 const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
-  const tariffs = [results.tarifa_1, results.tarifa_2, results.tarifa_3].filter((t): t is [string, string, string, number] => t !== null);
-
+  const tariffs = results;
   const trophyColors = ["text-yellow-400", "text-slate-300", "text-orange-400"];
   
   if (tariffs.length === 0) {
@@ -62,7 +61,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
       </CardHeader>
       <CardContent>
         <ul className="space-y-4">
-          {tariffs.map(([company, name, url, cost], index) => {
+          {tariffs.map(({ company, name, url, cost }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
             return (
               <li key={index} className="transition-transform duration-300 hover:scale-[1.02]">
@@ -109,26 +108,27 @@ export function TariffComparator() {
   const [results, setResults] = useState<TariffResults | null>(null);
   const { toast } = useToast();
 
-  const form = useForm<TariffInput>({
+  const form = useForm<FormInput>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      dias_facturados: 30,
-      potencia_punta_kW_P1: 4.6,
-      potencia_valle_kW_P2: 4.6,
-      energia_punta_kWh_P1: 100,
-      energia_llano_kWh_P2: 150,
-      energia_valle_kWh_P3: 200,
+      DÍAS_FACTURADOS: 30,
+      POTENCIA_P1_kW: 4.6,
+      POTENCIA_P2_kW: 4.6,
+      ENERGÍA_P1_kWh: 100,
+      ENERGÍA_P2_kWh: 150,
+      ENERGÍA_P3_kWh: 200,
       importe_factura_actual: undefined,
     },
   });
 
   const currentBill = form.watch("importe_factura_actual");
 
-  async function onSubmit(values: TariffInput) {
+  async function onSubmit(values: FormInput) {
     setLoading(true);
     setResults(null);
     try {
-      const result = await findTariffs(values);
+      const { importe_factura_actual, ...tariffValues } = values;
+      const result = await findTariffs(tariffValues);
       setResults(result);
     } catch (error) {
       console.error(error);
@@ -143,12 +143,12 @@ export function TariffComparator() {
   }
   
   const formFields = [
-    { name: "dias_facturados", label: "Días facturados", icon: CalendarDays, placeholder: "e.g., 30" },
-    { name: "potencia_punta_kW_P1", label: "Potencia Punta (kW)", icon: Zap, placeholder: "e.g., 4.6" },
-    { name: "potencia_valle_kW_P2", label: "Potencia Valle (kW)", icon: Zap, placeholder: "e.g., 4.6" },
-    { name: "energia_punta_kWh_P1", label: "Energía Punta (kWh)", icon: Lightbulb, placeholder: "e.g., 100" },
-    { name: "energia_llano_kWh_P2", label: "Energía Llano (kWh)", icon: Lightbulb, placeholder: "e.g., 150" },
-    { name: "energia_valle_kWh_P3", label: "Energía Valle (kWh)", icon: Lightbulb, placeholder: "e.g., 200" },
+    { name: "DÍAS_FACTURADOS", label: "Días facturados", icon: CalendarDays, placeholder: "e.g., 30" },
+    { name: "POTENCIA_P1_kW", label: "Potencia Punta (kW) P1", icon: Zap, placeholder: "e.g., 4.6" },
+    { name: "POTENCIA_P2_kW", label: "Potencia Valle (kW) P2", icon: Zap, placeholder: "e.g., 4.6" },
+    { name: "ENERGÍA_P1_kWh", label: "Energía Punta (kWh) P1", icon: Lightbulb, placeholder: "e.g., 100" },
+    { name: "ENERGÍA_P2_kWh", label: "Energía Llano (kWh) P2", icon: Lightbulb, placeholder: "e.g., 150" },
+    { name: "ENERGÍA_P3_kWh", label: "Energía Valle (kWh) P3", icon: Lightbulb, placeholder: "e.g., 200" },
     { name: "importe_factura_actual", label: "Importe factura actual (€) (Opcional)", icon: Euro, placeholder: "e.g., 75.50" },
   ] as const;
 
