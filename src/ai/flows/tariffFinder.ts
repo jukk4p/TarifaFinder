@@ -45,21 +45,22 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
                   (energia_valle_kWh_P3 * tariff.energia_valle_precio);
   }
   
-  // These are constants from the excel file for a 30 day period. We'll scale them.
-  const alquilerContadorPorDia = 0.027;
-  const financBonoSocialPorDia = 0.01274243;
-
-  const alquilerContador = alquilerContadorPorDia * dias_facturados;
-  const financBonoSocial = financBonoSocialPorDia * dias_facturados;
-  
   const subtotal = costPotencia + costEnergia;
 
-  // Impuesto eléctrico 5.11% on subtotal, but it was reduced temporarily. Let's use 0.5% as per BOE-A-2023-26442
-  // Then it was changed again. Let's stick to the value from the excel which seems to be 5.11% for some calculations.
-  // The excel file is a bit of a mess with constants. Let's stick to the simplest calculation first.
-  const totalBruto = subtotal + alquilerContador + financBonoSocial;
-  const iva = totalBruto * 0.21; // Assuming 21% IVA
-  const totalNeto = totalBruto + iva;
+  // Impuesto Eléctrico (IEE). El tipo normal es 5.11269632%. 
+  // Ha sufrido reducciones temporales (0.5%, 2.5%, 3.8%). 
+  // La discrepancia puede venir de usar un tipo diferente. Adoptamos el tipo normal.
+  const impuestoElectrico = subtotal * 0.0511269632;
+  
+  const alquilerContadorPorDia = 0.027;
+  const alquilerContador = alquilerContadorPorDia * dias_facturados;
+  
+  const baseIVA = subtotal + impuestoElectrico + alquilerContador;
+  
+  // El IVA ha variado entre 5%, 10% y 21%. Usamos el 21% como tipo general actual.
+  const iva = baseIVA * 0.21;
+
+  const totalNeto = baseIVA + iva;
 
   return totalNeto;
 }
