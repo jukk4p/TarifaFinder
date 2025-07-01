@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { findTariffs, type TariffOutput } from '@/ai/flows/tariffFinder';
+import { findTariffs } from '@/ai/flows/tariffFinder';
+import { explainTariff, type ExplainTariffOutput } from '@/ai/flows/explainTariff';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -24,7 +25,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart } from 'lucide-react';
+import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 
 const formSchema = z.object({
   DÍAS_FACTURADOS: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -44,7 +46,7 @@ type TariffResults = TariffOutput;
 
 const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
   const tariffs = results;
-  const numberEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣"];
+  const numberEmojis = ["1️⃣", "2️⃣", "3️⃣"];
 
   if (tariffs.length === 0) {
     return null;
@@ -98,10 +100,35 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   );
 };
 
+const ExplanationCard = ({ explanation, loading }: { explanation: string, loading: boolean }) => {
+  return (
+    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
+      <CardHeader>
+        <CardTitle className="text-primary flex items-center gap-2">
+          <MessageSquareHeart className="h-6 w-6" />
+          Análisis Personalizado
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+           <div className="flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin"/>
+              <span>Generando análisis...</span>
+           </div>
+        ) : (
+          <p className="text-muted-foreground whitespace-pre-wrap">{explanation}</p>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
 
 export function TariffComparator() {
   const [loading, setLoading] = useState(false);
+  const [explanationLoading, setExplanationLoading] = useState(false);
   const [results, setResults] = useState<TariffResults | null>(null);
+  const [explanation, setExplanation] = useState<string | null>(null);
   const { toast } = useToast();
 
   const form = useForm<FormInput>({
@@ -122,10 +149,26 @@ export function TariffComparator() {
   async function onSubmit(values: FormInput) {
     setLoading(true);
     setResults(null);
+    setExplanation(null);
+    setExplanationLoading(true);
+
     try {
       const { importe_factura_actual, ...tariffValues } = values;
       const result = await findTariffs(tariffValues);
       setResults(result);
+
+      explainTariff({ consumption: tariffValues, recommendations: result })
+        .then(explanationResult => {
+          setExplanation(explanationResult.explanation);
+        })
+        .catch(err => {
+          console.error("Failed to get tariff explanation:", err);
+          setExplanation("No se pudo generar el análisis personalizado en este momento.");
+        })
+        .finally(() => {
+          setExplanationLoading(false);
+        });
+
     } catch (error) {
       console.error(error);
       toast({
@@ -133,6 +176,7 @@ export function TariffComparator() {
         title: "Error",
         description: "No se pudo completar la comparación. Inténtalo de nuevo.",
       });
+      setExplanationLoading(false);
     } finally {
       setLoading(false);
     }
@@ -218,6 +262,12 @@ export function TariffComparator() {
       )}
 
       {results && <ResultsCard results={results} currentBill={currentBill} />}
+
+      {(explanation || explanationLoading) && (
+        <div className="pt-8 w-full">
+          <ExplanationCard explanation={explanation!} loading={explanationLoading} />
+        </div>
+      )}
 
       <div className="w-full text-center mt-12 border-t border-white/10 pt-8">
         <p className="text-muted-foreground mb-4">Si esta herramienta te resulta útil, considera hacer una donación.</p>

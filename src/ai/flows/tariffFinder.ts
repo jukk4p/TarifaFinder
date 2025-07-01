@@ -1,29 +1,8 @@
 'use server';
 
 import { ai } from '@/ai/genkit';
-import * as z from 'zod';
 import { tariffs, type Tariff } from '@/lib/tariffs';
-
-const tariffInputSchema = z.object({
-  DÍAS_FACTURADOS: z.number(),
-  POTENCIA_P1_kW: z.number(),
-  POTENCIA_P2_kW: z.number(),
-  ENERGÍA_P1_kWh: z.number(),
-  ENERGÍA_P2_kWh: z.number(),
-  ENERGÍA_P3_kWh: z.number(),
-});
-
-const tariffOutputSchema = z.array(
-    z.object({
-        company: z.string(),
-        name: z.string(),
-        url: z.string(),
-        cost: z.number(),
-    })
-);
-
-export type TariffInput = z.infer<typeof tariffInputSchema>;
-export type TariffOutput = z.infer<typeof tariffOutputSchema>;
+import { tariffInputSchema, tariffOutputSchema, type TariffInput, type TariffOutput } from './schemas';
 
 function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   const { 
@@ -47,18 +26,16 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   // 4. Término de energía
   const termEner = (ENERGÍA_P1_kWh * TARIFA_EP1 + ENERGÍA_P2_kWh * TARIFA_EP2 + ENERGÍA_P3_kWh * TARIFA_EP3);
   
-  // 5. Cargos regulados
+  const subTotalTerminos = termPot + termEner;
+  const IMP_ELEC = subTotalTerminos * 0.0511;
+
   const ALQUILER = 0.027 * DÍAS_FACTURADOS;
   const BONO_SOC = 0.012742 * DÍAS_FACTURADOS;
-
-  const subTotalEnergia = termPot + termEner;
-  const IMP_ELEC = subTotalEnergia * 0.0511;
   
-  const baseIVA = subTotalEnergia + IMP_ELEC + ALQUILER + BONO_SOC;
+  const baseIVA = subTotalTerminos + IMP_ELEC + ALQUILER + BONO_SOC;
   const IVA = baseIVA * 0.21;
   const FACTURA = baseIVA + IVA;
   
-  // 8. Rounding
   return Math.round(FACTURA * 100) / 100;
 }
 
