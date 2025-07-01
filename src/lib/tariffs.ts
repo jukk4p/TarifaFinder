@@ -14,7 +14,7 @@ export interface Tariff {
 
 export const tariffs: Tariff[] = [
   {
-    company: "OCTOPUS",
+    company: "Octopus",
     name: "Relax",
     potencia_punta_precio: 0.095,
     potencia_valle_precio: 0.027,
@@ -25,8 +25,8 @@ export const tariffs: Tariff[] = [
     url: "https://octopusenergy.es/precios",
   },
   {
-    company: "IMAGINA",
-    name: "Plan sin horas digital (enlace especial)",
+    company: "Imagina",
+    name: "Plan Sin Horas Digital (enlace especial)",
     potencia_punta_precio: 0.111,
     potencia_valle_precio: 0.056,
     periodos_energia: 1,
@@ -36,8 +36,8 @@ export const tariffs: Tariff[] = [
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
   },
    {
-    company: "IMAGINA",
-    name: "PlanNoches y findes digital (enlace especial)",
+    company: "Imagina",
+    name: "Plan Noches y Fines de Semana Digital (enlace especial)",
     potencia_punta_precio: 0.099,
     potencia_valle_precio: 0.020,
     periodos_energia: 3,
@@ -47,7 +47,7 @@ export const tariffs: Tariff[] = [
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
   },
   {
-    company: "Doméstica-Visalia",
+    company: "Doméstica - Visalia",
     name: "Especial Fijo 24h (enlace especial)",
     potencia_punta_precio: 0.06027,
     potencia_valle_precio: 0.06027,
@@ -58,7 +58,7 @@ export const tariffs: Tariff[] = [
     url: "https://visalia.es/luz/fijo24horas/",
   },
   {
-    company: "REPSOL",
+    company: "Repsol",
     name: "Ahorro Plus",
     potencia_punta_precio: 0.0682,
     potencia_valle_precio: 0.0682,
@@ -69,8 +69,8 @@ export const tariffs: Tariff[] = [
     url: "https://www.repsol.es/particulares/hogar/luz-y-gas/tarifas/tarifa-ahorro-plus/",
   },
   {
-    company: "REPSOL",
-    name: "Solar con batería virtual",
+    company: "Repsol",
+    name: "Solar con Batería Virtual",
     potencia_punta_precio: 0.0682,
     potencia_valle_precio: 0.0682,
     periodos_energia: 1,
@@ -80,8 +80,8 @@ export const tariffs: Tariff[] = [
     url: "https://www.repsol.es/particulares/hogar/energia-solar/tarifas/tarifa-solar-bateria-virtual/",
   },
   {
-    company: "Energía NUFRI",
-    name: "Tarifa TRES PRECIOS",
+    company: "Energía Nufri",
+    name: "Tarifa Tres Precios",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 3,
@@ -91,8 +91,8 @@ export const tariffs: Tariff[] = [
     url: "https://www.energianufri.com/tarifa-especial-luz",
   },
   {
-    company: "Energía NUFRI",
-    name: "Tarifa UN SOLO PRECIO 24H",
+    company: "Energía Nufri",
+    name: "Tarifa Un Solo Precio 24h",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 1,
@@ -103,7 +103,7 @@ export const tariffs: Tariff[] = [
   },
   {
     company: "Iberdrola",
-    name: "Plan Online 3 periodos",
+    name: "Plan Online 3 Periodos",
     potencia_punta_precio: 0.086301,
     potencia_valle_precio: 0.013014,
     periodos_energia: 3,
@@ -114,7 +114,7 @@ export const tariffs: Tariff[] = [
   },
   {
     company: "Naturgy",
-    name: "Noche",
+    name: "Tarifa Noche",
     potencia_punta_precio: 0.1082,
     potencia_valle_precio: 0.0334,
     periodos_energia: 3,
@@ -125,7 +125,7 @@ export const tariffs: Tariff[] = [
   },
   {
     company: "Endesa",
-    name: "One Luz 12 meses",
+    name: "One Luz 12 Meses",
     potencia_punta_precio: 0.11214,
     potencia_valle_precio: 0.04027,
     periodos_energia: 1,
@@ -135,7 +135,7 @@ export const tariffs: Tariff[] = [
     url: "https://www.endesa.com/es/luz-y-gas/luz/one/tarifa-one-luz-12-meses",
   },
   {
-    company: "EnergyaVM",
+    company: "Energya VM",
     name: "Fórmula Fija 3 Periodos Luz",
     potencia_punta_precio: 0.083,
     potencia_valle_precio: 0.00274,
@@ -168,8 +168,8 @@ export const tariffs: Tariff[] = [
     url: "https://www.totalenergies.es/es/hogares/tarifas-luz/a-tu-aire-siempre",
   },
   {
-    company: "CHC energía",
-    name: "PLAN VEHICULO ELECTRICO",
+    company: "CHC Energía",
+    name: "Plan Vehículo Eléctrico",
     potencia_punta_precio: 0.0884,
     potencia_valle_precio: 0.0884,
     periodos_energia: 3,
@@ -179,8 +179,8 @@ export const tariffs: Tariff[] = [
     url: "https://chcenergia.es/tarifa-luz/vehiculo-electrico/",
   },
   {
-    company: "COMERCIALIZADORAS DE REFERENCIA",
-    name: "PVPC-REGULADO (semiindexada a horaria)",
+    company: "Comercializadoras de Referencia",
+    name: "PVPC (Mercado Regulado)",
     potencia_punta_precio: 0.0823,
     potencia_valle_precio: 0.0019,
     periodos_energia: 3,
