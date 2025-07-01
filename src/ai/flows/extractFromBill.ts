@@ -20,12 +20,12 @@ const ExtractFromBillInputSchema = z.object({
 export type ExtractFromBillInput = z.infer<typeof ExtractFromBillInputSchema>;
 
 const ExtractFromBillOutputSchema = z.object({
-    DÍAS_FACTURADOS: z.number().optional().describe('El número total de días en el periodo de facturación. Busca "Nº días" o "Días facturados".'),
-    POTENCIA_P1_kW: z.number().optional().describe('La potencia contratada para el periodo Punta (P1) en kW. Busca "Potencia Punta", "Potencia P1", "Término de potencia P1" o "Potencia contratada Punta".'),
-    POTENCIA_P2_kW: z.number().optional().describe('La potencia contratada para el periodo Valle (P2) en kW. Busca "Potencia Valle", "Potencia P2", "Término de potencia P2" o "Potencia contratada Valle".'),
-    ENERGÍA_P1_kWh: z.number().optional().describe('El consumo de energía en el periodo Punta (P1) en kWh. Busca "Energía Punta", "Consumo P1", "Energía facturada Punta" o "Término de energía P1".'),
-    ENERGÍA_P2_kWh: z.number().optional().describe('El consumo de energía en el periodo Llano (P2) en kWh. Busca "Energía Llano", "Consumo P2", "Energía facturada Llano" o "Término de energía P2".'),
-    ENERGÍA_P3_kWh: z.number().optional().describe('El consumo de energía en el periodo Valle (P3) en kWh. Busca "Energía Valle", "Consumo P3", "Energía facturada Valle" o "Término de energía P3".'),
+    DÍAS_FACTURADOS: z.number().optional().describe('Número total de días en el periodo de facturación. Si no está explícito, calcúlalo a partir de la fecha de inicio y fin del periodo. Busca "Nº días", "Periodo de facturación", "Días facturados".'),
+    POTENCIA_P1_kW: z.number().optional().describe('Potencia contratada para el periodo Punta (P1) en kW. Es el valor principal de potencia contratada. Busca "Potencia Punta", "Potencia P1", "Término de potencia P1", "Potencia contratada Punta", o simplemente "Potencia contratada" si solo hay una.'),
+    POTENCIA_P2_kW: z.number().optional().describe('Potencia contratada para el periodo Valle (P2) en kW. A menudo es igual a P1. Busca "Potencia Valle", "Potencia P2", "Término de potencia P2", o "Potencia contratada Valle". Si no se especifica, usa el mismo valor que POTENCIA_P1_kW.'),
+    ENERGÍA_P1_kWh: z.number().optional().describe('Consumo de energía en el periodo Punta (P1) en kWh. Busca "Energía Punta", "Consumo P1", "Energía facturada Punta", "Término de energía P1", o similar.'),
+    ENERGÍA_P2_kWh: z.number().optional().describe('Consumo de energía en el periodo Llano (P2) en kWh. Busca "Energía Llano", "Consumo P2", "Energía facturada Llano", "Término de energía P2", o similar.'),
+    ENERGÍA_P3_kWh: z.number().optional().describe('Consumo de energía en el periodo Valle (P3) en kWh. Busca "Energía Valle", "Consumo P3", "Energía facturada Valle", "Término de energía P3", o similar.'),
 });
 export type ExtractFromBillOutput = z.infer<typeof ExtractFromBillOutputSchema>;
 
@@ -38,13 +38,15 @@ const prompt = ai.definePrompt({
   input: { schema: ExtractFromBillInputSchema },
   output: { schema: ExtractFromBillOutputSchema },
   prompt: `You are an expert system for processing Spanish electricity bills. Your task is to analyze the provided document and extract ONLY the following values. Be extremely precise.
-- Use a dot as the decimal separator.
-- If you cannot find a specific value with high confidence, DO NOT include it in the output. Do not guess or calculate values.
+- The output MUST be a valid JSON object matching the requested schema.
+- Use a dot as the decimal separator and return only numbers for numerical fields. Do not include units like 'kW' or 'kWh' in the output values.
+- If you cannot find a specific value with high confidence, DO NOT include it in the output. Do not guess or calculate values unless explicitly told to.
+- Prioritize semantic recognition over visual format. The terms can appear in different orders.
 
 Extract these fields based on common Spanish terms:
-- DÍAS_FACTURADOS: Find the billing period, usually "Nº días" or "Días facturados".
-- POTENCIA_P1_kW: Find contracted peak power ("Potencia Punta", "Potencia P1", "Término de potencia P1", "Potencia contratada Punta") in kW.
-- POTENCIA_P2_kW: Find contracted off-peak power ("Potencia Valle", "Potencia P2", "Término de potencia P2", "Potencia contratada Valle") in kW.
+- DÍAS_FACTURADOS: Find the total number of days in the billing period. Look for "Nº días" or "Días facturados". If not present, you can calculate it from "Periodo de facturación" start and end dates.
+- POTENCIA_P1_kW: Find contracted peak power ("Potencia Punta", "Potencia P1", "Término de potencia P1", "Potencia contratada Punta") in kW. This is the main contracted power.
+- POTENCIA_P2_kW: Find contracted off-peak power ("Potencia Valle", "Potencia P2", "Término de potencia P2", "Potencia contratada Valle") in kW. If only one contracted power is listed, use that same value for POTENCIA_P2_kW.
 - ENERGÍA_P1_kWh: Find energy consumption for the peak period ("Energía Punta", "Consumo P1", "Energía facturada Punta", "Término de energía P1") in kWh.
 - ENERGÍA_P2_kWh: Find energy consumption for the flat period ("Energía Llano", "Consumo P2", "Energía facturada Llano", "Término de energía P2") in kWh.
 - ENERGÍA_P3_kWh: Find energy consumption for the off-peak period ("Energía Valle", "Consumo P3", "Energía facturada Valle", "Término de energía P3") in kWh.
