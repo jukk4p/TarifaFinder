@@ -43,13 +43,13 @@ const ResultsCard = ({ results }: { results: TariffResults }) => {
   const tariffs = [results.tarifa_1, results.tarifa_2, results.tarifa_3].filter((t): t is [string, string, string] => t !== null);
 
   const trophyColors = ["text-chart-1", "text-chart-2", "text-chart-3"];
-
+  
   if (tariffs.length === 0) {
     return null;
   }
 
   return (
-    <Card className="animate-in fade-in-50 duration-500 w-full">
+    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-border/20">
       <CardHeader>
         <CardTitle className="text-accent flex items-center gap-2">
           <Trophy className="h-6 w-6" />
@@ -60,27 +60,29 @@ const ResultsCard = ({ results }: { results: TariffResults }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ol className="space-y-4">
+        <ul className="space-y-4">
           {tariffs.map(([company, name, url], index) => (
             <li key={index}>
               <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 rounded-lg border bg-card p-4 shadow-sm transition-transform hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="group flex items-center gap-4 rounded-lg border bg-secondary/50 p-4 shadow-sm transition-all hover:border-accent/80 hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-ring"
               >
-                <Trophy className={`h-8 w-8 shrink-0 ${trophyColors[index]}`} />
+                <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-background transition-colors group-hover:bg-accent/20`}>
+                    <Trophy className={`h-7 w-7 shrink-0 ${trophyColors[index]}`} />
+                </div>
                 <div className="flex-grow">
-                  <p className="text-sm text-muted-foreground">{company}</p>
+                  <p className="text-sm font-medium text-muted-foreground">{company}</p>
                   <p className="text-lg font-semibold text-foreground">{name}</p>
                 </div>
-                <Badge variant={index === 0 ? "default" : "secondary"} className="ml-auto shrink-0">
+                <Badge variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"} className="ml-auto shrink-0">
                   {`Top ${index + 1}`}
                 </Badge>
               </a>
             </li>
           ))}
-        </ol>
+        </ul>
       </CardContent>
     </Card>
   );
@@ -124,35 +126,35 @@ export function TariffComparator() {
   
   const formFields = [
     { name: "dias_facturados", label: "Días facturados", icon: CalendarDays, placeholder: "e.g., 30" },
-    { name: "potencia_punta_kW_P1", label: "Potencia Punta (kW) P1", icon: Zap, placeholder: "e.g., 4.6" },
-    { name: "potencia_valle_kW_P2", label: "Potencia Valle (kW) P2", icon: Zap, placeholder: "e.g., 4.6" },
-    { name: "energia_punta_kWh_P1", label: "Energía Punta (kWh) P1", icon: Lightbulb, placeholder: "e.g., 100" },
-    { name: "energia_llano_kWh_P2", label: "Energía Llano (kWh) P2", icon: Lightbulb, placeholder: "e.g., 150" },
-    { name: "energia_valle_kWh_P3", label: "Energía Valle (kWh) P3", icon: Lightbulb, placeholder: "e.g., 200" },
+    { name: "potencia_punta_kW_P1", label: "Potencia Punta (kW)", icon: Zap, placeholder: "e.g., 4.6" },
+    { name: "potencia_valle_kW_P2", label: "Potencia Valle (kW)", icon: Zap, placeholder: "e.g., 4.6" },
+    { name: "energia_punta_kWh_P1", label: "Energía Punta (kWh)", icon: Lightbulb, placeholder: "e.g., 100" },
+    { name: "energia_llano_kWh_P2", label: "Energía Llano (kWh)", icon: Lightbulb, placeholder: "e.g., 150" },
+    { name: "energia_valle_kWh_P3", label: "Energía Valle (kWh)", icon: Lightbulb, placeholder: "e.g., 200" },
   ] as const;
 
   return (
-    <div className="w-full max-w-4xl space-y-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl font-headline">
+    <div className="w-full max-w-4xl space-y-8 py-12">
+      <div className="text-center space-y-2">
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           TarifaFinder
         </h1>
-        <p className="mt-4 text-lg text-muted-foreground">
-          Encuentra la tarifa eléctrica más barata para ti.
+        <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
+          Introduce tu consumo y encuentra la tarifa eléctrica más barata para ti.
         </p>
       </div>
 
-      <Card className="w-full shadow-lg">
+      <Card className="w-full shadow-lg border-border/50 bg-card/50 backdrop-blur-sm">
         <CardHeader>
           <CardTitle>Introduce tus datos de consumo</CardTitle>
           <CardDescription>
-            Rellena los campos con los datos de tu última factura.
+            Rellena los campos con los datos de tu última factura para obtener una comparación precisa.
           </CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {formFields.map(item => (
                   <FormField
                     key={item.name}
@@ -165,7 +167,7 @@ export function TariffComparator() {
                           {item.label}
                         </FormLabel>
                         <FormControl>
-                          <Input type="number" step="0.1" placeholder={item.placeholder} {...field} />
+                          <Input type="number" step="0.1" placeholder={item.placeholder} {...field} className="bg-background/80" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -194,9 +196,9 @@ export function TariffComparator() {
       </Card>
       
       {loading && (
-        <div className="flex items-center justify-center gap-2 text-muted-foreground">
+        <div className="flex items-center justify-center gap-2 text-muted-foreground animate-pulse">
             <Loader2 className="h-5 w-5 animate-spin"/>
-            <span>Buscando las mejores ofertas en nuestra hoja de cálculo...</span>
+            <span>Buscando las mejores ofertas...</span>
         </div>
       )}
 
