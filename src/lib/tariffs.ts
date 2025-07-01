@@ -137,12 +137,12 @@ export const tariffs: Tariff[] = [
   {
     company: "EnergyaVM",
     name: "Fórmula Fija 3 Periodos Luz",
-    potencia_punta_precio: 0.08219,
+    potencia_punta_precio: 0.083,
     potencia_valle_precio: 0.00274,
     periodos_energia: 3,
-    energia_punta_precio: 0.1785,
-    energia_llano_precio: 0.1360,
-    energia_valle_precio: 0.0935,
+    energia_punta_precio: 0.1995,
+    energia_llano_precio: 0.152,
+    energia_valle_precio: 0.1045,
     url: "https://www.energyavm.es/luz/formula-fija-3-periodos-luz/",
   },
   {
