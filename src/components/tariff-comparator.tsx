@@ -33,7 +33,10 @@ const formSchema = z.object({
   ENERGÍA_P1_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   ENERGÍA_P2_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   ENERGÍA_P3_kWh: z.coerce.number().positive("Debe ser un número positivo"),
-  importe_factura_actual: z.coerce.number().positive("Debe ser un número positivo").optional(),
+  importe_factura_actual: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.coerce.number().positive("Debe ser un número positivo").optional()
+  ),
 });
 
 type FormInput = z.infer<typeof formSchema>;
@@ -110,7 +113,7 @@ export function TariffComparator() {
       ENERGÍA_P1_kWh: 100,
       ENERGÍA_P2_kWh: 150,
       ENERGÍA_P3_kWh: 200,
-      importe_factura_actual: undefined,
+      importe_factura_actual: '',
     },
   });
 
