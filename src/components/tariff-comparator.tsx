@@ -366,7 +366,7 @@ export function TariffComparator() {
         <p className="text-muted-foreground mb-4">Si esta herramienta te resulta útil, considera hacer una donación.</p>
         <Button asChild>
           <a
-            href="https://paypal.me/jukk4p?country.x=ES&locale.x=es_ES"
+            href="https://paypal.me/jukk4p"
             target="_blank"
             rel="noopener noreferrer"
           >
