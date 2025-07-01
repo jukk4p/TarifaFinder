@@ -165,7 +165,7 @@ export const tariffs: Tariff[] = [
     energia_punta_precio: 0.129,
     energia_llano_precio: 0.129,
     energia_valle_precio: 0.129,
-    url: "https://www.totalenergies.es/particulares/luz-y-gas/tarifas/a-tu-aire-luz-siempre",
+    url: "https://www.totalenergies.es/es/hogares/tarifas-luz/a-tu-aire-siempre",
   },
   {
     company: "CHC energía",
