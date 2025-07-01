@@ -1,0 +1,145 @@
+// @/lib/tariffs.ts
+
+export interface Tariff {
+  company: string;
+  name: string;
+  potencia_punta_precio: number; // €/kW/día
+  potencia_valle_precio: number; // €/kW/día
+  periodos_energia: 1 | 3;
+  energia_punta_precio: number; // €/kWh
+  energia_llano_precio: number; // €/kWh
+  energia_valle_precio: number; // €/kWh
+}
+
+export const tariffs: Tariff[] = [
+  {
+    company: "OCTOPUS",
+    name: "Relax",
+    potencia_punta_precio: 0.095,
+    potencia_valle_precio: 0.027,
+    periodos_energia: 1,
+    energia_punta_precio: 0.118,
+    energia_llano_precio: 0.118,
+    energia_valle_precio: 0.118,
+  },
+  {
+    company: "IMAGINA",
+    name: "Plan sin horas",
+    potencia_punta_precio: 0.087,
+    potencia_valle_precio: 0.044,
+    periodos_energia: 1,
+    energia_punta_precio: 0.113,
+    energia_llano_precio: 0.113,
+    energia_valle_precio: 0.113,
+  },
+  {
+    company: "Doméstica-Visalia",
+    name: "Especial Fijo 24h (enlace especial)",
+    potencia_punta_precio: 0.060273,
+    potencia_valle_precio: 0.060273,
+    periodos_energia: 1,
+    energia_punta_precio: 0.108995,
+    energia_llano_precio: 0.108995,
+    energia_valle_precio: 0.108995,
+  },
+  {
+    company: "REPSOL",
+    name: "Ahorro Plus",
+    potencia_punta_precio: 0.068219,
+    potencia_valle_precio: 0.068219,
+    periodos_energia: 1,
+    energia_punta_precio: 0.1299,
+    energia_llano_precio: 0.1299,
+    energia_valle_precio: 0.1299,
+  },
+  {
+    company: "REPSOL",
+    name: "Solar con batería virtual",
+    potencia_punta_precio: 0.0682119,
+    potencia_valle_precio: 0.068219,
+    periodos_energia: 1,
+    energia_punta_precio: 0.1499,
+    energia_llano_precio: 0.1499,
+    energia_valle_precio: 0.1499,
+  },
+  {
+    company: "Energía NUFRI",
+    name: "OPAL TRIO - CN023",
+    potencia_punta_precio: 0.084193,
+    potencia_valle_precio: 0.032596,
+    periodos_energia: 3,
+    energia_punta_precio: 0.176079,
+    energia_llano_precio: 0.106312,
+    energia_valle_precio: 0.074711,
+  },
+  {
+    company: "Iberdrola",
+    name: "Plan Online 3 periodos",
+    potencia_punta_precio: 0.086301,
+    potencia_valle_precio: 0.013014,
+    periodos_energia: 3,
+    energia_punta_precio: 0.175576,
+    energia_llano_precio: 0.122892,
+    energia_valle_precio: 0.090904,
+  },
+  {
+    company: "Naturgy",
+    name: "Noche",
+    potencia_punta_precio: 0.108163,
+    potencia_valle_precio: 0.033392,
+    periodos_energia: 3,
+    energia_punta_precio: 0.185461,
+    energia_llano_precio: 0.116414,
+    energia_valle_precio: 0.082334,
+  },
+  {
+    company: "Endesa",
+    name: "One Luz 12 meses",
+    potencia_punta_precio: 0.11213848767123288,
+    potencia_valle_precio: 0.04026736438356164,
+    periodos_energia: 1,
+    energia_punta_precio: 0.1107,
+    energia_llano_precio: 0.1107,
+    energia_valle_precio: 0.1107,
+  },
+  {
+    company: "EnergyaVM",
+    name: "3 periodos luz",
+    potencia_punta_precio: 0.08333333333333333,
+    potencia_valle_precio: 0.0027766666666666664,
+    periodos_energia: 3,
+    energia_punta_precio: 0.1785,
+    energia_llano_precio: 0.136,
+    energia_valle_precio: 0.0935,
+  },
+  {
+    company: "Total Energies",
+    name: "A tu aire Ahorro*",
+    potencia_punta_precio: 0.071918,
+    potencia_valle_precio: 0.07189,
+    periodos_energia: 3,
+    energia_punta_precio: 0.188041,
+    energia_llano_precio: 0.11622,
+    energia_valle_precio: 0.080428,
+  },
+  {
+    company: "CHC energía",
+    name: "PLAN VEHICULO ELECTRICO",
+    potencia_punta_precio: 0.088356,
+    potencia_valle_precio: 0.088356,
+    periodos_energia: 3,
+    energia_punta_precio: 0.1985,
+    energia_llano_precio: 0.1985,
+    energia_valle_precio: 0.029,
+  },
+  {
+    company: "COMERCIALIZADORAS DE REFERENCIA",
+    name: "PVPC-REGULADO (semiindexada horaria)",
+    potencia_punta_precio: 0.08231109589041095,
+    potencia_valle_precio: 0.0019112,
+    periodos_energia: 3,
+    energia_punta_precio: 0.1767,
+    energia_llano_precio: 0.1177,
+    energia_valle_precio: 0.0867,
+  },
+];
