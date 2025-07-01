@@ -32,7 +32,9 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
     energia_valle_kWh_P3
   } = input;
 
-  const costPotencia = (potencia_punta_kW_P1 * tariff.potencia_punta_precio + potencia_valle_kW_P2 * tariff.potencia_valle_precio) * dias_facturados;
+  const costPotencia = 
+      (potencia_punta_kW_P1 * tariff.potencia_punta_precio * dias_facturados) + 
+      (potencia_valle_kW_P2 * tariff.potencia_valle_precio * dias_facturados);
 
   let costEnergia;
 
@@ -51,8 +53,8 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   // Impuesto Eléctrico (IEE) at 0.5%
   const impuestoElectrico = subtotal * 0.005;
   
-  // Alquiler contador based on spreadsheet's implied value (0.80€ for 30 days)
-  const alquilerContadorPorDia = 0.02663;
+  // Alquiler contador based on spreadsheet's value (2,40€ for 30 days -> 0.08€/day)
+  const alquilerContadorPorDia = 0.08;
   const alquilerContador = alquilerContadorPorDia * dias_facturados;
   
   const baseIVA = subtotal + impuestoElectrico + alquilerContador;
