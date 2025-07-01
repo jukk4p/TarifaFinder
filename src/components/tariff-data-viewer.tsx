@@ -26,9 +26,9 @@ export function TariffDataViewer() {
             <div className="flex items-center gap-4">
               <Database className="h-6 w-6 text-primary shrink-0" />
               <div>
-                <p className="text-lg font-semibold">Datos de Tarifas Actuales</p>
-                <p className="mt-1 text-sm font-normal text-muted-foreground">
-                  Pulsa para ver o ocultar la tabla con los datos de las tarifas.
+                <p className="text-lg font-semibold">Base de Datos de Tarifas</p>
+                <p className="mt-1 text-sm font-normal text-muted-foreground text-left">
+                  Para actualizar, añade o edita las tarifas en el fichero <code className="bg-muted px-1.5 py-0.5 rounded-md font-mono text-xs">src/lib/tariffs.ts</code>.
                 </p>
               </div>
             </div>
