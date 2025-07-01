@@ -50,9 +50,11 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   // 5. Cargos regulados
   const ALQUILER = 0.027 * DÍAS_FACTURADOS;
   const BONO_SOC = 0.012742 * DÍAS_FACTURADOS;
-  const subTotal = termPot + termEner + ALQUILER + BONO_SOC;
-  const IMP_ELEC = subTotal * 0.0511;
-  const baseIVA = subTotal + IMP_ELEC;
+
+  const subTotalEnergia = termPot + termEner;
+  const IMP_ELEC = subTotalEnergia * 0.0511;
+  
+  const baseIVA = subTotalEnergia + IMP_ELEC + ALQUILER + BONO_SOC;
   const IVA = baseIVA * 0.21;
   const FACTURA = baseIVA + IVA;
   

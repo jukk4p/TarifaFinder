@@ -184,9 +184,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.0823,
     potencia_valle_precio: 0.0019,
     periodos_energia: 3,
-    energia_punta_precio: 0.0470,
-    energia_llano_precio: 0.0120,
-    energia_valle_precio: 0.0230,
+    energia_punta_precio: 0.162,
+    energia_llano_precio: 0.124,
+    energia_valle_precio: 0.103,
     url: "https://sede.cnmc.gob.es/listado/censo/10",
   },
 ];
