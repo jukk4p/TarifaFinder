@@ -22,10 +22,6 @@ export const es = {
     compareButton: 'Comparar Tarifas',
     calculatingButton: 'Calculando...',
     searching: 'Buscando las mejores ofertas...',
-    uploadTitle: 'O sube tu factura',
-    uploadDescription: 'La IA extraerá los datos por ti (PDF o imagen).',
-    uploadButton: 'Subir Factura',
-    extractingButton: 'Extrayendo datos...',
   },
   results: {
     title: 'Tus Mejores Ofertas',
@@ -69,10 +65,8 @@ export const es = {
   error: {
     title: 'Error',
     description: 'No se pudo completar la comparación. Inténtalo de nuevo.',
-    extractionFailed: 'No se pudieron extraer los datos de la factura. Asegúrate de que la imagen sea nítida.',
   },
   success: {
     title: 'Éxito',
-    extraction: '¡Datos extraídos! Revisa los campos y compara.',
   }
 };

@@ -22,10 +22,6 @@ export const ca = {
     compareButton: 'Comparar Tarifes',
     calculatingButton: 'Calculant...',
     searching: 'Buscant les millors ofertes...',
-    uploadTitle: 'O puja la teva factura',
-    uploadDescription: 'La IA extraurà les dades per tu (PDF o imatge).',
-    uploadButton: 'Pujar Factura',
-    extractingButton: 'Extraient dades...',
   },
   results: {
     title: 'Les Teves Millors Ofertes',
@@ -69,10 +65,8 @@ export const ca = {
   error: {
     title: 'Error',
     description: 'No s\'ha pogut completar la comparació. Intenta-ho de nou.',
-    extractionFailed: 'No s\'han pogut extreure les dades de la factura. Assegura\'t que la imatge sigui nítida.',
   },
   success: {
     title: 'Èxit',
-    extraction: 'Dades extretes! Revisa els camps i compara.',
   }
 };
