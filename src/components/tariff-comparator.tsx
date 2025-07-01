@@ -25,7 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy, Sparkles } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy, Sparkles, Gift } from 'lucide-react';
 
 const formSchema = z.object({
   dias_facturados: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -203,6 +203,20 @@ export function TariffComparator() {
       )}
 
       {results && <ResultsCard results={results} />}
+
+      <div className="w-full text-center mt-12 border-t border-white/10 pt-8">
+        <p className="text-muted-foreground mb-4">Si esta herramienta te resulta útil, considera hacer una donación.</p>
+        <Button asChild>
+          <a
+            href="https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID_HERE"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Gift className="mr-2 h-5 w-5" />
+            Invítame a un café en PayPal
+          </a>
+        </Button>
+      </div>
     </div>
   );
 }
