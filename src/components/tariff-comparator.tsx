@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { findTariffs } from '@/ai/flows/tariffFinder';
-import { explainTariff, type ExplainTariffOutput } from '@/ai/flows/explainTariff';
+import { explainTariff } from '@/ai/flows/explainTariff';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -25,8 +25,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
+
 
 const formSchema = z.object({
   DÍAS_FACTURADOS: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -57,7 +60,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
       <CardHeader>
         <CardTitle className="text-accent flex items-center gap-2">
           <Sparkles className="h-6 w-6" />
-          Resultados de la Comparación
+          Tus Mejores Ofertas
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -71,7 +74,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
               <div key={index}>
                 <p className="font-semibold text-lg flex items-start">
                   <span className="mr-3 text-2xl">{numberEmojis[index]}</span>
-                  <span className="mt-1">{company} con su tarifa {name}</span>
+                  <span className="mt-1">{company} - {name}</span>
                 </p>
                 <div className="pl-10 space-y-1 mt-1">
                   <p className="text-muted-foreground">
@@ -83,7 +86,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                     </p>
                   )}
                   <p className="text-muted-foreground">
-                    Enlace a la tarifa: <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">(Ver oferta)</a>
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">(Ver oferta)</a>
                   </p>
                 </div>
               </div>
@@ -99,6 +102,84 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
     </Card>
   );
 };
+
+const chartConfig = {
+  consumo: {
+    label: "Consumo",
+  },
+  p1: {
+    label: "Punta",
+    color: "hsl(var(--chart-1))",
+  },
+  p2: {
+    label: "Llano",
+    color: "hsl(var(--chart-2))",
+  },
+  p3: {
+    label: "Valle",
+    color: "hsl(var(--chart-3))",
+  },
+} satisfies ChartConfig;
+
+
+const ConsumptionChart = ({ data }: { data: { name: keyof typeof chartConfig; consumo: number }[] }) => {
+  return (
+    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
+      <CardHeader>
+        <CardTitle className="text-primary flex items-center gap-2">
+          <BarChartIcon className="h-6 w-6" />
+          Tu Distribución de Consumo
+        </CardTitle>
+        <CardDescription>
+          Este gráfico muestra cómo se reparte tu consumo en los diferentes periodos.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pl-0">
+        <ChartContainer config={chartConfig} className="h-[150px] w-full">
+          <BarChart
+            accessibilityLayer
+            data={data}
+            layout="vertical"
+            margin={{ left: 10, right: 50 }}
+          >
+            <CartesianGrid horizontal={false} />
+            <YAxis
+              dataKey="name"
+              type="category"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              width={60}
+              tickFormatter={(value) => chartConfig[value as keyof typeof chartConfig]?.label}
+            />
+            <XAxis dataKey="consumo" type="number" hide />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dot" hideLabel />}
+            />
+            <Bar dataKey="consumo" layout="vertical" radius={5}>
+              <LabelList
+                dataKey="consumo"
+                position="right"
+                offset={8}
+                className="fill-foreground font-semibold"
+                fontSize={12}
+                formatter={(value: number) => `${value} kWh`}
+              />
+              {data.map((entry) => (
+                <Cell
+                  key={`cell-${entry.name}`}
+                  fill={entry.consumo > 0 ? chartConfig[entry.name].color : 'transparent'}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
+  );
+};
+
 
 const ExplanationCard = ({ explanation, loading }: { explanation: string, loading: boolean }) => {
   return (
@@ -128,6 +209,7 @@ export function TariffComparator() {
   const [loading, setLoading] = useState(false);
   const [explanationLoading, setExplanationLoading] = useState(false);
   const [results, setResults] = useState<TariffResults | null>(null);
+  const [chartData, setChartData] = useState<any[] | null>(null);
   const [explanation, setExplanation] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -149,6 +231,7 @@ export function TariffComparator() {
   async function onSubmit(values: FormInput) {
     setLoading(true);
     setResults(null);
+    setChartData(null);
     setExplanation(null);
     setExplanationLoading(true);
 
@@ -156,6 +239,14 @@ export function TariffComparator() {
       const { importe_factura_actual, ...tariffValues } = values;
       const result = await findTariffs(tariffValues);
       setResults(result);
+
+      const consumptionDataForChart = [
+        { name: 'p1', consumo: values.ENERGÍA_P1_kWh },
+        { name: 'p2', consumo: values.ENERGÍA_P2_kWh },
+        { name: 'p3', consumo: values.ENERGÍA_P3_kWh },
+      ].sort((a,b) => b.consumo - a.consumo);
+
+      setChartData(consumptionDataForChart);
 
       explainTariff({ consumption: tariffValues, recommendations: result })
         .then(explanationResult => {
@@ -262,9 +353,11 @@ export function TariffComparator() {
       )}
 
       {results && <ResultsCard results={results} currentBill={currentBill} />}
+      
+      {chartData && <ConsumptionChart data={chartData} />}
 
       {(explanation || explanationLoading) && (
-        <div className="pt-8 w-full">
+        <div className="pt-2 w-full">
           <ExplanationCard explanation={explanation!} loading={explanationLoading} />
         </div>
       )}
