@@ -91,6 +91,17 @@ export const tariffs: Tariff[] = [
     url: "https://www.energianufri.com/tarifa-especial-luz",
   },
   {
+    company: "Energía Nufri",
+    name: "Tarifa UN SOLO PRECIO 24H",
+    potencia_punta_precio: 0.0842,
+    potencia_valle_precio: 0.0326,
+    periodos_energia: 1,
+    energia_punta_precio: 0.115332,
+    energia_llano_precio: 0.115332,
+    energia_valle_precio: 0.115332,
+    url: "https://www.energianufri.com/tarifa-especial-luz",
+  },
+  {
     company: "Iberdrola",
     name: "Plan Online 3 periodos",
     potencia_punta_precio: 0.086301,
