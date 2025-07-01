@@ -91,7 +91,7 @@ export const tariffs: Tariff[] = [
     url: "https://www.energianufri.com/tarifa-especial-luz",
   },
   {
-    company: "Energía Nufri",
+    company: "Energía NUFRI",
     name: "Tarifa UN SOLO PRECIO 24H",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
