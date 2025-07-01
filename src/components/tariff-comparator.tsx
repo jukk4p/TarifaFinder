@@ -28,7 +28,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
+import { useTranslation } from '@/lib/i18n';
 
 
 const formSchema = z.object({
@@ -48,6 +49,7 @@ type FormInput = z.infer<typeof formSchema>;
 type TariffResults = TariffOutput;
 
 const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
+  const { t } = useTranslation();
   const tariffs = results;
   const numberEmojis = ["1️⃣", "2️⃣", "3️⃣"];
 
@@ -60,12 +62,12 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
       <CardHeader>
         <CardTitle className="text-accent flex items-center gap-2">
           <Sparkles className="h-6 w-6" />
-          Tus Mejores Ofertas
+          {t('results.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-6 text-muted-foreground">
-          Según los datos que has facilitado, estas son las tres ofertas más económicas:
+          {t('results.subtitle')}
         </p>
         <div className="space-y-6">
           {tariffs.map(({ company, name, url, cost }, index) => {
@@ -78,15 +80,15 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                 </p>
                 <div className="pl-10 space-y-1 mt-1">
                   <p className="text-muted-foreground">
-                    Coste estimado: <span className="font-semibold text-foreground">{cost.toFixed(2)} €</span>
+                    {t('results.estimatedCost')}: <span className="font-semibold text-foreground">{cost.toFixed(2)} €</span>
                   </p>
                   {savings !== null && (
                     <p className={`text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
-                      {savings > 0 ? `Ahorro estimado: ${savings.toFixed(2)}€` : `Coste extra: ${Math.abs(savings).toFixed(2)}€`}
+                      {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
                     </p>
                   )}
                   <p className="text-muted-foreground">
-                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">(Ver oferta)</a>
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">{t('results.seeOffer')}</a>
                   </p>
                 </div>
               </div>
@@ -96,42 +98,24 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
       </CardContent>
       <CardFooter className="pt-6 border-t border-white/10 mt-6">
         <p className="w-full text-center text-xs text-muted-foreground">
-          📌 El importe incluye término de potencia y de energía para el período indicado.
+          {t('results.footnote')}
         </p>
       </CardFooter>
     </Card>
   );
 };
 
-const chartConfig = {
-  consumo: {
-    label: "Consumo",
-  },
-  p1: {
-    label: "Punta",
-    color: "hsl(var(--chart-1))",
-  },
-  p2: {
-    label: "Llano",
-    color: "hsl(var(--chart-2))",
-  },
-  p3: {
-    label: "Valle",
-    color: "hsl(var(--chart-3))",
-  },
-} satisfies ChartConfig;
-
-
-const ConsumptionChart = ({ data }: { data: { name: keyof typeof chartConfig; consumo: number }[] }) => {
+const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number }[], chartConfig: ChartConfig }) => {
+  const { t } = useTranslation();
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
           <BarChartIcon className="h-6 w-6" />
-          Tu Distribución de Consumo
+          {t('consumption_chart.title')}
         </CardTitle>
         <CardDescription>
-          Este gráfico muestra cómo se reparte tu consumo en los diferentes periodos.
+          {t('consumption_chart.description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-0">
@@ -169,7 +153,7 @@ const ConsumptionChart = ({ data }: { data: { name: keyof typeof chartConfig; co
               {data.map((entry) => (
                 <Cell
                   key={`cell-${entry.name}`}
-                  fill={entry.consumo > 0 ? chartConfig[entry.name].color : 'transparent'}
+                  fill={entry.consumo > 0 ? chartConfig[entry.name as keyof typeof chartConfig].color : 'transparent'}
                 />
               ))}
             </Bar>
@@ -182,19 +166,20 @@ const ConsumptionChart = ({ data }: { data: { name: keyof typeof chartConfig; co
 
 
 const ExplanationCard = ({ explanation, loading }: { explanation: string, loading: boolean }) => {
+  const { t } = useTranslation();
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
           <MessageSquareHeart className="h-6 w-6" />
-          Análisis Personalizado
+          {t('explanation.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>
         {loading ? (
            <div className="flex items-center gap-2 text-muted-foreground">
               <Loader2 className="h-5 w-5 animate-spin"/>
-              <span>Generando análisis...</span>
+              <span>{t('explanation.loading')}</span>
            </div>
         ) : (
           <p className="text-muted-foreground whitespace-pre-wrap">{explanation}</p>
@@ -212,6 +197,7 @@ export function TariffComparator() {
   const [chartData, setChartData] = useState<any[] | null>(null);
   const [explanation, setExplanation] = useState<string | null>(null);
   const { toast } = useToast();
+  const { t, locale } = useTranslation();
 
   const form = useForm<FormInput>({
     resolver: zodResolver(formSchema),
@@ -227,6 +213,12 @@ export function TariffComparator() {
   });
 
   const currentBill = form.watch("importe_factura_actual");
+
+  const languageMap: Record<string, string> = {
+    es: 'Spanish',
+    en: 'English',
+    ca: 'Catalan'
+  };
 
   async function onSubmit(values: FormInput) {
     setLoading(true);
@@ -248,13 +240,13 @@ export function TariffComparator() {
 
       setChartData(consumptionDataForChart);
 
-      explainTariff({ consumption: tariffValues, recommendations: result })
+      explainTariff({ consumption: tariffValues, recommendations: result, language: languageMap[locale] })
         .then(explanationResult => {
           setExplanation(explanationResult.explanation);
         })
         .catch(err => {
           console.error("Failed to get tariff explanation:", err);
-          setExplanation("No se pudo generar el análisis personalizado en este momento.");
+          setExplanation(t('explanation.error'));
         })
         .finally(() => {
           setExplanationLoading(false);
@@ -264,8 +256,8 @@ export function TariffComparator() {
       console.error(error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "No se pudo completar la comparación. Inténtalo de nuevo.",
+        title: t('error.title'),
+        description: t('error.description'),
       });
       setExplanationLoading(false);
     } finally {
@@ -274,31 +266,49 @@ export function TariffComparator() {
   }
   
   const formFields = [
-    { name: "DÍAS_FACTURADOS", label: "Días facturados", icon: CalendarDays, placeholder: "e.g., 30" },
-    { name: "POTENCIA_P1_kW", label: "Potencia Punta (kW) P1", icon: Zap, placeholder: "e.g., 4.6" },
-    { name: "POTENCIA_P2_kW", label: "Potencia Valle (kW) P2", icon: Zap, placeholder: "e.g., 4.6" },
-    { name: "ENERGÍA_P1_kWh", label: "Energía Punta (kWh) P1", icon: Lightbulb, placeholder: "e.g., 100" },
-    { name: "ENERGÍA_P2_kWh", label: "Energía Llano (kWh) P2", icon: Lightbulb, placeholder: "e.g., 150" },
-    { name: "ENERGÍA_P3_kWh", label: "Energía Valle (kWh) P3", icon: Lightbulb, placeholder: "e.g., 200" },
-    { name: "importe_factura_actual", label: "Importe factura actual (€) (Opcional)", icon: Euro, placeholder: "e.g., 75.50" },
+    { name: "DÍAS_FACTURADOS", label: t('form.daysBilled'), icon: CalendarDays, placeholder: t('form.daysBilledPlaceholder') },
+    { name: "POTENCIA_P1_kW", label: t('form.powerPeak'), icon: Zap, placeholder: t('form.powerPeakPlaceholder') },
+    { name: "POTENCIA_P2_kW", label: t('form.powerOffPeak'), icon: Zap, placeholder: t('form.powerOffPeakPlaceholder') },
+    { name: "ENERGÍA_P1_kWh", label: t('form.energyPeak'), icon: Lightbulb, placeholder: t('form.energyPeakPlaceholder') },
+    { name: "ENERGÍA_P2_kWh", label: t('form.energyFlat'), icon: Lightbulb, placeholder: t('form.energyFlatPlaceholder') },
+    { name: "ENERGÍA_P3_kWh", label: t('form.energyOffPeak'), icon: Lightbulb, placeholder: t('form.energyOffPeakPlaceholder') },
+    { name: "importe_factura_actual", label: t('form.currentBill'), icon: Euro, placeholder: t('form.currentBillPlaceholder') },
   ] as const;
+
+  const chartConfig = {
+    consumo: {
+      label: "Consumo",
+    },
+    p1: {
+      label: t('consumption_chart.peak'),
+      color: "hsl(var(--chart-1))",
+    },
+    p2: {
+      label: t('consumption_chart.flat'),
+      color: "hsl(var(--chart-2))",
+    },
+    p3: {
+      label: t('consumption_chart.offpeak'),
+      color: "hsl(var(--chart-3))",
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="w-full max-w-4xl space-y-8 py-12">
       <div className="text-center space-y-2">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-          TarifaFinder
+          {t('header')}
         </h1>
         <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
-          Introduce tu consumo y encuentra la tarifa eléctrica más barata para ti.
+          {t('subtitle')}
         </p>
       </div>
 
       <Card className="w-full shadow-lg border-white/10 bg-card/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Introduce tus datos de consumo</CardTitle>
+          <CardTitle>{t('form.title')}</CardTitle>
           <CardDescription>
-            Rellena los campos con los datos de tu última factura para obtener una comparación precisa.
+            {t('form.description')}
           </CardDescription>
         </CardHeader>
         <Form {...form}>
@@ -331,12 +341,12 @@ export function TariffComparator() {
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Calculando...
+                    {t('form.calculatingButton')}
                   </>
                 ) : (
                   <>
                     <Calculator className="mr-2 h-5 w-5" />
-                    Comparar Tarifas
+                    {t('form.compareButton')}
                   </>
                 )}
               </Button>
@@ -348,13 +358,13 @@ export function TariffComparator() {
       {loading && (
         <div className="flex items-center justify-center gap-2 text-muted-foreground animate-pulse pt-4">
             <Loader2 className="h-5 w-5 animate-spin"/>
-            <span>Buscando las mejores ofertas...</span>
+            <span>{t('form.searching')}</span>
         </div>
       )}
 
       {results && <ResultsCard results={results} currentBill={currentBill} />}
       
-      {chartData && <ConsumptionChart data={chartData} />}
+      {chartData && <ConsumptionChart data={chartData} chartConfig={chartConfig} />}
 
       {(explanation || explanationLoading) && (
         <div className="pt-2 w-full">
@@ -363,7 +373,7 @@ export function TariffComparator() {
       )}
 
       <div className="w-full text-center mt-12 border-t border-white/10 pt-8">
-        <p className="text-muted-foreground mb-4">Si esta herramienta te resulta útil, considera hacer una donación.</p>
+        <p className="text-muted-foreground mb-4">{t('donation.text')}</p>
         <Button asChild>
           <a
             href="https://paypal.me/jukk4p"
@@ -371,7 +381,7 @@ export function TariffComparator() {
             rel="noopener noreferrer"
           >
             <Gift className="mr-2 h-5 w-5" />
-            Invítame a un café en PayPal
+            {t('donation.button')}
           </a>
         </Button>
       </div>

@@ -14,11 +14,12 @@ import { tariffInputSchema, tariffOutputSchema } from './schemas';
 const ExplainTariffInputSchema = z.object({
   consumption: tariffInputSchema,
   recommendations: tariffOutputSchema,
+  language: z.string().describe('The language for the explanation (e.g., "Spanish", "English", "Catalan").'),
 });
 export type ExplainTariffInput = z.infer<typeof ExplainTariffInputSchema>;
 
 const ExplainTariffOutputSchema = z.object({
-  explanation: z.string().describe('A brief, easy-to-understand explanation of the tariff recommendations, written in Spanish.'),
+  explanation: z.string().describe('A brief, easy-to-understand explanation of the tariff recommendations, written in the requested language.'),
 });
 export type ExplainTariffOutput = z.infer<typeof ExplainTariffOutputSchema>;
 
@@ -33,7 +34,7 @@ const prompt = ai.definePrompt({
   output: { schema: ExplainTariffOutputSchema },
   prompt: `Eres un experto en tarifas eléctricas de España. Tu objetivo es ayudar a los usuarios a entender por qué se les recomiendan ciertas tarifas.
 
-Analiza los datos de consumo del usuario y las 3 tarifas recomendadas. Luego, genera una explicación breve (2-3 frases) y clara en español.
+Analiza los datos de consumo del usuario y las 3 tarifas recomendadas. Luego, genera una explicación breve (2-3 frases) y clara en el idioma solicitado: {{{language}}}.
 
 **Datos de consumo del usuario:**
 - Días facturados: {{{consumption.DÍAS_FACTURADOS}}}

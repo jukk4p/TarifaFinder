@@ -16,8 +16,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Database } from "lucide-react";
+import { useTranslation } from "@/lib/i18n";
 
 export function TariffDataViewer() {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full max-w-6xl mt-8">
       <Accordion type="single" collapsible className="w-full">
@@ -26,9 +29,9 @@ export function TariffDataViewer() {
             <div className="flex items-center gap-4">
               <Database className="h-6 w-6 text-primary shrink-0" />
               <div>
-                <p className="text-lg font-semibold">Base de Datos de Tarifas</p>
+                <p className="text-lg font-semibold">{t('tariff_database.title')}</p>
                 <p className="mt-1 text-sm font-normal text-muted-foreground text-left">
-                  Aquí se muestran las tarifas disponibles para la comparación.
+                  {t('tariff_database.description')}
                 </p>
               </div>
             </div>
@@ -38,15 +41,15 @@ export function TariffDataViewer() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-white/20">
-                    <TableHead>Compañía</TableHead>
-                    <TableHead>Nombre</TableHead>
-                    <TableHead className="text-right">Pot. Punta (€/kW/día)</TableHead>
-                    <TableHead className="text-right">Pot. Valle (€/kW/día)</TableHead>
-                    <TableHead className="text-center">Periodos</TableHead>
-                    <TableHead className="text-right">Energía Punta (€/kWh)</TableHead>
-                    <TableHead className="text-right">Energía Llano (€/kWh)</TableHead>
-                    <TableHead className="text-right">Energía Valle (€/kWh)</TableHead>
-                    <TableHead>URL</TableHead>
+                    <TableHead>{t('tariff_database.company')}</TableHead>
+                    <TableHead>{t('tariff_database.name')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.powerPeakPrice')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.powerOffPeakPrice')}</TableHead>
+                    <TableHead className="text-center">{t('tariff_database.periods')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.energyPeakPrice')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.energyFlatPrice')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.energyOffPeakPrice')}</TableHead>
+                    <TableHead>{t('tariff_database.url')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -62,7 +65,7 @@ export function TariffDataViewer() {
                       <TableCell className="text-right">{tariff.energia_valle_precio.toFixed(5)}</TableCell>
                       <TableCell>
                         <a href={tariff.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline whitespace-nowrap">
-                          Ver oferta
+                          {t('tariff_database.seeOffer')}
                         </a>
                       </TableCell>
                     </TableRow>
