@@ -27,12 +27,12 @@ export const tariffs: Tariff[] = [
   {
     company: "IMAGINA",
     name: "Plan sin horas digital (enlace especial)",
-    potencia_punta_precio: 0.088,
-    potencia_valle_precio: 0.044,
+    potencia_punta_precio: 0.111,
+    potencia_valle_precio: 0.056,
     periodos_energia: 1,
-    energia_punta_precio: 0.1100,
-    energia_llano_precio: 0.1100,
-    energia_valle_precio: 0.1100,
+    energia_punta_precio: 0.139,
+    energia_llano_precio: 0.139,
+    energia_valle_precio: 0.139,
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
   },
    {
