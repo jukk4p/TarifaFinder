@@ -25,7 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy, Sparkles, Gift } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy, Sparkles, Gift, Euro } from 'lucide-react';
 
 const formSchema = z.object({
   dias_facturados: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -34,13 +34,14 @@ const formSchema = z.object({
   energia_punta_kWh_P1: z.coerce.number().positive("Debe ser un número positivo"),
   energia_llano_kWh_P2: z.coerce.number().positive("Debe ser un número positivo"),
   energia_valle_kWh_P3: z.coerce.number().positive("Debe ser un número positivo"),
+  importe_factura_actual: z.coerce.number().positive("Debe ser un número positivo").optional(),
 });
 
 type TariffInput = z.infer<typeof formSchema>;
 type TariffResults = TariffOutput;
 
-const ResultsCard = ({ results }: { results: TariffResults }) => {
-  const tariffs = [results.tarifa_1, results.tarifa_2, results.tarifa_3].filter((t): t is [string, string, string] => t !== null);
+const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
+  const tariffs = [results.tarifa_1, results.tarifa_2, results.tarifa_3].filter((t): t is [string, string, string, number] => t !== null);
 
   const trophyColors = ["text-yellow-400", "text-slate-300", "text-orange-400"];
   
@@ -56,32 +57,46 @@ const ResultsCard = ({ results }: { results: TariffResults }) => {
           ¡Aquí tienes tus resultados!
         </CardTitle>
         <CardDescription>
-          Estas son las 3 tarifas más baratas según tus datos. Haz clic para ver la oferta.
+          Estas son las 3 tarifas más baratas para tu consumo. {currentBill && currentBill > 0 ? "También te mostramos el ahorro estimado." : "Haz clic para ver la oferta."}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ul className="space-y-4">
-          {tariffs.map(([company, name, url], index) => (
-            <li key={index} className="transition-transform duration-300 hover:scale-[1.02]">
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-background transition-colors group-hover:bg-primary/10`}>
-                    <Trophy className={`h-7 w-7 shrink-0 transition-colors ${trophyColors[index]}`} />
-                </div>
-                <div className="flex-grow">
-                  <p className="text-sm font-medium text-muted-foreground">{company}</p>
-                  <p className="text-lg font-semibold text-foreground">{name}</p>
-                </div>
-                <Badge variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"} className="ml-auto shrink-0">
-                  {`Top ${index + 1}`}
-                </Badge>
-              </a>
-            </li>
-          ))}
+          {tariffs.map(([company, name, url, cost], index) => {
+            const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
+            return (
+              <li key={index} className="transition-transform duration-300 hover:scale-[1.02]">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-background transition-colors group-hover:bg-primary/10`}>
+                      <Trophy className={`h-7 w-7 shrink-0 transition-colors ${trophyColors[index]}`} />
+                  </div>
+                  <div className="flex-grow">
+                    <p className="text-sm font-medium text-muted-foreground">{company}</p>
+                    <p className="text-lg font-semibold text-foreground">{name}</p>
+                     {savings !== null && (
+                      <p className={`mt-1 text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
+                        {savings > 0 ? `Ahorro estimado: ${savings.toFixed(2)}€` : `Coste extra: ${Math.abs(savings).toFixed(2)}€`}
+                      </p>
+                    )}
+                  </div>
+                  <div className="ml-auto flex shrink-0 items-center gap-4 text-right">
+                    <div>
+                        <p className="text-xl font-bold text-foreground">{cost.toFixed(2)}€</p>
+                        <p className="text-xs text-muted-foreground">/mes estimado</p>
+                    </div>
+                    <Badge variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"} className="w-12 justify-center py-2 text-lg">
+                      #{index + 1}
+                    </Badge>
+                  </div>
+                </a>
+              </li>
+            )
+          })}
         </ul>
       </CardContent>
     </Card>
@@ -103,8 +118,11 @@ export function TariffComparator() {
       energia_punta_kWh_P1: 100,
       energia_llano_kWh_P2: 150,
       energia_valle_kWh_P3: 200,
+      importe_factura_actual: undefined,
     },
   });
+
+  const currentBill = form.watch("importe_factura_actual");
 
   async function onSubmit(values: TariffInput) {
     setLoading(true);
@@ -131,6 +149,7 @@ export function TariffComparator() {
     { name: "energia_punta_kWh_P1", label: "Energía Punta (kWh)", icon: Lightbulb, placeholder: "e.g., 100" },
     { name: "energia_llano_kWh_P2", label: "Energía Llano (kWh)", icon: Lightbulb, placeholder: "e.g., 150" },
     { name: "energia_valle_kWh_P3", label: "Energía Valle (kWh)", icon: Lightbulb, placeholder: "e.g., 200" },
+    { name: "importe_factura_actual", label: "Importe factura actual (€) (Opcional)", icon: Euro, placeholder: "e.g., 75.50" },
   ] as const;
 
   return (
@@ -202,7 +221,7 @@ export function TariffComparator() {
         </div>
       )}
 
-      {results && <ResultsCard results={results} />}
+      {results && <ResultsCard results={results} currentBill={currentBill} />}
 
       <div className="w-full text-center mt-12 border-t border-white/10 pt-8">
         <p className="text-muted-foreground mb-4">Si esta herramienta te resulta útil, considera hacer una donación.</p>

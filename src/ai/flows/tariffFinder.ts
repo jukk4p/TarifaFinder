@@ -14,9 +14,9 @@ const tariffInputSchema = z.object({
 });
 
 const tariffOutputSchema = z.object({
-  tarifa_1: z.tuple([z.string(), z.string(), z.string()]).nullable(),
-  tarifa_2: z.tuple([z.string(), z.string(), z.string()]).nullable(),
-  tarifa_3: z.tuple([z.string(), z.string(), z.string()]).nullable(),
+  tarifa_1: z.tuple([z.string(), z.string(), z.string(), z.number()]).nullable(),
+  tarifa_2: z.tuple([z.string(), z.string(), z.string(), z.number()]).nullable(),
+  tarifa_3: z.tuple([z.string(), z.string(), z.string(), z.number()]).nullable(),
 });
 
 export type TariffInput = z.infer<typeof tariffInputSchema>;
@@ -86,9 +86,9 @@ const tariffFinderFlow = ai.defineFlow(
     
     const top3 = sortedTariffs.slice(0, 3);
     
-    const formatTariff = (tariff: typeof top3[0] | undefined): [string, string, string] | null => {
+    const formatTariff = (tariff: typeof top3[0] | undefined): [string, string, string, number] | null => {
         if (!tariff) return null;
-        return [tariff.company, tariff.name, tariff.url];
+        return [tariff.company, tariff.name, tariff.url, tariff.cost];
     };
 
     return {
