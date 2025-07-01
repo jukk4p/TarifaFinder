@@ -22,6 +22,10 @@ export const en = {
     compareButton: 'Compare Tariffs',
     calculatingButton: 'Calculating...',
     searching: 'Searching for the best deals...',
+    uploadTitle: 'Or upload your bill',
+    uploadDescription: 'The AI will extract the data for you (PDF or image).',
+    uploadButton: 'Upload Bill',
+    extractingButton: 'Extracting data...',
   },
   results: {
     title: 'Your Best Offers',
@@ -65,5 +69,10 @@ export const en = {
   error: {
     title: 'Error',
     description: 'Could not complete the comparison. Please try again.',
+    extractionFailed: 'Could not extract data from the bill. Make sure the image is clear.',
+  },
+  success: {
+    title: 'Success',
+    extraction: 'Data extracted! Review the fields and compare.',
   }
 };

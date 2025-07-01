@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { findTariffs } from '@/ai/flows/tariffFinder';
 import { explainTariff } from '@/ai/flows/explainTariff';
+import { extractFromBill } from '@/ai/flows/extractFromBill';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -25,7 +26,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon, FileScan } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -200,6 +201,7 @@ const ExplanationCard = ({ explanation, loading }: { explanation: string, loadin
 
 export function TariffComparator() {
   const [loading, setLoading] = useState(false);
+  const [isExtracting, setIsExtracting] = useState(false);
   const [explanationLoading, setExplanationLoading] = useState(false);
   const [results, setResults] = useState<TariffResults | null>(null);
   const [chartData, setChartData] = useState<any[] | null>(null);
@@ -227,6 +229,70 @@ export function TariffComparator() {
     en: 'English',
     ca: 'Catalan'
   };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsExtracting(true);
+    if (analytics) {
+      logEvent(analytics, 'start_bill_extraction', {
+        file_type: file.type,
+        file_size: file.size,
+      });
+    }
+
+    try {
+      const billDataUri = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+      });
+
+      const result = await extractFromBill({ billDataUri });
+      
+      let fieldsUpdated = 0;
+      Object.entries(result).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          form.setValue(key as keyof FormInput, value, { shouldValidate: true });
+          fieldsUpdated++;
+        }
+      });
+
+      if (fieldsUpdated > 0) {
+        toast({
+          title: t('success.title'),
+          description: t('success.extraction'),
+        });
+        if (analytics) {
+          logEvent(analytics, 'finish_bill_extraction', {
+            success: true,
+            fields_updated: fieldsUpdated,
+          });
+        }
+      } else {
+          throw new Error("No fields extracted from the document.");
+      }
+    } catch (error) {
+      console.error("Extraction failed:", error);
+      toast({
+        variant: "destructive",
+        title: t('error.title'),
+        description: t('error.extractionFailed'),
+      });
+      if (analytics) {
+        logEvent(analytics, 'exception', {
+          description: 'bill_extraction_failed',
+          fatal: false,
+        });
+      }
+    } finally {
+      setIsExtracting(false);
+      event.target.value = '';
+    }
+  };
+
 
   async function onSubmit(values: FormInput) {
     setLoading(true);
@@ -350,6 +416,34 @@ export function TariffComparator() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardContent>
+              <div className="mb-8 p-6 rounded-lg border border-dashed border-white/20 bg-card/20 text-center">
+                <h3 className="text-lg font-semibold">{t('form.uploadTitle')}</h3>
+                <p className="text-muted-foreground mt-1 mb-4 text-sm">{t('form.uploadDescription')}</p>
+                <Input
+                  id="file-upload"
+                  type="file"
+                  className="hidden"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange}
+                  disabled={isExtracting}
+                />
+                <Button asChild variant="secondary" disabled={isExtracting}>
+                  <label htmlFor="file-upload" className="cursor-pointer">
+                    {isExtracting ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        {t('form.extractingButton')}
+                      </>
+                    ) : (
+                      <>
+                        <FileScan className="mr-2 h-5 w-5" />
+                        {t('form.uploadButton')}
+                      </>
+                    )}
+                  </label>
+                </Button>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {formFields.map(item => (
                   <FormField
