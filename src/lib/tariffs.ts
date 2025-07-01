@@ -38,12 +38,12 @@ export const tariffs: Tariff[] = [
    {
     company: "IMAGINA",
     name: "PlanNoches y findes digital (enlace especial)",
-    potencia_punta_precio: 0.100,
+    potencia_punta_precio: 0.099,
     potencia_valle_precio: 0.020,
     periodos_energia: 3,
-    energia_punta_precio: 0.1844,
-    energia_llano_precio: 0.1106,
-    energia_valle_precio: 0.0762,
+    energia_punta_precio: 0.184,
+    energia_llano_precio: 0.110,
+    energia_valle_precio: 0.076,
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
   },
   {
