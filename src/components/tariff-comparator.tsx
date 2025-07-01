@@ -272,7 +272,17 @@ export function TariffComparator() {
           });
         }
       } else {
-          throw new Error("No fields extracted from the document.");
+        toast({
+            variant: "destructive",
+            title: t('error.title'),
+            description: t('error.extractionFailed'),
+        });
+        if (analytics) {
+            logEvent(analytics, 'finish_bill_extraction', {
+                success: false,
+                fields_updated: 0,
+            });
+        }
       }
     } catch (error) {
       console.error("Extraction failed:", error);
