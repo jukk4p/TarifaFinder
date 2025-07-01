@@ -40,7 +40,7 @@ type TariffInput = z.infer<typeof formSchema>;
 type TariffResults = TariffOutput;
 
 const ResultsCard = ({ results }: { results: TariffResults }) => {
-  const tariffs = [results.tarifa_1, results.tarifa_2, results.tarifa_3].filter(Boolean);
+  const tariffs = [results.tarifa_1, results.tarifa_2, results.tarifa_3].filter((t): t is [string, string, string] => t !== null);
 
   const trophyColors = ["text-chart-1", "text-chart-2", "text-chart-3"];
 
@@ -56,23 +56,28 @@ const ResultsCard = ({ results }: { results: TariffResults }) => {
           ¡Aquí tienes tus resultados!
         </CardTitle>
         <CardDescription>
-          Estas son las 3 tarifas más baratas según tus datos.
+          Estas son las 3 tarifas más baratas según tus datos. Haz clic para ver la oferta.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ol className="space-y-4">
-          {tariffs.map((tariff, index) => (
-            <li
-              key={index}
-              className="flex items-center gap-4 rounded-lg border bg-card p-4 shadow-sm transition-transform hover:scale-[1.02]"
-            >
-              <Trophy className={`h-8 w-8 ${trophyColors[index]}`} />
-              <div className="flex-grow">
-                <span className="text-lg font-semibold text-foreground">{tariff}</span>
-              </div>
-              <Badge variant={index === 0 ? "default" : "secondary"} className="ml-auto shrink-0">
-                {`Top ${index + 1}`}
-              </Badge>
+          {tariffs.map(([company, name, url], index) => (
+            <li key={index}>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 rounded-lg border bg-card p-4 shadow-sm transition-transform hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                <Trophy className={`h-8 w-8 shrink-0 ${trophyColors[index]}`} />
+                <div className="flex-grow">
+                  <p className="text-sm text-muted-foreground">{company}</p>
+                  <p className="text-lg font-semibold text-foreground">{name}</p>
+                </div>
+                <Badge variant={index === 0 ? "default" : "secondary"} className="ml-auto shrink-0">
+                  {`Top ${index + 1}`}
+                </Badge>
+              </a>
             </li>
           ))}
         </ol>
