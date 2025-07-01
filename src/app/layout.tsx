@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { LanguageProvider } from '@/lib/i18n';
+import '@/lib/firebase'; // Import for side effects (Firebase initialization)
 
 export const metadata: Metadata = {
   title: 'TarifaFinder',

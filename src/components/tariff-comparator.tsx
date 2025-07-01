@@ -30,6 +30,9 @@ import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
+import { analytics, performance } from '@/lib/firebase';
+import { logEvent } from 'firebase/analytics';
+import { trace } from 'firebase/performance';
 
 
 const formSchema = z.object({
@@ -88,7 +91,12 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                     </p>
                   )}
                   <p className="text-muted-foreground">
-                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">{t('results.seeOffer')}</a>
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold"
+                      onClick={() => {
+                        if (analytics) {
+                          logEvent(analytics, 'view_offer', { company, tariff_name: name });
+                        }
+                      }}>{t('results.seeOffer')}</a>
                   </p>
                 </div>
               </div>
@@ -227,9 +235,22 @@ export function TariffComparator() {
     setExplanation(null);
     setExplanationLoading(true);
 
+    if (analytics) {
+      const { importe_factura_actual, ...analyticsValues } = values;
+      logEvent(analytics, 'compare_tariffs', {
+          ...analyticsValues,
+          includes_current_bill: !!importe_factura_actual,
+      });
+    }
+
     try {
       const { importe_factura_actual, ...tariffValues } = values;
+      
+      const findTariffsTrace = performance ? trace(performance, 'findTariffs_flow') : null;
+      findTariffsTrace?.start();
       const result = await findTariffs(tariffValues);
+      findTariffsTrace?.stop();
+      
       setResults(result);
 
       const consumptionDataForChart = [
@@ -240,20 +261,35 @@ export function TariffComparator() {
 
       setChartData(consumptionDataForChart);
 
+      const explainTariffTrace = performance ? trace(performance, 'explainTariff_flow') : null;
+      explainTariffTrace?.start();
       explainTariff({ consumption: tariffValues, recommendations: result, language: languageMap[locale] })
         .then(explanationResult => {
           setExplanation(explanationResult.explanation);
         })
         .catch(err => {
           console.error("Failed to get tariff explanation:", err);
+          if (analytics) {
+            logEvent(analytics, 'exception', {
+              description: 'explainTariff_failed',
+              fatal: false,
+            });
+          }
           setExplanation(t('explanation.error'));
         })
         .finally(() => {
+          explainTariffTrace?.stop();
           setExplanationLoading(false);
         });
 
     } catch (error) {
       console.error(error);
+      if (analytics) {
+        logEvent(analytics, 'exception', {
+          description: 'findTariffs_failed',
+          fatal: true,
+        });
+      }
       toast({
         variant: "destructive",
         title: t('error.title'),

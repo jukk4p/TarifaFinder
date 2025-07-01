@@ -9,9 +9,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Globe } from "lucide-react";
+import { analytics } from '@/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 
 export function LanguageSwitcher() {
   const { setLocale } = useTranslation();
+
+  const handleLanguageChange = (locale: 'es' | 'en' | 'ca') => {
+    setLocale(locale);
+    if (analytics) {
+      logEvent(analytics, 'change_language', { language: locale });
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -22,13 +31,13 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setLocale("es")}>
+        <DropdownMenuItem onClick={() => handleLanguageChange("es")}>
           Español
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLocale("en")}>
+        <DropdownMenuItem onClick={() => handleLanguageChange("en")}>
           English
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLocale("ca")}>
+        <DropdownMenuItem onClick={() => handleLanguageChange("ca")}>
           Català
         </DropdownMenuItem>
       </DropdownMenuContent>
