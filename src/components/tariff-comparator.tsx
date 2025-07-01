@@ -25,7 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Trophy, Sparkles } from 'lucide-react';
 
 const formSchema = z.object({
   dias_facturados: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -42,17 +42,17 @@ type TariffResults = TariffOutput;
 const ResultsCard = ({ results }: { results: TariffResults }) => {
   const tariffs = [results.tarifa_1, results.tarifa_2, results.tarifa_3].filter((t): t is [string, string, string] => t !== null);
 
-  const trophyColors = ["text-chart-1", "text-chart-2", "text-chart-3"];
+  const trophyColors = ["text-yellow-400", "text-slate-300", "text-orange-400"];
   
   if (tariffs.length === 0) {
     return null;
   }
 
   return (
-    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-border/20">
+    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-accent flex items-center gap-2">
-          <Trophy className="h-6 w-6" />
+          <Sparkles className="h-6 w-6" />
           ¡Aquí tienes tus resultados!
         </CardTitle>
         <CardDescription>
@@ -62,15 +62,15 @@ const ResultsCard = ({ results }: { results: TariffResults }) => {
       <CardContent>
         <ul className="space-y-4">
           {tariffs.map(([company, name, url], index) => (
-            <li key={index}>
+            <li key={index} className="transition-transform duration-300 hover:scale-[1.02]">
               <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-4 rounded-lg border bg-secondary/50 p-4 shadow-sm transition-all hover:border-accent/80 hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-ring"
+                className="group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary"
               >
-                <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-background transition-colors group-hover:bg-accent/20`}>
-                    <Trophy className={`h-7 w-7 shrink-0 ${trophyColors[index]}`} />
+                <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-background transition-colors group-hover:bg-primary/10`}>
+                    <Trophy className={`h-7 w-7 shrink-0 transition-colors ${trophyColors[index]}`} />
                 </div>
                 <div className="flex-grow">
                   <p className="text-sm font-medium text-muted-foreground">{company}</p>
@@ -144,7 +144,7 @@ export function TariffComparator() {
         </p>
       </div>
 
-      <Card className="w-full shadow-lg border-border/50 bg-card/50 backdrop-blur-sm">
+      <Card className="w-full shadow-lg border-white/10 bg-card/50 backdrop-blur-sm">
         <CardHeader>
           <CardTitle>Introduce tus datos de consumo</CardTitle>
           <CardDescription>
@@ -163,7 +163,7 @@ export function TariffComparator() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="flex items-center gap-2 text-muted-foreground">
-                          <item.icon className="h-4 w-4 text-accent" />
+                          <item.icon className="h-4 w-4 text-primary" />
                           {item.label}
                         </FormLabel>
                         <FormControl>
@@ -196,7 +196,7 @@ export function TariffComparator() {
       </Card>
       
       {loading && (
-        <div className="flex items-center justify-center gap-2 text-muted-foreground animate-pulse">
+        <div className="flex items-center justify-center gap-2 text-muted-foreground animate-pulse pt-4">
             <Loader2 className="h-5 w-5 animate-spin"/>
             <span>Buscando las mejores ofertas...</span>
         </div>
