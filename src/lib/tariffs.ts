@@ -157,6 +157,17 @@ export const tariffs: Tariff[] = [
     url: "https://www.totalenergies.es/particulares/contrata/identificar-cups-factura/luz?Producto=2tp3te&p=1&type=luz",
   },
   {
+    company: "Total Energies",
+    name: "A tu Aire Luz Siempre",
+    potencia_punta_precio: 0.071918,
+    potencia_valle_precio: 0.071890,
+    periodos_energia: 1,
+    energia_punta_precio: 0.129,
+    energia_llano_precio: 0.129,
+    energia_valle_precio: 0.129,
+    url: "https://www.totalenergies.es/particulares/luz-y-gas/tarifas/a-tu-aire-luz-siempre",
+  },
+  {
     company: "CHC energía",
     name: "PLAN VEHICULO ELECTRICO",
     potencia_punta_precio: 0.0884,
