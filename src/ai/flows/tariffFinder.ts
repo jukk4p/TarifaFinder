@@ -82,9 +82,9 @@ const tariffFinderFlow = ai.defineFlow(
 
     const sortedTariffs = calculatedCosts.sort((a, b) => a.cost - b.cost);
     
-    const top4 = sortedTariffs.slice(0, 4);
+    const top3 = sortedTariffs.slice(0, 3);
     
-    return top4;
+    return top3;
   }
 );
 

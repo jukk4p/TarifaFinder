@@ -60,7 +60,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
       </CardHeader>
       <CardContent>
         <p className="mb-6 text-muted-foreground">
-          Según los datos que has facilitado, estas son las cuatro ofertas más económicas:
+          Según los datos que has facilitado, estas son las tres ofertas más económicas:
         </p>
         <div className="space-y-6">
           {tariffs.map(({ company, name, url, cost }, index) => {
