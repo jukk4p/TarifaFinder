@@ -81,7 +81,7 @@ export const tariffs: Tariff[] = [
   },
   {
     company: "Energía NUFRI",
-    name: "OPAL TRIO - CN023",
+    name: "Tarifa TRES PRECIOS",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 3,
