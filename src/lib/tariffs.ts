@@ -107,9 +107,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.086301,
     potencia_valle_precio: 0.013014,
     periodos_energia: 3,
-    energia_punta_precio: 0.1756,
-    energia_llano_precio: 0.1229,
-    energia_valle_precio: 0.0909,
+    energia_punta_precio: 0.184576,
+    energia_llano_precio: 0.131892,
+    energia_valle_precio: 0.099904,
     url: "https://www.iberdrola.es/luz/plan-online-tres-periodos",
   },
   {
