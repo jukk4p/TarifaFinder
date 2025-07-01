@@ -98,6 +98,11 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
           })}
         </ul>
       </CardContent>
+      <CardFooter className="pt-4">
+        <p className="w-full text-center text-xs text-muted-foreground">
+          📌 El importe incluye término de potencia y de energía para el período indicado.
+        </p>
+      </CardFooter>
     </Card>
   );
 };
