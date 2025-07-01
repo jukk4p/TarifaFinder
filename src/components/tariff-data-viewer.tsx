@@ -28,7 +28,7 @@ export function TariffDataViewer() {
               <div>
                 <p className="text-lg font-semibold">Base de Datos de Tarifas</p>
                 <p className="mt-1 text-sm font-normal text-muted-foreground text-left">
-                  Para actualizar, añade o edita las tarifas en el fichero <code className="bg-muted px-1.5 py-0.5 rounded-md font-mono text-xs">src/lib/tariffs.ts</code>.
+                  Aquí se muestran las tarifas disponibles para la comparación.
                 </p>
               </div>
             </div>
