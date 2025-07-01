@@ -136,7 +136,7 @@ export const tariffs: Tariff[] = [
   },
   {
     company: "EnergyaVM",
-    name: "3 periodos luz",
+    name: "Fórmula Fija 3 Periodos Luz",
     potencia_punta_precio: 0.08219,
     potencia_valle_precio: 0.00274,
     periodos_energia: 3,
