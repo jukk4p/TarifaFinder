@@ -1,4 +1,4 @@
-import { Twitter, Linkedin, Mail } from 'lucide-react';
+import { Twitter } from 'lucide-react';
 import Link from 'next/link';
 
 export function Footer() {
@@ -17,7 +17,6 @@ export function Footer() {
               <h4 className="text-sm font-semibold text-foreground tracking-wider uppercase">Navegación</h4>
               <ul className="mt-4 space-y-2">
                 <li><Link href="/nosotros" className="text-sm text-muted-foreground hover:text-primary">Nosotros</Link></li>
-                <li><Link href="/contacto" className="text-sm text-muted-foreground hover:text-primary">Contacto</Link></li>
                 <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
               </ul>
             </div>
@@ -30,18 +29,12 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-foreground tracking-wider uppercase">Contacto</h4>
-              <ul className="mt-4 space-y-2">
-                <li>
-                  <a href="mailto:contacto@tarifafinder.com" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-                    <Mail className="h-4 w-4" />
-                    <span>contacto@tarifafinder.com</span>
-                  </a>
-                </li>
-              </ul>
+              <h4 className="text-sm font-semibold text-foreground tracking-wider uppercase">Síguenos</h4>
               <div className="flex space-x-4 mt-4">
-                <Link href="/#" className="text-muted-foreground hover:text-primary"><span className="sr-only">Twitter</span><Twitter className="h-5 w-5" /></Link>
-                <Link href="/#" className="text-muted-foreground hover:text-primary"><span className="sr-only">LinkedIn</span><Linkedin className="h-5 w-5" /></Link>
+                <Link href="https://twitter.com/TarifaFinder" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                  <span className="sr-only">Twitter</span>
+                  <Twitter className="h-5 w-5" />
+                </Link>
               </div>
             </div>
           </div>

@@ -23,7 +23,6 @@ export default function PrivacyPolicyPage() {
           <ul className="list-disc list-inside space-y-2 mt-2">
             <li><strong>Datos de consumo proporcionados por ti:</strong> Cuando utilizas nuestro comparador, introduces datos sobre tu consumo eléctrico (días facturados, potencia, kWh por periodo). Estos datos se utilizan exclusivamente para realizar la comparación y no se almacenan en nuestros servidores una vez que abandonas la sesión.</li>
             <li><strong>Datos de uso y analítica:</strong> Utilizamos Firebase Analytics para recopilar información anónima sobre cómo interactúas con nuestro sitio (páginas visitadas, clics en botones, tipo de dispositivo). Esto nos ayuda a mejorar la experiencia del usuario. Estos datos no te identifican personalmente.</li>
-            <li><strong>Datos de contacto:</strong> Si decides contactarnos a través de nuestro formulario, recopilamos tu nombre, correo electrónico y el mensaje que nos envías para poder responder a tu consulta.</li>
           </ul>
         </section>
 
@@ -32,7 +31,6 @@ export default function PrivacyPolicyPage() {
           <ul className="list-disc list-inside space-y-2">
             <li>Para proporcionar y mejorar el servicio de comparación de tarifas.</li>
             <li>Para analizar el uso de la plataforma y optimizar su rendimiento y funcionalidad.</li>
-            <li>Para comunicarnos contigo en respuesta a tus consultas o solicitudes.</li>
           </ul>
         </section>
 
@@ -43,7 +41,7 @@ export default function PrivacyPolicyPage() {
 
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-2">5. Tus Derechos</h2>
-          <p>De acuerdo con la legislación vigente, tienes derecho a acceder, rectificar, cancelar y oponerte al tratamiento de tus datos personales. Dado que no almacenamos datos personales de forma persistente, estos derechos se aplican principalmente a la información que nos proporcionas al contactarnos. Puedes ejercer tus derechos enviando un correo a <a href="mailto:contacto@tarifafinder.com" className="underline hover:text-primary">contacto@tarifafinder.com</a>.</p>
+          <p>De acuerdo con la legislación vigente, tienes derecho a acceder, rectificar, cancelar y oponerte al tratamiento de tus datos personales. Dado que TarifaFinder no almacena información personal identificable a través de su herramienta principal, el ejercicio de estos derechos se centra en la gestión de cookies, que puedes controlar como se describe en nuestra <a href="/politica-de-cookies" className="underline hover:text-primary">Política de Cookies</a>.</p>
         </section>
 
         <section>

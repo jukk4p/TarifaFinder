@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     question: '¿Qué hago si encuentro un error en los datos o en un cálculo?',
-    answer: 'Agradecemos enormemente tu ayuda. Si detectas cualquier posible error, por favor, no dudes en contactarnos a través de nuestro formulario o correo electrónico de contacto. Lo investigaremos lo antes posible.',
+    answer: 'Agradecemos enormemente tu ayuda. Si detectas cualquier posible error, por favor, no dudes en contactarnos a través de nuestra cuenta de Twitter @TarifaFinder. Lo investigaremos lo antes posible.',
   },
   {
     question: '¿Qué significan los periodos P1, P2 y P3?',
