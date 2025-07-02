@@ -54,6 +54,7 @@ const tariffFinderFlow = ai.defineFlow(
         name: tariff.name,
         url: tariff.url,
         cost: cost,
+        permanencia: tariff.permanencia,
       };
     });
 

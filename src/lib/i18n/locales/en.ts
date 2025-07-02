@@ -31,6 +31,7 @@ export const en = {
     extraCost: 'Extra cost',
     seeOffer: '(See offer)',
     footnote: '📌 The amount includes power and energy charges for the indicated period.',
+    commitment: 'Commitment',
   },
   consumption_chart: {
     title: 'Your Consumption Distribution',
@@ -61,6 +62,7 @@ export const en = {
     energyOffPeakPrice: 'Off-Peak Energy (€/kWh)',
     url: 'URL',
     seeOffer: 'See offer',
+    commitment: 'Commitment',
   },
   error: {
     title: 'Error',

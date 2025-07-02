@@ -31,6 +31,7 @@ export const ca = {
     extraCost: 'Cost extra',
     seeOffer: '(Veure oferta)',
     footnote: '📌 L\'import inclou terme de potència i d\'energia per al període indicat.',
+    commitment: 'Compromís',
   },
   consumption_chart: {
     title: 'La Teva Distribució de Consum',
@@ -61,6 +62,7 @@ export const ca = {
     energyOffPeakPrice: 'Energia Vall (€/kWh)',
     url: 'URL',
     seeOffer: 'Veure oferta',
+    commitment: 'Permanència',
   },
   error: {
     title: 'Error',

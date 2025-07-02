@@ -10,6 +10,7 @@ export interface Tariff {
   energia_llano_precio: number; // €/kWh
   energia_valle_precio: number; // €/kWh
   url: string;
+  permanencia?: string;
 }
 
 export const tariffs: Tariff[] = [
@@ -67,6 +68,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1299,
     energia_valle_precio: 0.1299,
     url: "https://www.repsol.es/particulares/hogar/luz-y-gas/tarifas/tarifa-ahorro-plus/",
+    permanencia: "12 meses",
   },
   {
     company: "Repsol",
@@ -78,6 +80,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1499,
     energia_valle_precio: 0.1499,
     url: "https://www.repsol.es/particulares/hogar/energia-solar/tarifas/tarifa-solar-bateria-virtual/",
+    permanencia: "12 meses",
   },
   {
     company: "Energía Nufri",
@@ -133,6 +136,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1232,
     energia_valle_precio: 0.1232,
     url: "https://www.endesa.com/es/luz-y-gas/luz/one/tarifa-one-luz-12-meses",
+    permanencia: "12 meses",
   },
   {
     company: "Energya VM",

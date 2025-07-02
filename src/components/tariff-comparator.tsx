@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon, Lock } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -73,7 +73,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
           {t('results.subtitle')}
         </p>
         <div className="space-y-6">
-          {tariffs.map(({ company, name, url, cost }, index) => {
+          {tariffs.map(({ company, name, url, cost, permanencia }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
             return (
               <div key={index}>
@@ -88,6 +88,12 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                   {savings !== null && (
                     <p className={`text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
                       {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
+                    </p>
+                  )}
+                  {permanencia && (
+                    <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+                      <Lock className="h-3 w-3" />
+                      {t('results.commitment')}: <span className="font-semibold text-foreground">{permanencia}</span>
                     </p>
                   )}
                   <p className="text-muted-foreground">

@@ -31,6 +31,7 @@ export const es = {
     extraCost: 'Coste extra',
     seeOffer: '(Ver oferta)',
     footnote: '📌 El importe incluye término de potencia y de energía para el período indicado.',
+    commitment: 'Compromiso',
   },
   consumption_chart: {
     title: 'Tu Distribución de Consumo',
@@ -61,6 +62,7 @@ export const es = {
     energyOffPeakPrice: 'Energía Valle (€/kWh)',
     url: 'URL',
     seeOffer: 'Ver oferta',
+    commitment: 'Permanencia',
   },
   error: {
     title: 'Error',
