@@ -16,17 +16,17 @@ export function Footer() {
             <div>
               <h4 className="text-sm font-semibold text-foreground tracking-wider uppercase">Navegación</h4>
               <ul className="mt-4 space-y-2">
-                <li><Link href="/#" className="text-sm text-muted-foreground hover:text-primary">Nosotros</Link></li>
-                <li><Link href="/#" className="text-sm text-muted-foreground hover:text-primary">Contacto</Link></li>
-                <li><Link href="/#" className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
+                <li><Link href="/nosotros" className="text-sm text-muted-foreground hover:text-primary">Nosotros</Link></li>
+                <li><Link href="/contacto" className="text-sm text-muted-foreground hover:text-primary">Contacto</Link></li>
+                <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-sm font-semibold text-foreground tracking-wider uppercase">Legal</h4>
               <ul className="mt-4 space-y-2">
-                <li><Link href="/#" className="text-sm text-muted-foreground hover:text-primary">Política de Privacidad</Link></li>
-                <li><Link href="/#" className="text-sm text-muted-foreground hover:text-primary">Política de Cookies</Link></li>
-                <li><Link href="/#" className="text-sm text-muted-foreground hover:text-primary">Términos de Uso</Link></li>
+                <li><Link href="/politica-de-privacidad" className="text-sm text-muted-foreground hover:text-primary">Política de Privacidad</Link></li>
+                <li><Link href="/politica-de-cookies" className="text-sm text-muted-foreground hover:text-primary">Política de Cookies</Link></li>
+                <li><Link href="/terminos-de-uso" className="text-sm text-muted-foreground hover:text-primary">Términos de Uso</Link></li>
               </ul>
             </div>
             <div>
