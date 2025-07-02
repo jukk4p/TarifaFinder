@@ -1,3 +1,4 @@
+import { Footer } from '@/components/footer';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { TariffComparator } from '@/components/tariff-comparator';
 import { TariffDataViewer } from '@/components/tariff-data-viewer';
@@ -17,6 +18,7 @@ export default function Home() {
         <TariffDataViewer />
       </main>
 
+      <Footer />
     </div>
   );
 }
