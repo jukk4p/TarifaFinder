@@ -223,12 +223,12 @@ export function TariffComparator() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       DÍAS_FACTURADOS: 30,
-      POTENCIA_P1_kW: 4.6,
-      POTENCIA_P2_kW: 4.6,
-      ENERGÍA_P1_kWh: 100,
-      ENERGÍA_P2_kWh: 150,
-      ENERGÍA_P3_kWh: 200,
-      importe_factura_actual: '',
+      POTENCIA_P1_kW: 5.5,
+      POTENCIA_P2_kW: 5.5,
+      ENERGÍA_P1_kWh: 300,
+      ENERGÍA_P2_kWh: 100,
+      ENERGÍA_P3_kWh: 100,
+      importe_factura_actual: '120',
     },
   });
 
@@ -436,3 +436,5 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    

@@ -20,9 +20,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.095,
     potencia_valle_precio: 0.027,
     periodos_energia: 1,
-    energia_punta_precio: 0.122,
-    energia_llano_precio: 0.122,
-    energia_valle_precio: 0.122,
+    energia_punta_precio: 0.222,
+    energia_llano_precio: 0.222,
+    energia_valle_precio: 0.222,
     url: "https://octopusenergy.es/precios",
     permanencia: "No",
   },
@@ -56,9 +56,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.06027,
     potencia_valle_precio: 0.06027,
     periodos_energia: 1,
-    energia_punta_precio: 0.108995,
-    energia_llano_precio: 0.108995,
-    energia_valle_precio: 0.108995,
+    energia_punta_precio: 0.208995,
+    energia_llano_precio: 0.208995,
+    energia_valle_precio: 0.208995,
     url: "https://visalia.es/luz/fijo24horas/",
     permanencia: "No",
   },
@@ -137,7 +137,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Endesa",
     name: "One Luz 12 Meses",
-    potencia_punta_precio: 0.11214,
+    potencia_punta_precio: 0.08214,
     potencia_valle_precio: 0.04027,
     periodos_energia: 1,
     energia_punta_precio: 0.1232,
@@ -207,3 +207,5 @@ export const tariffs: Tariff[] = [
     permanencia: "No",
   },
 ];
+
+    
