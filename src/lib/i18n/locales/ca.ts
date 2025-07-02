@@ -31,7 +31,7 @@ export const ca = {
     extraCost: 'Cost extra',
     seeOffer: '(Veure oferta)',
     footnote: '📌 L\'import inclou terme de potència i d\'energia per al període indicat.',
-    commitment: 'Compromís',
+    commitment: 'Permanència',
   },
   consumption_chart: {
     title: 'La Teva Distribució de Consum',

@@ -10,7 +10,7 @@ export interface Tariff {
   energia_llano_precio: number; // €/kWh
   energia_valle_precio: number; // €/kWh
   url: string;
-  permanencia?: string;
+  permanencia: "Si" | "Puede" | "No";
 }
 
 export const tariffs: Tariff[] = [
@@ -24,6 +24,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.122,
     energia_valle_precio: 0.122,
     url: "https://octopusenergy.es/precios",
+    permanencia: "No",
   },
   {
     company: "Imagina",
@@ -35,6 +36,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.139,
     energia_valle_precio: 0.139,
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
+    permanencia: "No",
   },
    {
     company: "Imagina",
@@ -46,6 +48,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.110,
     energia_valle_precio: 0.0762,
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
+    permanencia: "No",
   },
   {
     company: "Doméstica - Visalia",
@@ -57,6 +60,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.108995,
     energia_valle_precio: 0.108995,
     url: "https://visalia.es/luz/fijo24horas/",
+    permanencia: "No",
   },
   {
     company: "Repsol",
@@ -68,7 +72,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1299,
     energia_valle_precio: 0.1299,
     url: "https://www.repsol.es/particulares/hogar/luz-y-gas/tarifas/tarifa-ahorro-plus/",
-    permanencia: "12 meses",
+    permanencia: "Puede",
   },
   {
     company: "Repsol",
@@ -80,7 +84,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1499,
     energia_valle_precio: 0.1499,
     url: "https://www.repsol.es/particulares/hogar/energia-solar/tarifas/tarifa-solar-bateria-virtual/",
-    permanencia: "12 meses",
+    permanencia: "Puede",
   },
   {
     company: "Energía Nufri",
@@ -92,6 +96,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1063,
     energia_valle_precio: 0.0747,
     url: "https://www.energianufri.com/tarifa-especial-luz",
+    permanencia: "No",
   },
   {
     company: "Energía Nufri",
@@ -103,6 +108,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.115332,
     energia_valle_precio: 0.115332,
     url: "https://www.energianufri.com/tarifa-especial-luz",
+    permanencia: "No",
   },
   {
     company: "Iberdrola",
@@ -114,6 +120,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.131892,
     energia_valle_precio: 0.099904,
     url: "https://www.iberdrola.es/luz/plan-online-tres-periodos",
+    permanencia: "No",
   },
   {
     company: "Naturgy",
@@ -125,6 +132,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1164,
     energia_valle_precio: 0.0823,
     url: "https://www.naturgy.es/hogar/luz/tarifa_noche",
+    permanencia: "No",
   },
   {
     company: "Endesa",
@@ -136,7 +144,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1232,
     energia_valle_precio: 0.1232,
     url: "https://www.endesa.com/es/luz-y-gas/luz/one/tarifa-one-luz-12-meses",
-    permanencia: "12 meses",
+    permanencia: "Si",
   },
   {
     company: "Energya VM",
@@ -148,6 +156,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.152,
     energia_valle_precio: 0.1045,
     url: "https://www.energyavm.es/luz/formula-fija-3-periodos-luz/",
+    permanencia: "No",
   },
   {
     company: "Total Energies",
@@ -159,6 +168,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.12644,
     energia_valle_precio: 0.09209,
     url: "https://www.totalenergies.es/particulares/contrata/identificar-cups-factura/luz?Producto=2tp3te&p=1&type=luz",
+    permanencia: "No",
   },
   {
     company: "Total Energies",
@@ -170,6 +180,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.129,
     energia_valle_precio: 0.129,
     url: "https://www.totalenergies.es/es/hogares/tarifas-luz/a-tu-aire-siempre",
+    permanencia: "No",
   },
   {
     company: "CHC Energía",
@@ -181,6 +192,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.1985,
     energia_valle_precio: 0.0290,
     url: "https://chcenergia.es/tarifa-luz/vehiculo-electrico/",
+    permanencia: "No",
   },
   {
     company: "Comercializadoras de Referencia",
@@ -192,5 +204,6 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.124,
     energia_valle_precio: 0.103,
     url: "https://sede.cnmc.gob.es/listado/censo/10",
+    permanencia: "No",
   },
 ];

@@ -90,7 +90,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                       {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
                     </p>
                   )}
-                  {permanencia && (
+                  {permanencia && permanencia !== 'No' && (
                     <p className="text-sm text-muted-foreground flex items-center gap-1.5">
                       <Lock className="h-3 w-3" />
                       {t('results.commitment')}: <span className="font-semibold text-foreground">{permanencia}</span>

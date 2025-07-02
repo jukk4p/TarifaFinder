@@ -31,7 +31,7 @@ export const es = {
     extraCost: 'Coste extra',
     seeOffer: '(Ver oferta)',
     footnote: '📌 El importe incluye término de potencia y de energía para el período indicado.',
-    commitment: 'Compromiso',
+    commitment: 'Permanencia',
   },
   consumption_chart: {
     title: 'Tu Distribución de Consumo',
