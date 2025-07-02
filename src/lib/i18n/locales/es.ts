@@ -32,6 +32,8 @@ export const es = {
     seeOffer: '(Ver oferta)',
     footnote: '📌 El importe incluye término de potencia y de energía para el período indicado.',
     commitment: 'Permanencia',
+    commitment_yes: 'Tiene permanencia',
+    commitment_maybe: 'Puede tener permanencia',
   },
   consumption_chart: {
     title: 'Tu Distribución de Consumo',

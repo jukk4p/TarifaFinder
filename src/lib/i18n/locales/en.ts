@@ -32,6 +32,8 @@ export const en = {
     seeOffer: '(See offer)',
     footnote: '📌 The amount includes power and energy charges for the indicated period.',
     commitment: 'Commitment',
+    commitment_yes: 'Has a commitment period',
+    commitment_maybe: 'May have a commitment period',
   },
   consumption_chart: {
     title: 'Your Consumption Distribution',

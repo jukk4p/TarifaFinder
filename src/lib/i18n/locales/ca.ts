@@ -32,6 +32,8 @@ export const ca = {
     seeOffer: '(Veure oferta)',
     footnote: '📌 L\'import inclou terme de potència i d\'energia per al període indicat.',
     commitment: 'Permanència',
+    commitment_yes: 'Té permanència',
+    commitment_maybe: 'Pot tenir permanència',
   },
   consumption_chart: {
     title: 'La Teva Distribució de Consum',
