@@ -46,7 +46,7 @@ export const es = {
     error: 'No se pudo generar el análisis personalizado en este momento.',
   },
   donation: {
-    text: 'Si esta herramienta te resulta útil, considera hacer una donación.',
+    text: '¿Te ha sido útil esta herramienta? Puedes apoyarnos con una donación si lo consideras oportuno.',
     button: 'Invítame a un café en PayPal',
   },
   tariff_database: {

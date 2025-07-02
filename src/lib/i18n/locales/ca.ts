@@ -46,7 +46,7 @@ export const ca = {
     error: 'No s\'ha pogut generar l\'anàlisi personalitzada en aquest moment.',
   },
   donation: {
-    text: 'Si aquesta eina et resulta útil, considera fer una donació.',
+    text: "T'ha estat útil aquesta eina? Pots donar-nos suport amb una donació si ho consideres oportú.",
     button: 'Convida\'m a un cafè a PayPal',
   },
   tariff_database: {

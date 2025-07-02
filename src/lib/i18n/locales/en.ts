@@ -46,7 +46,7 @@ export const en = {
     error: 'Could not generate the personalized analysis at this time.',
   },
   donation: {
-    text: 'If you find this tool useful, please consider making a donation.',
+    text: "Was this tool helpful? You can support us with a donation if you'd like.",
     button: 'Buy me a coffee on PayPal',
   },
   tariff_database: {
