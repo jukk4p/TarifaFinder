@@ -25,10 +25,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart, Lock } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon, Lock } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { Pie, PieChart, Cell, Bar, XAxis, YAxis } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart";
+import { Bar, XAxis, YAxis, BarChart, Cell } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -132,7 +132,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
-          <BarChart className="h-6 w-6" />
+          <BarChartIcon className="h-6 w-6" />
           {t('consumption_chart.title')}
         </CardTitle>
         <CardDescription>
