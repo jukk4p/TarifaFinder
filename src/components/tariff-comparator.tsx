@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -127,7 +127,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
 
 const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number }[], chartConfig: ChartConfig }) => {
   const { t } = useTranslation();
-  const totalConsumption = React.useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
+  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
   
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
@@ -230,12 +230,12 @@ export function TariffComparator() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       DÍAS_FACTURADOS: 30,
-      POTENCIA_P1_kW: 5.5,
-      POTENCIA_P2_kW: 5.5,
-      ENERGÍA_P1_kWh: 300,
-      ENERGÍA_P2_kWh: 100,
-      ENERGÍA_P3_kWh: 100,
-      importe_factura_actual: '120',
+      POTENCIA_P1_kW: 4.6,
+      POTENCIA_P2_kW: 4.6,
+      ENERGÍA_P1_kWh: 100,
+      ENERGÍA_P2_kWh: 150,
+      ENERGÍA_P3_kWh: 200,
+      importe_factura_actual: undefined,
     },
   });
 
