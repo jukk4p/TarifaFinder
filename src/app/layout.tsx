@@ -3,10 +3,14 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { LanguageProvider } from '@/lib/i18n';
 import '@/lib/firebase'; // Import for side effects (Firebase initialization)
+import { TariffFinderLogo } from '@/components/logo';
 
 export const metadata: Metadata = {
   title: 'TarifaFinder',
   description: 'Comparador de tarifas eléctricas',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
