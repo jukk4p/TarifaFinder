@@ -58,7 +58,7 @@ export function TariffDataViewer() {
                     <TableRow key={index} className="border-white/10 last:border-b-0">
                       <TableCell className="font-medium">{tariff.company}</TableCell>
                       <TableCell>{tariff.name}</TableCell>
-                      <TableCell>{tariff.permanencia}</TableCell>
+                      <TableCell>{tariff.commitment ? 'Sí' : 'No'}</TableCell>
                       <TableCell className="text-right">{tariff.potencia_punta_precio.toFixed(5)}</TableCell>
                       <TableCell className="text-right">{tariff.potencia_valle_precio.toFixed(5)}</TableCell>
                       <TableCell className="text-center">{tariff.periodos_energia}</TableCell>

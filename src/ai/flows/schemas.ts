@@ -16,7 +16,6 @@ export const tariffOutputSchema = z.array(z.object({
   name: z.string(),
   url: z.string(),
   cost: z.number(),
-  permanencia: z.string().optional(),
 }));
 
 export type TariffOutput = z.infer<typeof tariffOutputSchema>;

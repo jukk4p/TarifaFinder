@@ -31,9 +31,7 @@ export const ca = {
     extraCost: 'Cost extra',
     seeOffer: '(Veure oferta)',
     footnote: '📌 L\'import inclou terme de potència i d\'energia per al període indicat.',
-    commitment: 'Permanència',
-    commitment_yes: 'Té permanència',
-    commitment_maybe: 'Pot tenir permanència',
+    commitment: 'Compromís',
   },
   consumption_chart: {
     title: 'La Teva Distribució de Consum',
@@ -48,8 +46,8 @@ export const ca = {
     error: 'No s\'ha pogut generar l\'anàlisi personalitzada en aquest moment.',
   },
   donation: {
-    text: "T'ha estat útil aquesta eina? Pots donar-nos suport amb una donació si ho consideres oportú.",
-    button: 'Convida\'m a un cafè a PayPal',
+    text: "Si aquesta eina et resulta útil, considera donar suport al projecte.",
+    button: 'Convidar a un cafè',
   },
   tariff_database: {
     title: 'Base de Dades de Tarifes',
@@ -64,7 +62,7 @@ export const ca = {
     energyOffPeakPrice: 'Energia Vall (€/kWh)',
     url: 'URL',
     seeOffer: 'Veure oferta',
-    commitment: 'Permanència',
+    commitment: 'Compromís',
   },
   error: {
     title: 'Error',

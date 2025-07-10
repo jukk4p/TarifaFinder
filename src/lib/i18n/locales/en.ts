@@ -32,8 +32,6 @@ export const en = {
     seeOffer: '(See offer)',
     footnote: '📌 The amount includes power and energy charges for the indicated period.',
     commitment: 'Commitment',
-    commitment_yes: 'Has a commitment period',
-    commitment_maybe: 'May have a commitment period',
   },
   consumption_chart: {
     title: 'Your Consumption Distribution',
@@ -48,8 +46,8 @@ export const en = {
     error: 'Could not generate the personalized analysis at this time.',
   },
   donation: {
-    text: "Was this tool helpful? You can support us with a donation if you'd like.",
-    button: 'Buy me a coffee on PayPal',
+    text: "If you find this tool useful, please consider supporting the project.",
+    button: 'Buy me a coffee',
   },
   tariff_database: {
     title: 'Tariff Database',

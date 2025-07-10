@@ -31,9 +31,7 @@ export const es = {
     extraCost: 'Coste extra',
     seeOffer: '(Ver oferta)',
     footnote: '📌 El importe incluye término de potencia y de energía para el período indicado.',
-    commitment: 'Permanencia',
-    commitment_yes: 'Tiene permanencia',
-    commitment_maybe: 'Puede tener permanencia',
+    commitment: 'Compromiso',
   },
   consumption_chart: {
     title: 'Tu Distribución de Consumo',
@@ -48,8 +46,8 @@ export const es = {
     error: 'No se pudo generar el análisis personalizado en este momento.',
   },
   donation: {
-    text: '¿Te ha sido útil esta herramienta? Puedes apoyarnos con una donación si lo consideras oportuno.',
-    button: 'Invítame a un café en PayPal',
+    text: 'Si esta herramienta te resulta útil, considera apoyar el proyecto.',
+    button: 'Invítame a un café',
   },
   tariff_database: {
     title: 'Base de Datos de Tarifas',
@@ -64,7 +62,7 @@ export const es = {
     energyOffPeakPrice: 'Energía Valle (€/kWh)',
     url: 'URL',
     seeOffer: 'Ver oferta',
-    commitment: 'Permanencia',
+    commitment: 'Compromiso',
   },
   error: {
     title: 'Error',

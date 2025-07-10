@@ -18,6 +18,7 @@ export function Footer() {
               <ul className="mt-4 space-y-2">
                 <li><Link href="/nosotros" className="text-sm text-muted-foreground hover:text-primary">Nosotros</Link></li>
                 <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
+                <li><Link href="/contacto" className="text-sm text-muted-foreground hover:text-primary">Contacto</Link></li>
               </ul>
             </div>
             <div>

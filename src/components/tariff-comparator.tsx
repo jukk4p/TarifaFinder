@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon, Lock } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { Bar, XAxis, YAxis, BarChart, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -72,8 +72,8 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
         <p className="mb-6 text-muted-foreground">
           {t('results.subtitle')}
         </p>
-        <div className="space-y-6">
-          {tariffs.map(({ company, name, url, cost, permanencia }, index) => {
+        <div className="space-y-4">
+          {tariffs.map(({ company, name, url, cost }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
             return (
               <div key={index}>
@@ -88,18 +88,6 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                   {savings !== null && (
                     <p className={`text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
                       {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
-                    </p>
-                  )}
-                  {permanencia === 'Si' && (
-                    <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                      <Lock className="h-3 w-3 text-destructive" />
-                      <span className="font-medium text-foreground">{t('results.commitment_yes')}</span>
-                    </p>
-                  )}
-                  {permanencia === 'Puede' && (
-                    <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                      <Lock className="h-3 w-3 text-chart-1" />
-                      <span className="font-medium text-foreground">{t('results.commitment_maybe')}</span>
                     </p>
                   )}
                   <p className="text-muted-foreground">
@@ -344,14 +332,6 @@ export function TariffComparator() {
   return (
     <div className="w-full max-w-4xl space-y-8 py-12">
       <div className="text-center space-y-4">
-        <svg
-          className="mx-auto h-12 w-auto"
-          viewBox="0 0 100 100"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M50 0L66.67 33.33H100L75 58.33L83.33 91.67L50 75L16.67 91.67L25 58.33L0 33.33H33.33L50 0Z" fill="hsl(var(--primary))"/>
-          <path d="M50 20L60 40H80L65 55L70 75L50 65L30 75L35 55L20 40H40L50 20Z" fill="hsl(var(--background))"/>
-        </svg>
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           {t('header')}
         </h1>
