@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -25,9 +26,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon, Lock } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { Bar, XAxis, YAxis, BarChart, Cell } from 'recharts';
+import { Bar, XAxis, YAxis, BarChart, Cell, LabelList } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
@@ -73,7 +74,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
           {t('results.subtitle')}
         </p>
         <div className="space-y-4">
-          {tariffs.map(({ company, name, url, cost }, index) => {
+          {tariffs.map(({ company, name, url, cost, permanencia }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
             return (
               <div key={index}>
@@ -88,6 +89,18 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                   {savings !== null && (
                     <p className={`text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
                       {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
+                    </p>
+                  )}
+                  {permanencia === 'Si' && (
+                    <p className="text-sm font-medium text-destructive flex items-center gap-1.5">
+                      <Lock className="h-3.5 w-3.5" />
+                      {t('results.permanence_yes')}
+                    </p>
+                  )}
+                  {permanencia === 'Puede' && (
+                    <p className="text-sm font-medium text-yellow-500 flex items-center gap-1.5">
+                       <Lock className="h-3.5 w-3.5 text-chart-1" />
+                       {t('results.permanence_maybe')}
                     </p>
                   )}
                   <p className="text-muted-foreground">
@@ -127,41 +140,42 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
           {t('consumption_chart.description')}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex items-center justify-center">
+      <CardContent>
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-video h-[250px] w-full"
         >
           <BarChart
-            data={data}
+            data={data.slice().reverse()}
+            layout="vertical"
             accessibilityLayer
             margin={{
-              left: 12,
-              right: 12,
+              left: 10,
+              right: 40,
+              top: 10,
+              bottom:10
             }}
           >
-            <XAxis
+            <XAxis type="number" hide />
+            <YAxis
               dataKey="name"
+              type="category"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => chartConfig[value as keyof typeof chartConfig]?.label as string}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => `${value} kWh`}
+              width={80}
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent hideLabel hideIndicator />}
             />
             <Bar
               dataKey="consumo"
               radius={8}
-              barSize={60}
+              barSize={40}
             >
+               <LabelList dataKey="consumo" position="right" offset={8} className="fill-foreground" fontSize={12} formatter={(value: number) => `${value} kWh`} />
                {data.map((entry) => (
                 <Cell
                   key={`cell-${entry.name}`}
@@ -332,6 +346,22 @@ export function TariffComparator() {
   return (
     <div className="w-full max-w-4xl space-y-8 py-12">
       <div className="text-center space-y-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100"
+          className="mx-auto h-20 w-20"
+        >
+          <defs>
+            <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
+            </linearGradient>
+          </defs>
+          <path
+            fill="url(#logo-gradient)"
+            d="M83.67,23.15a6.43,6.43,0,0,0-5.4-4.81c-8.47-1.7-17-2.58-25.42-2.58-13.43,0-26.85,2.15-26.85,2.15V84.23s13.42,2.14,26.85,2.14c8.39,0,16.92-.88,25.42-2.58a6.43,6.43,0,0,0,5.4-4.81L96.2,50.11,83.67,23.15ZM52.85,77.58c-12,0-21.72-2-21.72-2V24.34s9.74-2,21.72-2,21.72,2,21.72,2V75.62S64.83,77.58,52.85,77.58Z"
+          />
+        </svg>
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           {t('header')}
         </h1>
@@ -426,3 +456,5 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    
