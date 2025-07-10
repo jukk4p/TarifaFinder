@@ -5,8 +5,14 @@ import { LanguageProvider } from '@/lib/i18n';
 import '@/lib/firebase'; // Import for side effects (Firebase initialization)
 
 export const metadata: Metadata = {
-  title: 'TarifaFinder',
-  description: 'Comparador de tarifas eléctricas',
+  title: {
+    default: 'TarifaFinder',
+    template: '%s - TarifaFinder',
+  },
+  description: 'Comparador de tarifas eléctricas para ayudarte a ahorrar en tu factura de la luz.',
+  icons: {
+    icon: '/favicon.ico',
+  }
 };
 
 export default function RootLayout({
