@@ -130,7 +130,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
   const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
   
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
     if (percent === 0) return null;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -181,8 +181,23 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
               ))}
             </Pie>
             <ChartLegend
-              content={<ChartLegendContent nameKey="name" />}
-              className="-translate-y-[20px]"
+              content={({ payload }) => (
+                <ul className="grid gap-1.5 -translate-y-[20px]">
+                  {payload?.map((item) => {
+                    const { name, color } = item.payload as any;
+                    const value = (item.value as number) || 0;
+                    const percentage = totalConsumption > 0 ? (value / totalConsumption * 100).toFixed(0) : 0;
+                    return (
+                      <li key={name} className="flex items-center gap-2 text-sm">
+                        <span className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
+                        <span className="text-muted-foreground">{chartConfig[name as keyof typeof chartConfig]?.label}:</span>
+                        <span className="font-semibold">{value} kWh</span>
+                        <span className="text-muted-foreground">({percentage}%)</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
             />
           </PieChart>
         </ChartContainer>
