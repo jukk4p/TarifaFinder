@@ -25,9 +25,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, PieChart as PieChartIcon, Lock } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart, Lock } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { Pie, PieChart, Cell } from 'recharts';
+import { Pie, PieChart, Cell, Bar, XAxis, YAxis } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
@@ -127,26 +127,12 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
 
 const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number }[], chartConfig: ChartConfig }) => {
   const { t } = useTranslation();
-  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
-  
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-    if (percent === 0) return null;
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-xs font-semibold">
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
   
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
-          <PieChartIcon className="h-6 w-6" />
+          <BarChart className="h-6 w-6" />
           {t('consumption_chart.title')}
         </CardTitle>
         <CardDescription>
@@ -156,56 +142,51 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       <CardContent className="flex items-center justify-center">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-[250px]"
+          className="mx-auto aspect-video h-[250px] w-full"
         >
-          <PieChart>
+          <BarChart
+            data={data}
+            accessibilityLayer
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
+            <XAxis
+              dataKey="name"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => chartConfig[value as keyof typeof chartConfig]?.label as string}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => `${value} kWh`}
+            />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Pie
-              data={data}
+            <Bar
               dataKey="consumo"
-              nameKey="name"
-              innerRadius={50}
-              outerRadius={90}
-              strokeWidth={2}
-              labelLine={false}
-              label={renderCustomizedLabel}
+              radius={8}
+              barSize={60}
             >
-              {data.map((entry) => (
+               {data.map((entry) => (
                 <Cell
                   key={`cell-${entry.name}`}
                   fill={chartConfig[entry.name as keyof typeof chartConfig].color}
                 />
               ))}
-            </Pie>
-            <ChartLegend
-              content={({ payload }) => (
-                <ul className="grid gap-1.5 -translate-y-[20px]">
-                  {payload?.map((item) => {
-                    const { name, color } = item.payload as any;
-                    const value = (item.value as number) || 0;
-                    const percentage = totalConsumption > 0 ? (value / totalConsumption * 100).toFixed(0) : 0;
-                    return (
-                      <li key={name} className="flex items-center gap-2 text-sm">
-                        <span className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
-                        <span className="text-muted-foreground">{chartConfig[name as keyof typeof chartConfig]?.label}:</span>
-                        <span className="font-semibold">{value} kWh</span>
-                        <span className="text-muted-foreground">({percentage}%)</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              )}
-            />
-          </PieChart>
+            </Bar>
+          </BarChart>
         </ChartContainer>
       </CardContent>
     </Card>
   );
 };
-
 
 const ExplanationCard = ({ explanation, loading }: { explanation: string, loading: boolean }) => {
   const { t } = useTranslation();
@@ -362,7 +343,15 @@ export function TariffComparator() {
 
   return (
     <div className="w-full max-w-4xl space-y-8 py-12">
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-4">
+        <svg
+          className="mx-auto h-12 w-auto"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M50 0L66.67 33.33H100L75 58.33L83.33 91.67L50 75L16.67 91.67L25 58.33L0 33.33H33.33L50 0Z" fill="hsl(var(--primary))"/>
+          <path d="M50 20L60 40H80L65 55L70 75L50 65L30 75L35 55L20 40H40L50 20Z" fill="hsl(var(--background))"/>
+        </svg>
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           {t('header')}
         </h1>
