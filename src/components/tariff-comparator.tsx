@@ -25,10 +25,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon, Lock } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, PieChart as PieChartIcon, Lock } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
+import { Pie, PieChart, Cell } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -127,57 +127,64 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
 
 const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number }[], chartConfig: ChartConfig }) => {
   const { t } = useTranslation();
+  const totalConsumption = React.useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
+  
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
+    if (percent === 0) return null;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-xs font-semibold">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+  
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
-          <BarChartIcon className="h-6 w-6" />
+          <PieChartIcon className="h-6 w-6" />
           {t('consumption_chart.title')}
         </CardTitle>
         <CardDescription>
           {t('consumption_chart.description')}
         </CardDescription>
       </CardHeader>
-      <CardContent className="pl-0">
-        <ChartContainer config={chartConfig} className="h-[150px] w-full">
-          <BarChart
-            accessibilityLayer
-            data={data}
-            layout="vertical"
-            margin={{ left: 10, right: 50 }}
-          >
-            <CartesianGrid horizontal={false} />
-            <YAxis
-              dataKey="name"
-              type="category"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              width={60}
-              tickFormatter={(value) => chartConfig[value as keyof typeof chartConfig]?.label}
-            />
-            <XAxis dataKey="consumo" type="number" hide />
+      <CardContent className="flex items-center justify-center">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square h-[250px]"
+        >
+          <PieChart>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="dot" hideLabel />}
+              content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="consumo" layout="vertical" radius={5}>
-              <LabelList
-                dataKey="consumo"
-                position="right"
-                offset={8}
-                className="fill-foreground font-semibold"
-                fontSize={12}
-                formatter={(value: number) => `${value} kWh`}
-              />
+            <Pie
+              data={data}
+              dataKey="consumo"
+              nameKey="name"
+              innerRadius={50}
+              outerRadius={90}
+              strokeWidth={2}
+              labelLine={false}
+              label={renderCustomizedLabel}
+            >
               {data.map((entry) => (
                 <Cell
                   key={`cell-${entry.name}`}
-                  fill={entry.consumo > 0 ? chartConfig[entry.name as keyof typeof chartConfig].color : 'transparent'}
+                  fill={chartConfig[entry.name as keyof typeof chartConfig].color}
                 />
               ))}
-            </Bar>
-          </BarChart>
+            </Pie>
+            <ChartLegend
+              content={<ChartLegendContent nameKey="name" />}
+              className="-translate-y-[20px]"
+            />
+          </PieChart>
         </ChartContainer>
       </CardContent>
     </Card>
@@ -269,7 +276,7 @@ export function TariffComparator() {
         { name: 'p1', consumo: values.ENERGÍA_P1_kWh },
         { name: 'p2', consumo: values.ENERGÍA_P2_kWh },
         { name: 'p3', consumo: values.ENERGÍA_P3_kWh },
-      ].sort((a,b) => b.consumo - a.consumo);
+      ];
 
       setChartData(consumptionDataForChart);
 
@@ -324,9 +331,6 @@ export function TariffComparator() {
   ] as const;
 
   const chartConfig = {
-    consumo: {
-      label: "Consumo",
-    },
     p1: {
       label: t('consumption_chart.peak'),
       color: "hsl(var(--chart-1))",
@@ -412,7 +416,9 @@ export function TariffComparator() {
 
       {results && <ResultsCard results={results} currentBill={currentBill} />}
       
-      {chartData && <ConsumptionChart data={chartData} chartConfig={chartConfig} />}
+      {chartData && (chartData.reduce((acc, cv) => acc + cv.consumo, 0) > 0) && (
+        <ConsumptionChart data={chartData} chartConfig={chartConfig} />
+      )}
 
       {(explanation || explanationLoading) && (
         <div className="pt-2 w-full">
@@ -436,5 +442,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    
