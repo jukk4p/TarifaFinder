@@ -26,14 +26,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, BarChart as BarChartIcon, Lock } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, PieChart as PieChartIcon, Lock } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { Bar, XAxis, YAxis, BarChart, Cell, LabelList } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
 import { trace } from 'firebase/performance';
+import { useMemo } from 'react';
 
 
 const formSchema = z.object({
@@ -128,12 +129,38 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
 
 const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number }[], chartConfig: ChartConfig }) => {
   const { t } = useTranslation();
+  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
   
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-sm font-semibold">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+  
+  const legendFormatter = (value: string, entry: any) => {
+    const { color, payload } = entry;
+    const consumptionValue = payload.consumo;
+    const percentage = totalConsumption > 0 ? ((consumptionValue / totalConsumption) * 100).toFixed(1) : 0;
+    return (
+      <span style={{ color: 'hsl(var(--muted-foreground))' }}>
+        <span style={{ color }} className="font-semibold">{chartConfig[value as keyof typeof chartConfig]?.label}</span>
+        : {consumptionValue} kWh ({percentage}%)
+      </span>
+    );
+  };
+
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
-          <BarChartIcon className="h-6 w-6" />
+          <PieChartIcon className="h-6 w-6" />
           {t('consumption_chart.title')}
         </CardTitle>
         <CardDescription>
@@ -143,52 +170,36 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-video h-[250px] w-full"
+          className="mx-auto aspect-square h-[300px]"
         >
-          <BarChart
-            data={data.slice().reverse()}
-            layout="vertical"
-            accessibilityLayer
-            margin={{
-              left: 10,
-              right: 40,
-              top: 10,
-              bottom:10
-            }}
-          >
-            <XAxis type="number" hide />
-            <YAxis
-              dataKey="name"
-              type="category"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => chartConfig[value as keyof typeof chartConfig]?.label as string}
-              width={80}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel hideIndicator />}
-            />
-            <Bar
-              dataKey="consumo"
-              radius={8}
-              barSize={40}
-            >
-               <LabelList dataKey="consumo" position="right" offset={8} className="fill-foreground" fontSize={12} formatter={(value: number) => `${value} kWh`} />
-               {data.map((entry) => (
-                <Cell
-                  key={`cell-${entry.name}`}
-                  fill={chartConfig[entry.name as keyof typeof chartConfig].color}
-                />
-              ))}
-            </Bar>
-          </BarChart>
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Tooltip
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={renderCustomizedLabel}
+                outerRadius={120}
+                dataKey="consumo"
+                nameKey="name"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={chartConfig[entry.name as keyof typeof chartConfig].color} />
+                ))}
+              </Pie>
+              <Legend verticalAlign="bottom" height={36} formatter={legendFormatter}/>
+            </PieChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
     </Card>
   );
 };
+
 
 const ExplanationCard = ({ explanation, loading }: { explanation: string, loading: boolean }) => {
   const { t } = useTranslation();
@@ -346,22 +357,6 @@ export function TariffComparator() {
   return (
     <div className="w-full max-w-4xl space-y-8 py-12">
       <div className="text-center space-y-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 100 100"
-          className="mx-auto h-20 w-20"
-        >
-          <defs>
-            <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
-            </linearGradient>
-          </defs>
-          <path
-            fill="url(#logo-gradient)"
-            d="M83.67,23.15a6.43,6.43,0,0,0-5.4-4.81c-8.47-1.7-17-2.58-25.42-2.58-13.43,0-26.85,2.15-26.85,2.15V84.23s13.42,2.14,26.85,2.14c8.39,0,16.92-.88,25.42-2.58a6.43,6.43,0,0,0,5.4-4.81L96.2,50.11,83.67,23.15ZM52.85,77.58c-12,0-21.72-2-21.72-2V24.34s9.74-2,21.72-2,21.72,2,21.72,2V75.62S64.83,77.58,52.85,77.58Z"
-          />
-        </svg>
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           {t('header')}
         </h1>
