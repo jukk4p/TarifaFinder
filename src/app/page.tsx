@@ -1,11 +1,10 @@
 import { Footer } from '@/components/footer';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { TariffComparator } from '@/components/tariff-comparator';
-import { TariffDataViewer } from '@/components/tariff-data-viewer';
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col min-h-screen w-full bg-background overflow-x-hidden">
+    <div className="flex flex-col">
       <div className="absolute top-4 right-4 z-20">
         <LanguageSwitcher />
       </div>
@@ -15,7 +14,6 @@ export default function Home() {
       
       <main className="container mx-auto flex flex-grow flex-col items-center justify-center p-4 relative z-10">
         <TariffComparator />
-        <TariffDataViewer />
       </main>
 
       <Footer />
