@@ -10,49 +10,49 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
+    --primary: 204 90% 54%;
+    --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 210 40% 9.8%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 217 91% 60%;
+    --accent: 173 96% 42%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 142.1 76.2% 36.3%;
-    --chart-1: 38 92% 50%;
-    --chart-2: 210 20% 60%;
-    --chart-3: 25 80% 60%;
+    --ring: 204 90% 54%;
+    --chart-1: 0 72% 51%; /* P1 - Rojo/Naranja */
+    --chart-2: 48 96% 50%; /* P2 - Amarillo */
+    --chart-3: 173 96% 42%; /* P3 - Verde/Azul */
     --chart-4: 174 60% 40%;
     --chart-5: 207 90% 61%;
     --radius: 0.5rem;
   }
   .dark {
-    --background: 220 13% 10%;
+    --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
-    --card: 220 13% 15%;
+    --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
-    --popover: 220 13% 10%;
+    --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 220 14% 25%;
+    --primary: 204 90% 54%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 210 20% 98%;
-    --muted: 220 14% 25%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217 91% 60%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 173 96% 42%;
     --accent-foreground: 210 20% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 220 13% 25%;
-    --input: 220 13% 25%;
-    --ring: 142.1 76.2% 36.3%;
-    --chart-1: 38 92% 50%;
-    --chart-2: 210 20% 60%;
-    --chart-3: 25 80% 60%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 204 90% 54%;
+    --chart-1: 0 72% 51%; /* P1 - Rojo/Naranja */
+    --chart-2: 48 96% 50%; /* P2 - Amarillo */
+    --chart-3: 173 96% 42%; /* P3 - Verde/Azul */
     --chart-4: 174 60% 40%;
     --chart-5: 207 90% 61%;
   }
@@ -65,4 +65,41 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html.dark {
+  --background: 220 13% 10%;
+  --foreground: 210 20% 98%;
+  --card: 220 13% 15%;
+  --card-foreground: 210 20% 98%;
+  --popover: 220 13% 10%;
+  --popover-foreground: 210 20% 98%;
+  --primary: 208 98% 50%; /* Deep sky blue */
+  --primary-foreground: 210 20% 98%;
+  --secondary: 220 14% 25%;
+  --secondary-foreground: 210 20% 98%;
+  --muted: 220 14% 25%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 174 72% 56%; /* Teal */
+  --accent-foreground: 210 20% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 85.7% 97.3%;
+  --border: 220 13% 25%;
+  --input: 220 13% 25%;
+  --ring: 208 98% 50%;
+  --chart-1: 0 84% 60%; /* Destructive-like for P1 */
+  --chart-2: 48 96% 50%; /* A vibrant yellow for P2 */
+  --chart-3: 174 72% 56%; /* Accent-like for P3 */
+  --chart-4: 210 20% 60%;
+  --chart-5: 207 90% 61%;
+  --background-body: 210 3.8% 9.6%; /* Light grey -> dark equivalent */
+}
+
+body {
+    background-color: hsl(var(--background-body, var(--background)));
+    font-family: 'Inter', sans-serif;
+}
+
+html.dark body {
+  background-color: hsl(var(--background-body));
 }

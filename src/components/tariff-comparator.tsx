@@ -28,7 +28,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Gift, Euro, MessageSquareHeart, PieChart as PieChartIcon, Lock } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
@@ -127,29 +127,43 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   );
 };
 
-const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number }[], chartConfig: ChartConfig }) => {
+const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number; fill: string; }[], chartConfig: ChartConfig }) => {
   const { t } = useTranslation();
   const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
   
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, payload }: any) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.3;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
+    const sin = Math.sin(-RADIAN * midAngle);
+    const cos = Math.cos(-RADIAN * midAngle);
+    const sx = cx + (outerRadius + 10) * cos;
+    const sy = cy + (outerRadius + 10) * sin;
+    const mx = cx + (outerRadius + 20) * cos;
+    const my = cy + (outerRadius + 20) * sin;
+    const ex = mx + (cos >= 0 ? 1 : -1) * 12;
+    const ey = my;
+    const textAnchor = cos >= 0 ? 'start' : 'end';
+  
     return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-sm font-semibold">
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
+      <g>
+        <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={payload.fill} fill="none" />
+        <circle cx={ex} cy={ey} r={2} fill={payload.fill} stroke="none" />
+        <text x={ex + (cos >= 0 ? 1 : -1) * 8} y={ey} textAnchor={textAnchor} fill="hsl(var(--foreground))" dominantBaseline="central" className="text-sm font-semibold">
+            {`${(percent * 100).toFixed(0)}%`}
+        </text>
+      </g>
     );
   };
+  
   
   const legendFormatter = (value: string, entry: any) => {
     const { color, payload } = entry;
     const consumptionValue = payload.consumo;
     const percentage = totalConsumption > 0 ? ((consumptionValue / totalConsumption) * 100).toFixed(1) : 0;
     return (
-      <span style={{ color: 'hsl(var(--muted-foreground))' }}>
+      <span className="text-muted-foreground">
         <span style={{ color }} className="font-semibold">{chartConfig[value as keyof typeof chartConfig]?.label}</span>
         : {consumptionValue} kWh ({percentage}%)
       </span>
@@ -170,11 +184,12 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-[300px]"
+          className="mx-auto aspect-square h-[350px]"
         >
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
+            <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}>
               <Tooltip
+                cursor={{ fill: "hsl(var(--muted))" }}
                 content={<ChartTooltipContent hideLabel />}
               />
               <Pie
@@ -183,12 +198,14 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
-                outerRadius={120}
+                innerRadius={60}
+                outerRadius={100}
+                paddingAngle={5}
                 dataKey="consumo"
                 nameKey="name"
               >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={chartConfig[entry.name as keyof typeof chartConfig].color} />
+                {data.map((entry) => (
+                  <Cell key={`cell-${entry.name}`} fill={entry.fill} />
                 ))}
               </Pie>
               <Legend verticalAlign="bottom" height={36} formatter={legendFormatter}/>
@@ -255,6 +272,12 @@ export function TariffComparator() {
     en: 'English',
     ca: 'Catalan'
   };
+  
+  const chartConfig = {
+    p1: { label: t('consumption_chart.peak'), color: "hsl(var(--chart-1))" },
+    p2: { label: t('consumption_chart.flat'), color: "hsl(var(--chart-2))" },
+    p3: { label: t('consumption_chart.offpeak'), color: "hsl(var(--chart-3))" },
+  } satisfies ChartConfig;
 
   async function onSubmit(values: FormInput) {
     setLoading(true);
@@ -282,9 +305,9 @@ export function TariffComparator() {
       setResults(result);
 
       const consumptionDataForChart = [
-        { name: 'p1', consumo: values.ENERGÍA_P1_kWh },
-        { name: 'p2', consumo: values.ENERGÍA_P2_kWh },
-        { name: 'p3', consumo: values.ENERGÍA_P3_kWh },
+        { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: "var(--color-p1)" },
+        { name: 'p2', consumo: values.ENERGÍA_P2_kWh, fill: "var(--color-p2)" },
+        { name: 'p3', consumo: values.ENERGÍA_P3_kWh, fill: "var(--color-p3)" },
       ];
 
       setChartData(consumptionDataForChart);
@@ -338,21 +361,6 @@ export function TariffComparator() {
     { name: "ENERGÍA_P3_kWh", label: t('form.energyOffPeak'), icon: Lightbulb, placeholder: t('form.energyOffPeakPlaceholder') },
     { name: "importe_factura_actual", label: t('form.currentBill'), icon: Euro, placeholder: t('form.currentBillPlaceholder') },
   ] as const;
-
-  const chartConfig = {
-    p1: {
-      label: t('consumption_chart.peak'),
-      color: "hsl(var(--chart-1))",
-    },
-    p2: {
-      label: t('consumption_chart.flat'),
-      color: "hsl(var(--chart-2))",
-    },
-    p3: {
-      label: t('consumption_chart.offpeak'),
-      color: "hsl(var(--chart-3))",
-    },
-  } satisfies ChartConfig;
 
   return (
     <div className="w-full max-w-4xl space-y-8 py-12">
