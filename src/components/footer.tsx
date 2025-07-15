@@ -31,7 +31,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {currentYear} TarifaFinder. Todos los derechos reservados.</p>
+          <p>&copy; {currentYear} TarifaFinder.</p>
         </div>
       </div>
     </footer>
