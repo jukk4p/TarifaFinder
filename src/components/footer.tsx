@@ -1,5 +1,6 @@
-import { Twitter } from 'lucide-react';
+import { Gift, Twitter } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from './ui/button';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -30,6 +31,21 @@ export function Footer() {
             </div>
           </div>
         </div>
+
+        <div className="w-full text-center mt-12 border-t border-white/10 pt-8">
+          <p className="text-muted-foreground mb-4">Si esta herramienta te ha resultado útil, considera apoyar el proyecto.</p>
+          <Button asChild>
+            <a
+              href="https://paypal.me/jukk4p"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Gift className="mr-2 h-5 w-5" />
+              Invítame a un café
+            </a>
+          </Button>
+        </div>
+        
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-muted-foreground">
           <p>&copy; {currentYear} TarifaFinder</p>
         </div>
