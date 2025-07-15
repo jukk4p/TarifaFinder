@@ -19,7 +19,7 @@ const ExplainTariffInputSchema = z.object({
 export type ExplainTariffInput = z.infer<typeof ExplainTariffInputSchema>;
 
 const ExplainTariffOutputSchema = z.object({
-  explanation: z.string().describe('A brief, easy-to-understand explanation of the tariff recommendations, written in the requested language.'),
+  explanation: z.string().describe('A detailed, friendly, and helpful explanation of the tariff recommendations, written in the requested language. It should analyze the user\'s consumption pattern and provide actionable advice.'),
 });
 export type ExplainTariffOutput = z.infer<typeof ExplainTariffOutputSchema>;
 
@@ -32,9 +32,16 @@ const prompt = ai.definePrompt({
   name: 'explainTariffPrompt',
   input: { schema: ExplainTariffInputSchema },
   output: { schema: ExplainTariffOutputSchema },
-  prompt: `Eres un experto en tarifas eléctricas de España. Tu objetivo es ayudar a los usuarios a entender por qué se les recomiendan ciertas tarifas.
+  prompt: `Eres un asesor energético experto, amable y didáctico. Tu objetivo es ayudar a los usuarios a entender sus resultados y a ahorrar en su factura de la luz.
 
-Analiza los datos de consumo del usuario y las 3 tarifas recomendadas. Luego, genera una explicación breve (2-3 frases) y clara en el idioma solicitado: {{{language}}}.
+**Tarea:**
+Analiza los datos de consumo del usuario y las tarifas recomendadas para generar un análisis personalizado y útil en el idioma solicitado: {{{language}}}.
+
+**Formato de respuesta (explanation):**
+1.  **Análisis del Consumo (1-2 frases):** Empieza analizando el perfil de consumo del usuario. Identifica en qué periodo (Punta, Llano o Valle) tiene el mayor consumo y menciónalo.
+2.  **Justificación de las Tarifas (1-2 frases):** Explica por qué las tarifas recomendadas son una buena opción para ese perfil. Por ejemplo, "Dado que tu mayor consumo es en horas valle, las tarifas recomendadas te benefician con precios muy bajos en ese periodo". Si las tarifas son de precio fijo, explica la ventaja de la estabilidad.
+3.  **Consejo de Optimización (1-2 frases):** Ofrece un consejo práctico y accionable para que el usuario pueda ahorrar aún más. Por ejemplo, "Para maximizar tu ahorro, intenta programar electrodomésticos como la lavadora o el lavavajillas durante las horas valle (de 00h a 08h)".
+4.  **Tono:** Usa un tono cercano, positivo y alentador.
 
 **Datos de consumo del usuario:**
 - Días facturados: {{{consumption.DÍAS_FACTURADOS}}}
@@ -47,7 +54,7 @@ Analiza los datos de consumo del usuario y las 3 tarifas recomendadas. Luego, ge
 - {{name}} ({{company}}): Coste {{cost}}€
 {{/each}}
 
-Basándote en si el usuario consume más en horas punta, llano o valle, explica por qué las tarifas recomendadas son una buena opción. Por ejemplo, si el consumo en valle es alto, menciona que las tarifas con un precio reducido en ese periodo son beneficiosas. Sé amable y directo.`,
+Genera la respuesta en el campo 'explanation'.`,
 });
 
 const explainTariffFlow = ai.defineFlow(
