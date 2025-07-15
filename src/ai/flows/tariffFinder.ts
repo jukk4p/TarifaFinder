@@ -20,23 +20,29 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   const TARIFA_EP2 = tariff.energia_llano_precio;
   const TARIFA_EP3 = tariff.energia_valle_precio;
   
-  // 3. Termino de potencia
-  const termPot = (POTENCIA_P1_kW * TARIFA_PP1 + POTENCIA_P2_kW * TARIFA_PP2) * DÍAS_FACTURADOS;
+  // 1. Subtotal de potencia
+  const subtotalPotencia = (POTENCIA_P1_kW * TARIFA_PP1 + POTENCIA_P2_kW * TARIFA_PP2) * DÍAS_FACTURADOS;
 
-  // 4. Término de energía
-  const termEner = (ENERGÍA_P1_kWh * TARIFA_EP1 + ENERGÍA_P2_kWh * TARIFA_EP2 + ENERGÍA_P3_kWh * TARIFA_EP3);
+  // 2. Subtotal de energía
+  const subtotalEnergia = (ENERGÍA_P1_kWh * TARIFA_EP1 + ENERGÍA_P2_kWh * TARIFA_EP2 + ENERGÍA_P3_kWh * TARIFA_EP3);
   
-  const subTotalTerminos = termPot + termEner;
-  const IMP_ELEC = subTotalTerminos * 0.0511;
+  // 3. Impuesto eléctrico
+  const impuestoElectrico = (subtotalPotencia + subtotalEnergia) * 0.0511;
 
-  const ALQUILER = 0.027 * DÍAS_FACTURADOS;
-  const BONO_SOC = 0.012742 * DÍAS_FACTURADOS;
+  // 4. Alquiler del contador
+  const alquilerContador = 0.027 * DÍAS_FACTURADOS;
+
+  // 5. Financiación del bono social
+  const financiacionBonoSocial = 0.012742 * DÍAS_FACTURADOS;
   
-  const baseIVA = subTotalTerminos + IMP_ELEC + ALQUILER + BONO_SOC;
-  const IVA = baseIVA * 0.21;
-  const FACTURA = baseIVA + IVA;
+  // 6. Cálculo del IVA
+  const baseImponibleIVA = subtotalPotencia + subtotalEnergia + impuestoElectrico + alquilerContador + financiacionBonoSocial;
+  const iva = baseImponibleIVA * 0.21;
   
-  return Math.round(FACTURA * 100) / 100;
+  // 7. Total de la factura
+  const totalFactura = baseImponibleIVA + iva;
+  
+  return Math.round(totalFactura * 100) / 100;
 }
 
 
