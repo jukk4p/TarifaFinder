@@ -5,7 +5,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative z-10 w-full border-t border-white/10 bg-transparent py-8 px-4 sm:px-6 lg:px-8 mt-auto backdrop-blur-sm bg-card/10">
+    <footer className="relative z-10 w-full border-t border-white/10 bg-transparent py-8 px-4 sm:px-6 lg:px-8 backdrop-blur-sm bg-card/10">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
@@ -31,7 +31,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {currentYear} TarifaFinder.</p>
+          <p>&copy; {currentYear} TarifaFinder</p>
         </div>
       </div>
     </footer>
