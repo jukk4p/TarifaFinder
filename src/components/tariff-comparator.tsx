@@ -442,20 +442,6 @@ export function TariffComparator() {
           <ExplanationCard explanation={explanation!} loading={explanationLoading} />
         </div>
       )}
-
-      <div className="w-full text-center mt-12 border-t border-white/10 pt-8">
-        <p className="text-muted-foreground mb-4">{t('donation.text')}</p>
-        <Button asChild>
-          <a
-            href="https://paypal.me/jukk4p"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Gift className="mr-2 h-5 w-5" />
-            {t('donation.button')}
-          </a>
-        </Button>
-      </div>
     </div>
   );
 }
