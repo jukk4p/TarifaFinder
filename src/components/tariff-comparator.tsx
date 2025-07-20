@@ -75,7 +75,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
           {t('results.subtitle')}
         </p>
         <div className="space-y-4">
-          {tariffs.map(({ company, name, url, cost, permanencia }, index) => {
+          {tariffs.map(({ company, name, url, cost }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
             return (
               <div key={index}>
@@ -90,18 +90,6 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                   {savings !== null && (
                     <p className={`text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
                       {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
-                    </p>
-                  )}
-                  {permanencia === 'Si' && (
-                    <p className="text-sm font-medium text-destructive flex items-center gap-1.5">
-                      <Lock className="h-3.5 w-3.5" />
-                      {t('results.permanence_yes')}
-                    </p>
-                  )}
-                  {permanencia === 'Puede' && (
-                    <p className="text-sm font-medium text-yellow-500 flex items-center gap-1.5">
-                       <Lock className="h-3.5 w-3.5 text-chart-1" />
-                       {t('results.permanence_maybe')}
                     </p>
                   )}
                   <p className="text-muted-foreground">
@@ -445,5 +433,7 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    
 
     
