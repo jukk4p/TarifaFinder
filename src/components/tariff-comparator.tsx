@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, Lock } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, Lock, PiggyBank, ExternalLink, Medal } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -56,62 +56,83 @@ type TariffResults = TariffOutput;
 const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
   const { t } = useTranslation();
   const tariffs = results;
-  const numberEmojis = ["1️⃣", "2️⃣", "3️⃣"];
 
   if (tariffs.length === 0) {
     return null;
   }
 
+  const getMedalColor = (index: number) => {
+    if (index === 0) return "text-yellow-400"; // Gold
+    if (index === 1) return "text-slate-400"; // Silver
+    if (index === 2) return "text-yellow-600"; // Bronze
+    return "text-muted-foreground";
+  };
+
   return (
-    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
-      <CardHeader>
-        <CardTitle className="text-accent flex items-center gap-2">
-          <Sparkles className="h-6 w-6" />
-          {t('results.title')}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="mb-6 text-muted-foreground">
-          {t('results.subtitle')}
-        </p>
-        <div className="space-y-4">
+    <div className="w-full animate-in fade-in-50 duration-500">
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent flex items-center justify-center gap-2">
+            <Sparkles className="h-7 w-7" />
+            {t('results.title')}
+            </h2>
+            <p className="max-w-xl mx-auto text-muted-foreground mt-2">
+            {t('results.subtitle')}
+            </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tariffs.map(({ company, name, url, cost }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
+            const isBestOption = index === 0;
+
             return (
-              <div key={index}>
-                <p className="font-semibold text-lg flex items-start">
-                  <span className="mr-3 text-2xl">{numberEmojis[index]}</span>
-                  <span className="mt-1">{company} - {name}</span>
-                </p>
-                <div className="pl-10 space-y-1 mt-1">
-                  <p className="text-muted-foreground">
-                    {t('results.estimatedCost')}: <span className="font-semibold text-foreground">{cost.toFixed(2)} €</span>
-                  </p>
-                  {savings !== null && (
-                    <p className={`text-sm font-medium ${savings > 0 ? 'text-primary' : 'text-destructive'}`}>
-                      {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
+              <Card key={index} className={`flex flex-col bg-card/50 backdrop-blur-sm shadow-xl border-white/10 ${isBestOption ? 'border-primary' : ''}`}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-lg">{company}</CardTitle>
+                      <CardDescription>{name}</CardDescription>
+                    </div>
+                    <Medal className={`h-8 w-8 ${getMedalColor(index)}`} />
+                  </div>
+                </CardHeader>
+                <CardContent className="flex-grow space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Euro className="h-5 w-5 text-primary" />
+                    <p className="text-muted-foreground">
+                      {t('results.estimatedCost')}: <span className="font-bold text-2xl text-foreground">{cost.toFixed(2)} €</span>
                     </p>
+                  </div>
+                  {savings !== null && (
+                     <div className="flex items-center gap-2">
+                        <PiggyBank className="h-5 w-5 text-primary" />
+                        <p className={`text-sm font-medium ${savings > 0 ? 'text-foreground' : 'text-destructive'}`}>
+                        {savings > 0 ? `${t('results.estimatedSavings')}: ${savings.toFixed(2)}€` : `${t('results.extraCost')}: ${Math.abs(savings).toFixed(2)}€`}
+                        </p>
+                    </div>
                   )}
-                  <p className="text-muted-foreground">
-                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold"
-                      onClick={() => {
+                </CardContent>
+                <CardFooter>
+                  <Button asChild className="w-full" variant={isBestOption ? "default" : "secondary"}>
+                    <a href={url} target="_blank" rel="noopener noreferrer" onClick={() => {
                         if (analytics) {
                           logEvent(analytics, 'view_offer', { company, tariff_name: name });
                         }
-                      }}>{t('results.seeOffer')}</a>
-                  </p>
-                </div>
-              </div>
+                      }}>
+                      {t('results.seeOffer')}
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardFooter>
+              </Card>
             );
           })}
         </div>
-      </CardContent>
-      <CardFooter className="pt-6 border-t border-white/10 mt-6">
-        <p className="w-full text-center text-xs text-muted-foreground">
-          {t('results.footnote')}
+        <p className="w-full text-center text-xs text-muted-foreground pt-4">
+            {t('results.footnote')}
         </p>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };
 
@@ -433,7 +454,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    
-
-    
