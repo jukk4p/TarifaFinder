@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, Lock, PiggyBank, ExternalLink, Medal } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink, Medal } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -61,11 +61,11 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
     return null;
   }
 
-  const getMedalColor = (index: number) => {
-    if (index === 0) return "text-yellow-400"; // Gold
-    if (index === 1) return "text-slate-400"; // Silver
-    if (index === 2) return "text-yellow-600"; // Bronze
-    return "text-muted-foreground";
+  const getRankingStyle = (index: number) => {
+    if (index === 0) return "bg-yellow-400 text-black"; // Gold
+    if (index === 1) return "bg-slate-400 text-black"; // Silver
+    if (index === 2) return "bg-yellow-600 text-white"; // Bronze
+    return "bg-muted text-muted-foreground";
   };
 
   return (
@@ -93,7 +93,9 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
                       <CardTitle className="text-lg">{company}</CardTitle>
                       <CardDescription>{name}</CardDescription>
                     </div>
-                    <Medal className={`h-8 w-8 ${getMedalColor(index)}`} />
+                    <div className={`flex items-center justify-center h-8 w-8 rounded-full font-bold text-lg ${getRankingStyle(index)}`}>
+                      {index + 1}
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="flex-grow space-y-4">
@@ -454,3 +456,5 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    
