@@ -26,16 +26,16 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink, Medal } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
 import { trace } from 'firebase/performance';
 import { useMemo } from 'react';
-
+import Image from 'next/image';
 
 const formSchema = z.object({
   DÍAS_FACTURADOS: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -81,23 +81,29 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tariffs.map(({ company, name, url, cost }, index) => {
+          {tariffs.map(({ company, name, url, logoUrl, cost }, index) => {
             const savings = currentBill && currentBill > 0 ? currentBill - cost : null;
             const isBestOption = index === 0;
 
             return (
-              <Card key={index} className={`flex flex-col bg-card/50 backdrop-blur-sm shadow-xl border-white/10 ${isBestOption ? 'border-primary' : ''}`}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">{company}</CardTitle>
-                      <CardDescription>{name}</CardDescription>
-                    </div>
-                    <div className={`flex items-center justify-center h-8 w-8 rounded-full font-bold text-lg ${getRankingStyle(index)}`}>
-                      {index + 1}
-                    </div>
-                  </div>
-                </CardHeader>
+              <Card key={index} className={`relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl border-white/10 ${isBestOption ? 'border-primary' : ''}`}>
+                 <CardHeader>
+                   <div className="flex justify-between items-start">
+                     <div className="flex-1">
+                       <CardTitle className="text-lg">{company}</CardTitle>
+                       <CardDescription>{name}</CardDescription>
+                     </div>
+                     <div className="w-12 h-12 relative">
+                      <Image 
+                        src={logoUrl} 
+                        alt={`Logo de ${company}`} 
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 10vw, 5vw"
+                      />
+                     </div>
+                   </div>
+                 </CardHeader>
                 <CardContent className="flex-grow space-y-4">
                   <div className="flex items-center gap-2">
                     <Euro className="h-5 w-5 text-primary" />
@@ -456,5 +462,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    

@@ -27,7 +27,7 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   const subtotalEnergia = (ENERGÍA_P1_kWh * TARIFA_EP1 + ENERGÍA_P2_kWh * TARIFA_EP2 + ENERGÍA_P3_kWh * TARIFA_EP3);
   
   // 3. Impuesto eléctrico
-  const impuestoElectrico = (subtotalPotencia + subtotalEnergia) * 0.0511;
+  const impuestoElectrico = (subtotalPotencia + subtotalEnergia) * 0.05113;
 
   // 4. Alquiler del contador
   const alquilerContador = 0.027 * DÍAS_FACTURADOS;
@@ -59,6 +59,7 @@ const tariffFinderFlow = ai.defineFlow(
         company: tariff.company,
         name: tariff.name,
         url: tariff.url,
+        logoUrl: tariff.logoUrl,
         cost: cost,
       };
     });

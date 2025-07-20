@@ -15,6 +15,7 @@ export const tariffOutputSchema = z.array(z.object({
   company: z.string(),
   name: z.string(),
   url: z.string(),
+  logoUrl: z.string(),
   cost: z.number(),
 }));
 
