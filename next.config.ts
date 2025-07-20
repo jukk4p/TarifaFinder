@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    serverComponentsExternalPackages: ['@genkit-ai/googleai'],
+    outputFileTracingExcludes: {
+      '*': ['.firebase/**'],
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -16,6 +22,14 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'logo.clearbit.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.companiasdeluz.com',
+      }
     ],
   },
 };
