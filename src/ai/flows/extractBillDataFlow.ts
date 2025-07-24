@@ -15,7 +15,7 @@ const ExtractBillDataInputSchema = z.object({
   billDocument: z
     .string()
     .describe(
-      "A photo or PDF of an electricity bill, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+      "A photo or PDF of an electricity bill, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'"
     ),
 });
 export type ExtractBillDataInput = z.infer<typeof ExtractBillDataInputSchema>;
@@ -33,14 +33,16 @@ const prompt = ai.definePrompt({
   output: { schema: tariffInputSchema },
   prompt: `You are an expert electricity bill analyst. Your task is to extract the following specific information from the provided bill document and return it as a structured JSON object.
 
+You must extract the exact values as they appear in the document for each of the energy periods. Do not calculate or estimate them. If a specific value for an energy period is not found, use 0.
+
 - DÍAS_FACTURADOS: The total number of billed days.
 - POTENCIA_P1_kW: The contracted peak power (Potencia Punta) in kW.
 - POTENCIA_P2_kW: The contracted off-peak power (Potencia Valle) in kW. If only one power value is present, use it for both P1 and P2.
-- ENERGÍA_P1_kWh: The energy consumed in the peak period (Punta) in kWh.
-- ENERGÍA_P2_kWh: The energy consumed in the flat period (Llano) in kWh.
-- ENERGÍA_P3_kWh: The energy consumed in the off-peak period (Valle) in kWh.
+- ENERGÍA_P1_kWh: The exact energy consumed in the peak period (Punta) in kWh as it appears on the bill.
+- ENERGÍA_P2_kWh: The exact energy consumed in the flat period (Llano) in kWh as it appears on the bill.
+- ENERGÍA_P3_kWh: The exact energy consumed in the off-peak period (Valle) in kWh as it appears on the bill.
 
-Carefully analyze the document to find each value. If a value is not explicitly found, return a sensible default like 0.
+Carefully analyze the document to find each value. If a value is not explicitly found, return 0 for that field.
 
 Document: {{media url=billDocument}}`,
 });
