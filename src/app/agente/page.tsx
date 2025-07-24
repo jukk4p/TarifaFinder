@@ -13,10 +13,10 @@ export default function AgentPage() {
         <div className="prose-p:text-muted-foreground">
             <p>
                 Este es un ejemplo de cómo puedes integrar un agente de IA externo como LlamaCloud.
-                Sube un documento, hazle una pregunta y el agente usará una herramienta para llamar a la API externa y obtener la respuesta.
+                Sube un documento y el agente usará una herramienta para llamar a la API externa y obtener la respuesta.
             </p>
              <p className="text-sm">
-              <strong>Nota:</strong> Esta es una implementación de demostración. La llamada a LlamaCloud está simulada. Para que funcione, necesitas añadir tu API Key en el fichero <code>.env</code>.
+              <strong>Nota:</strong> Para que funcione, necesitas añadir tu API Key de LlamaCloud en el fichero <code>.env</code>.
             </p>
         </div>
         <div className="mt-8">

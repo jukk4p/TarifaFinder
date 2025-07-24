@@ -39,7 +39,9 @@ const analyzeDocumentFlow = ai.defineFlow(
   async ({ document, instruction }) => {
     
     // Step 1: Parse the document using LlamaParse
-    const parsedText = await callLlamaParse(document);
+    // This flow is currently not used, but kept for potential future use.
+    // The active flow for LlamaCloud is extractWithLlamaCloud.ts
+    const parsedText = "This flow is not currently connected to a UI component.";
 
     // Step 2: Send the parsed text and the instruction to the AI model
     const prompt = `You are an expert document analyst. A user has uploaded a document and provided an instruction.
