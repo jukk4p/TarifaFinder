@@ -3,4 +3,4 @@
 import './flows/tariffFinder';
 import './flows/explainTariff';
 import './flows/extractBillDataFlow';
-import './flows/documentAgentFlow';
+import './flows/analyzeDocumentFlow';
