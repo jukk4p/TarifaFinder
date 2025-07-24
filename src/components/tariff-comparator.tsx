@@ -37,6 +37,7 @@ import { logEvent } from 'firebase/analytics';
 import { trace } from 'firebase/performance';
 import { useMemo } from 'react';
 import Image from 'next/image';
+import { AgentChatDialog } from './agent-chat-dialog';
 
 const formSchema = z.object({
   DÍAS_FACTURADOS: z.coerce.number().int().positive("Debe ser un número positivo"),
@@ -468,19 +469,21 @@ export function TariffComparator() {
                 className="hidden"
                 accept="image/*,application/pdf"
                 />
-              <Button
-                variant="outline"
-                className="mt-4 sm:mt-0"
-                onClick={triggerFileSelect}
-                disabled={extracting}
-              >
-                {extracting ? (
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                ) : (
-                  <UploadCloud className="mr-2 h-5 w-5" />
-                )}
-                {extracting ? t('form.extractingButton') : t('form.extractButton')}
-              </Button>
+              <div className="flex items-center gap-2 mt-4 sm:mt-0">
+                <Button
+                    variant="outline"
+                    onClick={triggerFileSelect}
+                    disabled={extracting}
+                >
+                    {extracting ? (
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    ) : (
+                    <UploadCloud className="mr-2 h-5 w-5" />
+                    )}
+                    {extracting ? t('form.extractingButton') : t('form.extractButton')}
+                </Button>
+                <AgentChatDialog />
+              </div>
            </div>
         </CardHeader>
         <Form {...form}>
