@@ -7,7 +7,7 @@
  * - AnalyzeDocumentOutput - The return type for the analyzeDocument function.
  */
 import { ai } from '@/ai/genkit';
-import { callLlamaCloud } from '@/services/llamaCloudService';
+import { callLlamaParse } from '@/services/llamaCloudService';
 import { z } from 'zod';
 
 const AnalyzeDocumentInputSchema = z.object({
@@ -29,6 +29,7 @@ export async function analyzeDocument(input: AnalyzeDocumentInput): Promise<Anal
   return analyzeDocumentFlow(input);
 }
 
+
 const analyzeDocumentFlow = ai.defineFlow(
   {
     name: 'analyzeDocumentFlow',
@@ -36,13 +37,29 @@ const analyzeDocumentFlow = ai.defineFlow(
     outputSchema: AnalyzeDocumentOutputSchema,
   },
   async ({ document, instruction }) => {
-    // In a real scenario, you might pass the document to a tool
-    // that uploads it and gets an ID, then passes the ID and instruction to LlamaCloud.
-    // For now, we simulate this by calling our service directly.
-    const analysisResult = await callLlamaCloud(instruction, document);
+    
+    // Step 1: Parse the document using LlamaParse
+    const parsedText = await callLlamaParse(document);
 
+    // Step 2: Send the parsed text and the instruction to the AI model
+    const prompt = `You are an expert document analyst. A user has uploaded a document and provided an instruction.
+    
+    Document Content (in Markdown):
+    ---
+    ${parsedText}
+    ---
+
+    User's Instruction:
+    "${instruction}"
+
+    Please provide a clear and concise response based on the document content and the user's instruction.`;
+
+    const { text } = await ai.generate({
+      prompt: prompt,
+    });
+    
     return {
-      analysis: analysisResult,
+      analysis: text,
     };
   }
 );
