@@ -1,4 +1,4 @@
-import { Gift, Twitter } from 'lucide-react';
+import { Gift, Twitter, Bot } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 
@@ -12,6 +12,12 @@ export function Footer() {
           <div className="md:col-span-2">
             <h3 className="text-lg font-semibold text-foreground">TarifaFinder</h3>
             <p className="mt-2 text-sm text-muted-foreground">Tu comparador de tarifas eléctricas inteligente.</p>
+             <div className="flex items-center gap-2 mt-4">
+               <Bot className="h-5 w-5 text-primary" />
+              <Link href="/agente" className="text-sm text-muted-foreground hover:text-primary">
+                Agente IA (Beta)
+              </Link>
+            </div>
           </div>
           <div className="grid grid-cols-2 md:col-span-2 gap-8">
             <div>
