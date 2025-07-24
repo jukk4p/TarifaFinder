@@ -4,7 +4,7 @@ export const ca = {
   subtitle: 'Introdueix el teu consum i troba la tarifa elèctrica més barata per a tu.',
   form: {
     title: 'Introdueix les teves dades de consum',
-    description: 'Omple els camps amb les dades de la teva última factura per obtenir una comparació precisa.',
+    description: 'Omple els camps manualment o puja una factura per extreure les dades automàticament.',
     daysBilled: 'Dies facturats',
     daysBilledPlaceholder: 'p. ex., 30',
     powerPeak: 'Potència Punta (kW) P1',
@@ -22,6 +22,9 @@ export const ca = {
     compareButton: 'Comparar Tarifes',
     calculatingButton: 'Calculant...',
     searching: 'Buscant les millors ofertes...',
+    extractButton: 'Extreure dades de factura',
+    extractingButton: 'Extraient...',
+    extractingProcess: 'L\'IA està analitzant la teva factura...',
   },
   results: {
     title: 'Les Teves Millors Ofertes',

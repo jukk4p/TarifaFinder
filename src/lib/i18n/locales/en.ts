@@ -4,7 +4,7 @@ export const en = {
   subtitle: 'Enter your consumption details and find the cheapest electricity tariff for you.',
   form: {
     title: 'Enter your consumption data',
-    description: 'Fill in the fields with the data from your last bill for an accurate comparison.',
+    description: 'Fill in the fields manually or upload a bill to extract the data automatically.',
     daysBilled: 'Days billed',
     daysBilledPlaceholder: 'e.g., 30',
     powerPeak: 'Peak Power (kW) P1',
@@ -22,6 +22,9 @@ export const en = {
     compareButton: 'Compare Tariffs',
     calculatingButton: 'Calculating...',
     searching: 'Searching for the best deals...',
+    extractButton: 'Extract data from bill',
+    extractingButton: 'Extracting...',
+    extractingProcess: 'The AI is analyzing your bill...',
   },
   results: {
     title: 'Your Best Offers',

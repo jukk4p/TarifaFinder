@@ -4,7 +4,7 @@ export const es = {
   subtitle: 'Introduce tu consumo y encuentra la tarifa eléctrica más barata para ti.',
   form: {
     title: 'Introduce tus datos de consumo',
-    description: 'Rellena los campos con los datos de tu última factura para obtener una comparación precisa.',
+    description: 'Rellena los campos manualmente o sube una factura para extraer los datos automáticamente.',
     daysBilled: 'Días facturados',
     daysBilledPlaceholder: 'e.g., 30',
     powerPeak: 'Potencia Punta (kW) P1',
@@ -22,6 +22,9 @@ export const es = {
     compareButton: 'Comparar Tarifas',
     calculatingButton: 'Calculando...',
     searching: 'Buscando las mejores ofertas...',
+    extractButton: 'Extraer datos de factura',
+    extractingButton: 'Extrayendo...',
+    extractingProcess: 'La IA está analizando tu factura...',
   },
   results: {
     title: 'Tus Mejores Ofertas',

@@ -1,12 +1,13 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { findTariffs } from '@/ai/flows/tariffFinder';
 import { explainTariff } from '@/ai/flows/explainTariff';
+import { extractBillData } from '@/ai/flows/extractBillDataFlow';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -26,7 +27,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink, UploadCloud } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -60,13 +61,6 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   if (tariffs.length === 0) {
     return null;
   }
-
-  const getRankingStyle = (index: number) => {
-    if (index === 0) return "bg-yellow-400 text-black"; // Gold
-    if (index === 1) return "bg-slate-400 text-black"; // Silver
-    if (index === 2) return "bg-yellow-600 text-white"; // Bronze
-    return "bg-muted text-muted-foreground";
-  };
 
   return (
     <div className="w-full animate-in fade-in-50 duration-500">
@@ -262,12 +256,14 @@ const ExplanationCard = ({ explanation, loading }: { explanation: string, loadin
 
 export function TariffComparator() {
   const [loading, setLoading] = useState(false);
+  const [extracting, setExtracting] = useState(false);
   const [explanationLoading, setExplanationLoading] = useState(false);
   const [results, setResults] = useState<TariffResults | null>(null);
   const [chartData, setChartData] = useState<any[] | null>(null);
   const [explanation, setExplanation] = useState<string | null>(null);
   const { toast } = useToast();
   const { t, locale } = useTranslation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<FormInput>({
     resolver: zodResolver(formSchema),
@@ -368,6 +364,72 @@ export function TariffComparator() {
       setLoading(false);
     }
   }
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setExtracting(true);
+    setResults(null);
+    setChartData(null);
+    setExplanation(null);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64Data = reader.result as string;
+      try {
+        if (analytics) {
+          logEvent(analytics, 'extract_bill_start', { file_type: file.type, file_size: file.size });
+        }
+        const extractedData = await extractBillData({ billDocument: base64Data });
+        
+        // Populate form with extracted data
+        form.reset(extractedData);
+        if (analytics) {
+          logEvent(analytics, 'extract_bill_success');
+        }
+
+        toast({
+          title: t('success.title'),
+          description: "Datos extraídos de la factura y rellenados en el formulario.",
+        });
+
+      } catch (error) {
+        console.error("Failed to extract data from bill:", error);
+        if (analytics) {
+          logEvent(analytics, 'exception', {
+            description: 'extractBillData_failed',
+            fatal: false,
+          });
+        }
+        toast({
+          variant: "destructive",
+          title: t('error.title'),
+          description: "No se pudieron extraer los datos de la factura. Por favor, introdúcelos manualmente.",
+        });
+      } finally {
+        setExtracting(false);
+         // Reset file input value to allow re-uploading the same file
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      }
+    };
+    reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+        toast({
+            variant: "destructive",
+            title: t('error.title'),
+            description: "Error al leer el archivo. Inténtalo de nuevo.",
+        });
+        setExtracting(false);
+    };
+  };
+
+  const triggerFileSelect = () => {
+    fileInputRef.current?.click();
+  };
   
   const formFields = [
     { name: "DÍAS_FACTURADOS", label: t('form.daysBilled'), icon: CalendarDays, placeholder: t('form.daysBilledPlaceholder') },
@@ -392,10 +454,34 @@ export function TariffComparator() {
 
       <Card className="w-full shadow-lg border-white/10 bg-card/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>{t('form.title')}</CardTitle>
-          <CardDescription>
-            {t('form.description')}
-          </CardDescription>
+           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <div className="flex-1">
+                <CardTitle>{t('form.title')}</CardTitle>
+                <CardDescription className="mt-1">
+                  {t('form.description')}
+                </CardDescription>
+              </div>
+               <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*,application/pdf"
+                />
+              <Button
+                variant="outline"
+                className="mt-4 sm:mt-0"
+                onClick={triggerFileSelect}
+                disabled={extracting}
+              >
+                {extracting ? (
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                ) : (
+                  <UploadCloud className="mr-2 h-5 w-5" />
+                )}
+                {extracting ? t('form.extractingButton') : t('form.extractButton')}
+              </Button>
+           </div>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -423,7 +509,7 @@ export function TariffComparator() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" disabled={loading} className="w-full" size="lg">
+              <Button type="submit" disabled={loading || extracting} className="w-full" size="lg">
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -441,10 +527,10 @@ export function TariffComparator() {
         </Form>
       </Card>
       
-      {loading && (
+      {(loading || extracting) && (
         <div className="flex items-center justify-center gap-2 text-muted-foreground animate-pulse pt-4">
             <Loader2 className="h-5 w-5 animate-spin"/>
-            <span>{t('form.searching')}</span>
+            <span>{extracting ? t('form.extractingProcess') : t('form.searching')}</span>
         </div>
       )}
 
