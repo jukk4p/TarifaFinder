@@ -27,7 +27,7 @@ async function uploadFile(document: string): Promise<string> {
     console.log("Uploading file to LlamaCloud...");
     const blob = dataURIToBlob(document);
     const formData = new FormData();
-    formData.append('file', blob, 'document_to_extract.pdf');
+    formData.append('upload_file', blob, 'document_to_extract.pdf'); // Changed 'file' to 'upload_file'
 
     const response = await fetch(`${BASE_URL}/files`, {
         method: 'POST',
