@@ -110,7 +110,7 @@ export function AgentChatDialog() {
       <DialogTrigger asChild>
         <Button variant="outline">
           <MessageSquareQuote className="mr-2 h-5 w-5" />
-          Analizar Documento
+          Preguntar al Agente IA
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
@@ -152,7 +152,7 @@ export function AgentChatDialog() {
                         render={({ field }) => (
                         <FormItem className="flex-grow">
                             <FormControl>
-                            <Input placeholder="Ej: 'Resume este documento'" {...field} className="bg-background/80" />
+                            <Input placeholder="Ej: 'Resume este documento en 3 puntos clave'" {...field} className="bg-background/80" />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
