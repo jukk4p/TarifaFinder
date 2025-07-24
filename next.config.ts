@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -8,11 +9,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@genkit-ai/googleai'],
-    outputFileTracingExcludes: {
+  serverExternalPackages: ['@genkit-ai/googleai'],
+  outputFileTracingExcludes: {
       '*': ['.firebase/**'],
-    },
   },
   images: {
     remotePatterns: [
