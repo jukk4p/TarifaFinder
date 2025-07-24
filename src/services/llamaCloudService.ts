@@ -4,11 +4,7 @@
 
 /**
  * Calls the LlamaCloud API to extract information from a document.
- * 
- * NOTE: This is a placeholder implementation. In a real-world scenario,
- * you would use the actual LlamaCloud API endpoint and handle authentication
- * with an API key stored securely.
- * 
+ *
  * @param query The user's query to send to the agent.
  * @returns A promise that resolves to the data extracted by LlamaCloud.
  */
@@ -19,36 +15,54 @@ export async function callLlamaCloud(query: string): Promise<string> {
 
   if (!apiKey) {
     console.warn("LlamaCloud API key not found. Returning mock data.");
-    // This is a mock response for demonstration purposes.
-    // Replace this with your actual API call.
     await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
-    return `This is a simulated response for the query: "${query}". The LlamaCloud integration is ready to be connected with a real API key.`;
-  }
-  
-  // Example of what a real API call might look like:
-  /*
-  const response = await fetch('https://api.cloud.llama.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      // Adjust payload according to LlamaCloud documentation
-      model: 'some-model',
-      messages: [{ role: 'user', content: query }],
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch data from LlamaCloud');
+    return "No se ha encontrado la clave de la API de LlamaCloud. Por favor, configúrala en el archivo .env para conectar con el servicio.";
   }
 
-  const data = await response.json();
-  return data.choices[0].message.content;
-  */
+  try {
+    // This is an example endpoint. You might need to adjust it based on LlamaCloud's documentation.
+    // LlamaParse is often used for document extraction.
+    const response = await fetch('https://api.cloud.llamaindex.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      // The payload will vary depending on the specific LlamaCloud service (LlamaParse, etc.)
+      // This is a generic chat completions payload.
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo', // Specify the model you want to use
+        messages: [
+            { 
+                role: 'system', 
+                content: 'You are a helpful assistant that extracts information from documents.' 
+            },
+            {
+                role: 'user', 
+                content: query 
+            }
+        ],
+      })
+    });
 
-  // Returning mock data even if key exists, as the endpoint is fictional.
-  await new Promise(resolve => setTimeout(resolve, 1500)); 
-  return `This is a simulated response for the query: "${query}". The LlamaCloud API key is present, but this is still mock data. You can now implement the real API call.`;
+    if (!response.ok) {
+        const errorBody = await response.text();
+        console.error(`LlamaCloud API error: ${response.status} ${response.statusText}`, errorBody);
+        throw new Error(`Failed to fetch data from LlamaCloud. Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // The structure of the response might differ. Adjust according to the actual API response.
+    if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+      return data.choices[0].message.content;
+    } else {
+      return "The LlamaCloud API returned an unexpected response structure.";
+    }
+
+  } catch (error) {
+    console.error("Error calling LlamaCloud service:", error);
+    // Provide a user-friendly error message
+    return `An error occurred while communicating with LlamaCloud. Please check the server logs for details.`;
+  }
 }
