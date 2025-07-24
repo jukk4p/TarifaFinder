@@ -3,13 +3,11 @@
  */
 import type { z } from 'zod';
 
-// Define the expected structure of the LlamaCloud API response
-interface LlamaCloudResponse {
-    result: {
-        response: string;
-    };
+// Define the expected structure of the LlamaCloud API response for a query
+interface LlamaCloudQueryResponse {
+    response: string;
+    // LlamaCloud might also return source_nodes, etc., but we only need the response for now.
 }
-
 
 /**
  * Calls the LlamaCloud API to extract information from a document.
@@ -34,13 +32,12 @@ export async function callLlamaCloud(query: string, document?: string): Promise<
      return "Por favor, proporciona un documento para analizar.";
   }
 
-  // The LlamaCloud agent API expects a specific structure.
+  // The LlamaCloud agent API for querying documents.
   // We'll send the user's instruction as the query.
-  // The document handling would depend on the agent's specific configuration.
-  // For this example, we assume the agent can take the query and we log that a document is present.
   console.log("Document is present and will be part of the context for the agent.");
 
-  const apiUrl = `https://api.cloud.llamaindex.ai/api/agent/${agentId}/chat`;
+  // Use the /query endpoint for question-answering over documents
+  const apiUrl = `https://api.cloud.llamaindex.ai/api/agent/${agentId}/query`;
 
   try {
     const response = await fetch(apiUrl, {
@@ -52,7 +49,7 @@ export async function callLlamaCloud(query: string, document?: string): Promise<
         body: JSON.stringify({
             input: query,
             // In a real scenario, you'd send the document here according to your agent's expected input schema.
-            // For now, we are just sending the user's query.
+            // LlamaCloud agents often discover context from associated tools/pipelines, so just sending the query is often sufficient.
         }),
     });
 
@@ -61,10 +58,10 @@ export async function callLlamaCloud(query: string, document?: string): Promise<
       throw new Error(`LlamaCloud API request failed with status ${response.status}: ${errorText}`);
     }
 
-    const data: LlamaCloudResponse = await response.json();
+    const data: LlamaCloudQueryResponse = await response.json();
     
     // Extract the actual response from the nested structure
-    return data.result.response;
+    return data.response;
 
   } catch (error) {
     console.error("Error calling LlamaCloud service:", error);
