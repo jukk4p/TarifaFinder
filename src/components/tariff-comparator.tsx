@@ -90,12 +90,12 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                             <tbody>
                                 {tariff.periodos_energia === 3 ? (
                                     <>
-                                        <tr><td className="text-left text-muted-foreground">{t('results.energyPeakPrice')}:</td><td className="text-right font-mono">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
-                                        <tr><td className="text-left text-muted-foreground">{t('results.energyFlatPrice')}:</td><td className="text-right font-mono">{tariff.energia_llano_precio.toFixed(5)}€</td></tr>
-                                        <tr><td className="text-left text-muted-foreground">{t('results.energyOffPeakPrice')}:</td><td className="text-right font-mono">{tariff.energia_valle_precio.toFixed(5)}€</td></tr>
+                                        <tr><td className="text-left text-muted-foreground pr-4">{t('results.energyPeakPrice')}:</td><td className="text-right font-mono">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
+                                        <tr><td className="text-left text-muted-foreground pr-4">{t('results.energyFlatPrice')}:</td><td className="text-right font-mono">{tariff.energia_llano_precio.toFixed(5)}€</td></tr>
+                                        <tr><td className="text-left text-muted-foreground pr-4">{t('results.energyOffPeakPrice')}:</td><td className="text-right font-mono">{tariff.energia_valle_precio.toFixed(5)}€</td></tr>
                                     </>
                                 ) : (
-                                    <tr><td className="text-left text-muted-foreground">{t('results.energyPrice')}:</td><td className="text-right font-mono">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
+                                    <tr><td className="text-left text-muted-foreground pr-4">{t('results.energyPrice')}:</td><td className="text-right font-mono">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
                                 )}
                             </tbody>
                         </table>
@@ -104,8 +104,8 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                         <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> {t('results.powerPrices')} (kW/día)</h3>
                         <table className="w-full text-sm">
                             <tbody>
-                                <tr><td className="text-left text-muted-foreground">{t('results.powerPeakPrice')}:</td><td className="text-right font-mono">{tariff.potencia_punta_precio.toFixed(5)}€</td></tr>
-                                <tr><td className="text-left text-muted-foreground">{t('results.powerOffPeakPrice')}:</td><td className="text-right font-mono">{tariff.potencia_valle_precio.toFixed(5)}€</td></tr>
+                                <tr><td className="text-left text-muted-foreground pr-4">{t('results.powerPeakPrice')}:</td><td className="text-right font-mono">{tariff.potencia_punta_precio.toFixed(5)}€</td></tr>
+                                <tr><td className="text-left text-muted-foreground pr-4">{t('results.powerOffPeakPrice')}:</td><td className="text-right font-mono">{tariff.potencia_valle_precio.toFixed(5)}€</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -640,6 +640,7 @@ export function TariffComparator() {
 }
 
     
+
 
 
 
