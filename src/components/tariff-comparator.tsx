@@ -83,9 +83,9 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                 <DialogTitle className="text-xl font-bold text-foreground">{tariff.name}</DialogTitle>
             </DialogHeader>
             <div className="py-6 px-4 sm:px-6 space-y-6">
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Clock className="h-5 w-5" /> {t('results.energyPrice')} (kWh)</h3>
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Clock className="h-5 w-5" /> {t('results.energyPrices')} (kWh)</h3>
                         <div className="space-y-2 text-sm">
                             {tariff.periodos_energia === 3 ? (
                                 <>
@@ -99,7 +99,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                         </div>
                     </div>
                     <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> {t('results.powerPrice')} (kW/día)</h3>
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> {t('results.powerPrices')} (kW/día)</h3>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between text-muted-foreground"><span>{t('results.powerPeakPrice')}:</span> <span className="font-mono">{tariff.potencia_punta_precio.toFixed(5)}€</span></div>
                             <div className="flex justify-between text-muted-foreground"><span>{t('results.powerOffPeakPrice')}:</span> <span className="font-mono">{tariff.potencia_valle_precio.toFixed(5)}€</span></div>
@@ -636,5 +636,6 @@ export function TariffComparator() {
 }
 
     
+
 
 
