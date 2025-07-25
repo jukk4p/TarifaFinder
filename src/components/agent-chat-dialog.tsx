@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useCallback } from 'react';
@@ -12,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Bot, FileUp, FileText, Cloud } from 'lucide-react';
+import { ArrowPathIcon as Loader2, UserIcon as Bot, ArrowUpTrayIcon as FileUp, DocumentTextIcon as FileText, CloudIcon as Cloud } from '@heroicons/react/24/outline';
 import { extractWithLlamaCloud } from '@/ai/flows/extractWithLlamaCloud';
 
 const formSchema = z.object({

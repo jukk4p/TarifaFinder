@@ -1,3 +1,4 @@
+
 "use client";
 
 import { tariffs } from "@/lib/tariffs";
@@ -15,7 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Database } from "lucide-react";
+import { CircleStackIcon as Database } from "@heroicons/react/24/outline";
 import { useTranslation } from "@/lib/i18n";
 
 export function TariffDataViewer() {

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useTranslation } from "@/lib/i18n";
@@ -8,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Globe } from "lucide-react";
+import { LanguageIcon as Globe } from "@heroicons/react/24/outline";
 import { analytics } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
 

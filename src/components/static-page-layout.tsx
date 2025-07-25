@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeftIcon as ArrowLeft } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Footer } from '@/components/footer';
 

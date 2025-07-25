@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink, UploadCloud, ChevronDown, TrendingUp, Info, ArrowRight, FileText, Clock, Power } from 'lucide-react';
+import { ArrowPathIcon as Loader2, BoltIcon as Zap, LightBulbIcon as Lightbulb, CalendarDaysIcon as CalendarDays, CalculatorIcon as Calculator, SparklesIcon as Sparkles, CurrencyEuroIcon as Euro, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon as PiggyBank, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon as ChevronDown, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon as ArrowRight, DocumentTextIcon as FileText, ClockIcon as Clock, PowerIcon as Power } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -85,7 +85,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
             <div className="py-6 px-4 sm:px-6 space-y-6">
                 <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Clock className="h-5 w-5" /> {t('results.energyPrices')} (kWh)</h3>
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Clock className="h-5 w-5" /> {t('results.energyPrices')}</h3>
                         <table className="w-full text-sm">
                             <tbody>
                                 {tariff.periodos_energia === 3 ? (
@@ -101,7 +101,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                         </table>
                     </div>
                      <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> {t('results.powerPrices')} (kW/día)</h3>
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> {t('results.powerPrices')}</h3>
                         <table className="w-full text-sm">
                             <tbody>
                                 <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.powerPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.potencia_punta_precio.toFixed(5)}€</td></tr>
@@ -273,7 +273,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
-          <PieChartIcon className="h-6 w-6" />
+          <ChartPieIcon className="h-6 w-6" />
           {t('consumption_chart.title')}
         </CardTitle>
         <CardDescription>
@@ -640,6 +640,7 @@ export function TariffComparator() {
 }
 
     
+
 
 
 

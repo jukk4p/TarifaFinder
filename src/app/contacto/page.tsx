@@ -1,7 +1,7 @@
 import { StaticPageLayout } from '@/components/static-page-layout';
 import { ContactForm } from '@/components/contact-form';
 import type { Metadata } from 'next';
-import { Mail } from 'lucide-react';
+import { EnvelopeIcon as Mail } from '@heroicons/react/24/outline';
 
 export const metadata: Metadata = {
   title: 'Contacto - TarifaFinder',
