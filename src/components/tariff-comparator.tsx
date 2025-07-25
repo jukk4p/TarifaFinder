@@ -127,7 +127,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
 }
 
 
-const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: TariffOutput[0], currentBill?: number, isBestOption: boolean }) => {
+const TariffResultCard = ({ tariff, currentBill }: { tariff: TariffOutput[0], currentBill?: number }) => {
     const { t } = useTranslation();
     const savings = currentBill && currentBill > 0 ? currentBill - tariff.cost : null;
 
@@ -135,32 +135,37 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
         <Dialog>
             <Card className="group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 border-transparent hover:border-primary">
                 <div className="flex flex-col flex-grow p-6 text-center">
-                    <div className="flex-grow">
-                         <div className="w-full min-w-[100px] h-20 relative mb-6">
-                            <Image 
-                                src={tariff.logoUrl} 
-                                alt={`Logo de ${tariff.company}`} 
-                                fill
-                                className="object-contain"
-                                sizes="(max-width: 768px) 30vw, 15vw"
-                            />
-                        </div>
-                        <p className="text-lg font-semibold text-foreground h-12 line-clamp-2">{tariff.name}</p>
-                        <Separator className="bg-white/10 my-6" />
-                        <div className="flex justify-between items-baseline py-2">
-                            <p className="text-muted-foreground text-sm">{t('results.estimatedCost')}</p>
-                            <p className="font-bold text-3xl text-foreground">{tariff.cost.toFixed(2)}€</p>
-                        </div>
-                        {savings !== null && (
-                            <div className="flex justify-between items-baseline py-2">
-                                <p className="text-accent text-sm font-semibold flex items-center gap-2">
-                                    <TrendingUp className="h-4 w-4" /> {t('results.estimatedSavings')}
-                                </p>
-                                <p className={`text-xl font-bold ${savings > 0 ? 'text-accent' : 'text-destructive'}`}>
-                                    {savings > 0 ? `${savings.toFixed(2)}€` : `${Math.abs(savings).toFixed(2)}€`}
-                                </p>
+                    <div className="flex-grow flex flex-col">
+                        <div className="flex-grow">
+                            <div className="w-full min-w-[100px] h-20 relative mb-6">
+                                <Image 
+                                    src={tariff.logoUrl} 
+                                    alt={`Logo de ${tariff.company}`} 
+                                    fill
+                                    className="object-contain"
+                                    sizes="(max-width: 768px) 30vw, 15vw"
+                                />
                             </div>
-                        )}
+                            <p className="text-lg font-semibold text-foreground h-12 line-clamp-2">{tariff.name}</p>
+                        </div>
+                        
+                        <div>
+                            <Separator className="bg-white/10 my-6" />
+                            <div className="flex justify-between items-baseline py-2">
+                                <p className="text-muted-foreground text-sm">{t('results.estimatedCost')}</p>
+                                <p className="font-bold text-3xl text-foreground">{tariff.cost.toFixed(2)}€</p>
+                            </div>
+                            {savings !== null && (
+                                <div className="flex justify-between items-baseline py-2">
+                                    <p className="text-accent text-sm font-semibold flex items-center gap-2">
+                                        <TrendingUp className="h-4 w-4" /> {t('results.estimatedSavings')}
+                                    </p>
+                                    <p className={`text-xl font-bold ${savings > 0 ? 'text-accent' : 'text-destructive'}`}>
+                                        {savings > 0 ? `${savings.toFixed(2)}€` : `${Math.abs(savings).toFixed(2)}€`}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                      <div className="mt-6">
                         <DialogTrigger asChild>
@@ -201,8 +206,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             <TariffResultCard 
                 key={index} 
                 tariff={tariff} 
-                currentBill={currentBill} 
-                isBestOption={index === 0} 
+                currentBill={currentBill}
             />
           ))}
         </div>
@@ -629,3 +633,4 @@ export function TariffComparator() {
 }
 
     
+
