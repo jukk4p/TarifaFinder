@@ -39,6 +39,7 @@ export const es = {
     priceDetails: 'Detalles de Precios',
     powerPeakPrice: 'Potencia Punta',
     powerOffPeakPrice: 'Potencia Valle',
+    powerPrice: 'Precios Potencia',
     energyPrice: 'Precio Energía',
     energyPeakPrice: 'Energía Punta',
     energyFlatPrice: 'Energía Llano',

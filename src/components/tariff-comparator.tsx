@@ -70,7 +70,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
     const { t } = useTranslation();
     return (
         <DialogContent className="sm:max-w-md bg-card/80 backdrop-blur-lg border-white/20">
-            <DialogHeader className="items-center text-center pt-8">
+            <DialogHeader className="items-center text-center pt-4">
                  <div className="w-full h-20 relative mb-4">
                     <Image 
                         src={tariff.logoUrl} 
@@ -82,37 +82,40 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                 </div>
                 <DialogTitle className="text-xl font-bold text-foreground">{tariff.name}</DialogTitle>
             </DialogHeader>
-            <div className="py-6 px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                    <h3 className="text-lg font-semibold flex items-center gap-2 text-primary"><Clock className="h-5 w-5" /> Precios Energía (kWh)</h3>
-                    <div className="space-y-2 text-sm">
-                         { tariff.periodos_energia === 3 ? (
-                            <>
-                                <div className="flex justify-between text-muted-foreground"><span>{t('results.energyPeakPrice')}</span> <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)} €</span></div>
-                                <div className="flex justify-between text-muted-foreground"><span>{t('results.energyFlatPrice')}</span> <span className="font-mono">{tariff.energia_llano_precio.toFixed(5)} €</span></div>
-                                <div className="flex justify-between text-muted-foreground"><span>{t('results.energyOffPeakPrice')}</span> <span className="font-mono">{tariff.energia_valle_precio.toFixed(5)} €</span></div>
-                            </>
-                         ) : (
-                            <div className="flex justify-between text-muted-foreground"><span>{t('results.energyPrice')}</span> <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)} €</span></div>
-                         )}
+            <div className="py-6 px-4 sm:px-6 space-y-6">
+                <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Clock className="h-5 w-5" /> {t('results.energyPrice')} (kWh)</h3>
+                        <div className="space-y-2 text-sm">
+                            {tariff.periodos_energia === 3 ? (
+                                <>
+                                    <div className="flex justify-between text-muted-foreground"><span>{t('results.energyPeakPrice')}:</span> <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span></div>
+                                    <div className="flex justify-between text-muted-foreground"><span>{t('results.energyFlatPrice')}:</span> <span className="font-mono">{tariff.energia_llano_precio.toFixed(5)}€</span></div>
+                                    <div className="flex justify-between text-muted-foreground"><span>{t('results.energyOffPeakPrice')}:</span> <span className="font-mono">{tariff.energia_valle_precio.toFixed(5)}€</span></div>
+                                </>
+                            ) : (
+                                <div className="flex justify-between text-muted-foreground"><span>{t('results.energyPrice')}:</span> <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span></div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="space-y-3">
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> {t('results.powerPrice')} (kW/día)</h3>
+                        <div className="space-y-2 text-sm">
+                            <div className="flex justify-between text-muted-foreground"><span>{t('results.powerPeakPrice')}:</span> <span className="font-mono">{tariff.potencia_punta_precio.toFixed(5)}€</span></div>
+                            <div className="flex justify-between text-muted-foreground"><span>{t('results.powerOffPeakPrice')}:</span> <span className="font-mono">{tariff.potencia_valle_precio.toFixed(5)}€</span></div>
+                        </div>
                     </div>
                 </div>
-                 <div className="space-y-4">
-                    <h3 className="text-lg font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> Precios Potencia (kW/día)</h3>
-                    <div className="space-y-2 text-sm">
-                        <div className="flex justify-between text-muted-foreground"><span>{t('results.powerPeakPrice')}</span> <span className="font-mono">{tariff.potencia_punta_precio.toFixed(5)} €</span></div>
-                        <div className="flex justify-between text-muted-foreground"><span>{t('results.powerOffPeakPrice')}</span> <span className="font-mono">{tariff.potencia_valle_precio.toFixed(5)} €</span></div>
-                    </div>
+                <Separator className="bg-white/10" />
+                <div className="space-y-3">
+                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><FileText className="h-5 w-5" /> Condiciones</h3>
+                    <p className="text-sm text-muted-foreground">
+                        {tariff.commitment ? `Esta tarifa tiene un compromiso de permanencia.` : 'Esta tarifa no tiene compromiso de permanencia.'}
+                        El precio final puede estar sujeto a otras condiciones. Visita la web de la compañía para más detalles.
+                    </p>
                 </div>
             </div>
-             <div className="px-8 pb-8 space-y-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2 text-primary"><FileText className="h-5 w-5" /> Condiciones</h3>
-                <p className="text-sm text-muted-foreground">
-                    {tariff.commitment ? `Esta tarifa tiene un compromiso de permanencia.` : 'Esta tarifa no tiene compromiso de permanencia.'}
-                    El precio final puede estar sujeto a otras condiciones. Visita la web de la compañía para más detalles.
-                </p>
-            </div>
-            <div className="px-8 pb-8">
+            <div className="px-6 pb-6">
                 <Button asChild className="w-full" variant="secondary">
                      <a href={tariff.url} target="_blank" rel="noopener noreferrer" onClick={() => {
                          if (analytics) { logEvent(analytics, 'view_offer_details', { company: tariff.company, tariff_name: tariff.name }); }
@@ -134,7 +137,7 @@ const TariffResultCard = ({ tariff, currentBill }: { tariff: TariffOutput[0], cu
     return (
         <Dialog>
             <Card className="group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 border-transparent hover:border-primary">
-                <div className="flex flex-col flex-grow p-6 text-center">
+                <CardContent className="flex flex-col flex-grow p-6 text-center">
                     <div className="flex-grow flex flex-col">
                         <div className="flex-grow">
                             <div className="w-full min-w-[100px] h-20 relative mb-6">
@@ -167,15 +170,15 @@ const TariffResultCard = ({ tariff, currentBill }: { tariff: TariffOutput[0], cu
                             )}
                         </div>
                     </div>
-                     <div className="mt-6">
+                     <CardFooter className="p-0 mt-6">
                         <DialogTrigger asChild>
                             <Button variant="subtle" className="w-full justify-center rounded-md !p-4 !h-auto text-sm font-semibold">
                                 {t('results.seeOffer')}
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                         </DialogTrigger>
-                    </div>
-                </div>
+                    </CardFooter>
+                </CardContent>
             </Card>
             <TariffDetailsDialog tariff={tariff} />
         </Dialog>
@@ -633,4 +636,5 @@ export function TariffComparator() {
 }
 
     
+
 

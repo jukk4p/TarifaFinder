@@ -39,6 +39,7 @@ export const ca = {
     priceDetails: 'Detalls de Preus',
     powerPeakPrice: 'Potència Punta',
     powerOffPeakPrice: 'Potència Vall',
+    powerPrice: 'Preus Potència',
     energyPrice: 'Preu Energia',
     energyPeakPrice: 'Energia Punta',
     energyFlatPrice: 'Energia Plana',

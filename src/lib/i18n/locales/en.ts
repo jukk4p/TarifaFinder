@@ -39,6 +39,7 @@ export const en = {
     priceDetails: 'Price Details',
     powerPeakPrice: 'Peak Power',
     powerOffPeakPrice: 'Off-Peak Power',
+    powerPrice: 'Power Prices',
     energyPrice: 'Energy Price',
     energyPeakPrice: 'Peak Energy',
     energyFlatPrice: 'Flat Energy',
