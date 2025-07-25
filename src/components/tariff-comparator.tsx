@@ -38,7 +38,6 @@ import { logEvent } from 'firebase/analytics';
 import { trace } from 'firebase/performance';
 import { useMemo } from 'react';
 import Image from 'next/image';
-import { AgentChatDialog } from './agent-chat-dialog';
 import { Separator } from './ui/separator';
 import {
   Dialog,
@@ -209,7 +208,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
-          {results.map((tariff, index) => (
+          {results.slice(0, 2).map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
                 tariff={tariff} 
@@ -569,7 +568,6 @@ export function TariffComparator() {
                     )}
                     {extracting ? t('form.extractingButton') : t('form.extractButton')}
                 </Button>
-                <AgentChatDialog />
               </div>
            </div>
         </CardHeader>
@@ -638,14 +636,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    
-
-
-
-
-
-
-
-
-
