@@ -61,6 +61,12 @@ const tariffFinderFlow = ai.defineFlow(
         url: tariff.url,
         logoUrl: tariff.logoUrl,
         cost: cost,
+        potencia_punta_precio: tariff.potencia_punta_precio,
+        potencia_valle_precio: tariff.potencia_valle_precio,
+        energia_punta_precio: tariff.energia_punta_precio,
+        energia_llano_precio: tariff.energia_llano_precio,
+        energia_valle_precio: tariff.energia_valle_precio,
+        periodos_energia: tariff.periodos_energia,
       };
     });
 
