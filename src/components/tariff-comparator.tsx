@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowPathIcon as Loader2, BoltIcon as Zap, LightBulbIcon as Lightbulb, CalendarDaysIcon as CalendarDays, CalculatorIcon as Calculator, SparklesIcon as Sparkles, CurrencyEuroIcon as Euro, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon as PiggyBank, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon as ChevronDown, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon as ArrowRight, DocumentTextIcon as FileText, ClockIcon as Clock, PowerIcon as Power } from '@heroicons/react/24/outline';
+import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon, DocumentTextIcon, ClockIcon, PowerIcon } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -76,7 +76,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                         src={tariff.logoUrl} 
                         alt={`Logo de ${tariff.company}`} 
                         fill
-                        className="object-contain"
+                        className="object-contain mix-blend-multiply"
                         sizes="(max-width: 768px) 50vw, 25vw"
                     />
                 </div>
@@ -85,7 +85,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
             <div className="py-6 px-4 sm:px-6 space-y-6">
                 <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Clock className="h-5 w-5" /> {t('results.energyPrices')}</h3>
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {t('results.energyPrices')}</h3>
                         <table className="w-full text-sm">
                             <tbody>
                                 {tariff.periodos_energia === 3 ? (
@@ -101,7 +101,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                         </table>
                     </div>
                      <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Power className="h-5 w-5" /> {t('results.powerPrices')}</h3>
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><PowerIcon className="h-5 w-5" /> {t('results.powerPrices')}</h3>
                         <table className="w-full text-sm">
                             <tbody>
                                 <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.powerPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.potencia_punta_precio.toFixed(5)}€</td></tr>
@@ -112,7 +112,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                 </div>
                 <Separator className="bg-white/10" />
                 <div className="space-y-3">
-                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><FileText className="h-5 w-5" /> Condiciones</h3>
+                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><DocumentTextIcon className="h-5 w-5" /> Condiciones</h3>
                     <p className="text-sm text-muted-foreground">
                         {tariff.commitment ? `Esta tarifa tiene un compromiso de permanencia.` : 'Esta tarifa no tiene compromiso de permanencia.'}
                         El precio final puede estar sujeto a otras condiciones. Visita la web de la compañía para más detalles.
@@ -149,7 +149,7 @@ const TariffResultCard = ({ tariff, currentBill }: { tariff: TariffOutput[0], cu
                                     src={tariff.logoUrl} 
                                     alt={`Logo de ${tariff.company}`} 
                                     fill
-                                    className="object-contain"
+                                    className="object-contain mix-blend-multiply"
                                     sizes="(max-width: 768px) 30vw, 15vw"
                                 />
                             </div>
@@ -178,7 +178,7 @@ const TariffResultCard = ({ tariff, currentBill }: { tariff: TariffOutput[0], cu
                         <DialogTrigger asChild>
                             <Button variant="subtle" className="w-full justify-center rounded-md !p-4 !h-auto text-sm font-semibold">
                                 {t('results.seeOffer')}
-                                <ArrowRight className="ml-2 h-4 w-4" />
+                                <ArrowRightIcon className="ml-2 h-4 w-4" />
                             </Button>
                         </DialogTrigger>
                     </CardFooter>
@@ -201,7 +201,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
       <div className="space-y-4">
         <div className="text-center mb-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent flex items-center justify-center gap-2">
-            <Sparkles className="h-7 w-7" />
+            <SparklesIcon className="h-7 w-7" />
             {t('results.title')}
             </h2>
             <p className="max-w-xl mx-auto text-muted-foreground mt-2">
@@ -520,13 +520,13 @@ export function TariffComparator() {
   };
   
   const formFields = [
-    { name: "DÍAS_FACTURADOS", label: t('form.daysBilled'), icon: CalendarDays, placeholder: t('form.daysBilledPlaceholder') },
-    { name: "POTENCIA_P1_kW", label: t('form.powerPeak'), icon: Zap, placeholder: t('form.powerPeakPlaceholder') },
-    { name: "POTENCIA_P2_kW", label: t('form.powerOffPeak'), icon: Zap, placeholder: t('form.powerOffPeakPlaceholder') },
-    { name: "ENERGÍA_P1_kWh", label: t('form.energyPeak'), icon: Lightbulb, placeholder: t('form.energyPeakPlaceholder') },
-    { name: "ENERGÍA_P2_kWh", label: t('form.energyFlat'), icon: Lightbulb, placeholder: t('form.energyFlatPlaceholder') },
-    { name: "ENERGÍA_P3_kWh", label: t('form.energyOffPeak'), icon: Lightbulb, placeholder: t('form.energyOffPeakPlaceholder') },
-    { name: "importe_factura_actual", label: t('form.currentBill'), icon: Euro, placeholder: t('form.currentBillPlaceholder') },
+    { name: "DÍAS_FACTURADOS", label: t('form.daysBilled'), icon: CalendarDaysIcon, placeholder: t('form.daysBilledPlaceholder') },
+    { name: "POTENCIA_P1_kW", label: t('form.powerPeak'), icon: BoltIcon, placeholder: t('form.powerPeakPlaceholder') },
+    { name: "POTENCIA_P2_kW", label: t('form.powerOffPeak'), icon: BoltIcon, placeholder: t('form.powerOffPeakPlaceholder') },
+    { name: "ENERGÍA_P1_kWh", label: t('form.energyPeak'), icon: LightBulbIcon, placeholder: t('form.energyPeakPlaceholder') },
+    { name: "ENERGÍA_P2_kWh", label: t('form.energyFlat'), icon: LightBulbIcon, placeholder: t('form.energyFlatPlaceholder') },
+    { name: "ENERGÍA_P3_kWh", label: t('form.energyOffPeak'), icon: LightBulbIcon, placeholder: t('form.energyOffPeakPlaceholder') },
+    { name: "importe_factura_actual", label: t('form.currentBill'), icon: CurrencyEuroIcon, placeholder: t('form.currentBillPlaceholder') },
   ] as const;
 
   return (
@@ -607,7 +607,7 @@ export function TariffComparator() {
                   </>
                 ) : (
                   <>
-                    <Calculator className="mr-2 h-5 w-5" />
+                    <CalculatorIcon className="mr-2 h-5 w-5" />
                     {t('form.compareButton')}
                   </>
                 )}
@@ -640,6 +640,7 @@ export function TariffComparator() {
 }
 
     
+
 
 
 
