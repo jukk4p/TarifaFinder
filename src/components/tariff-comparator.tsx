@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink, UploadCloud, ChevronDown, TrendingUp, Info } from 'lucide-react';
+import { Loader2, Zap, Lightbulb, CalendarDays, Calculator, Sparkles, Euro, MessageSquareHeart, PieChart as PieChartIcon, PiggyBank, ExternalLink, UploadCloud, ChevronDown, TrendingUp, Info, ArrowRight } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -65,28 +65,27 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen} className={`w-full rounded-lg transition-all duration-300 ${isBestOption ? 'shadow-primary/20 shadow-2xl' : ''}`}>
             <Card className={`relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl border-white/10 h-full ${isBestOption ? 'border-primary' : ''}`}>
-                <CardHeader className="text-center items-center pb-4">
-                    <div className="w-24 h-12 relative mb-4">
+                <CardHeader className="text-center items-center p-6">
+                    <div className="w-full h-16 min-h-16 relative mb-4">
                         <Image 
                             src={tariff.logoUrl} 
                             alt={`Logo de ${tariff.company}`} 
                             fill
                             className="object-contain"
-                            sizes="(max-width: 768px) 20vw, 10vw"
+                            sizes="(max-width: 768px) 30vw, 15vw"
                         />
                     </div>
-                    <CardTitle className="text-lg font-semibold">{tariff.name}</CardTitle>
+                    <p className="text-sm font-semibold text-foreground h-10 line-clamp-2">{tariff.name}</p>
                 </CardHeader>
-
-                <CardContent className="flex-grow space-y-4 px-6">
-                    <Separator className="bg-white/10" />
+                <CardContent className="flex-grow flex flex-col justify-around px-6 pb-6">
+                    <Separator className="bg-white/10 my-4" />
                     <div className="flex justify-between items-center py-2">
                         <p className="text-muted-foreground text-sm">{t('results.estimatedCost')}</p>
                         <p className="font-bold text-2xl text-foreground">{tariff.cost.toFixed(2)}€</p>
                     </div>
-                    {savings !== null && (
+                     {savings !== null && (
                         <>
-                            <Separator className="bg-white/10" />
+                            <Separator className="bg-white/10 my-4" />
                             <div className="flex justify-between items-center py-2">
                                 <p className="text-accent text-sm font-semibold flex items-center gap-2"><TrendingUp className="h-4 w-4" /> {t('results.estimatedSavings')}</p>
                                 <p className={`text-xl font-bold ${savings > 0 ? 'text-accent' : 'text-destructive'}`}>
@@ -96,11 +95,10 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
                         </>
                     )}
                 </CardContent>
-
                 <CardFooter className="flex-col !p-0 mt-auto">
                     <CollapsibleContent className="w-full p-6 pt-0 space-y-4">
                          <Separator className="bg-white/10" />
-                         <div className="space-y-2 text-sm">
+                         <div className="space-y-2 text-sm pt-4">
                             <h4 className="font-semibold text-foreground mb-2">{t('results.priceDetails')}</h4>
                             <div className="flex justify-between text-muted-foreground"><span>{t('results.powerPeakPrice')}</span> <span className="font-mono">{tariff.potencia_punta_precio.toFixed(4)} €/kW/día</span></div>
                             <div className="flex justify-between text-muted-foreground"><span>{t('results.powerOffPeakPrice')}</span> <span className="font-mono">{tariff.potencia_valle_precio.toFixed(4)} €/kW/día</span></div>
@@ -126,9 +124,13 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
                     </CollapsibleContent>
                     
                     <CollapsibleTrigger asChild>
-                        <Button variant="ghost" className="w-full rounded-t-none !p-6">
-                            {t('results.seeOffer')}
-                            <ChevronDown className={`ml-2 h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                        <Button variant="ghost" className="w-full justify-between rounded-t-none !p-4 !h-auto border-t border-white/10">
+                            <span className="text-sm font-semibold">{t('results.seeOffer')}</span>
+                            <div className="flex items-center">
+                               <span className="sr-only">Toggle Details</span>
+                               <ArrowRight className={`ml-2 h-4 w-4 transition-transform duration-200 ${isOpen ? 'hidden' : ''}`} />
+                               <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : 'hidden'}`} />
+                            </div>
                         </Button>
                     </CollapsibleTrigger>
                 </CardFooter>
@@ -587,3 +589,5 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    
