@@ -41,6 +41,7 @@ You must extract the exact values as they appear in the document for each of the
 - ENERGÍA_P1_kWh: The exact energy consumed in the peak period (Punta) in kWh as it appears on the bill.
 - ENERGÍA_P2_kWh: The exact energy consumed in the flat period (Llano) in kWh as it appears on the bill.
 - ENERGÍA_P3_kWh: The exact energy consumed in the off-peak period (Valle) in kWh as it appears on the bill.
+- importe_factura_actual: The total amount of the bill ("Total Importe Factura"). If it's not found, do not include this field.
 
 Carefully analyze the document to find each value. If a value is not explicitly found, return 0 for that field.
 

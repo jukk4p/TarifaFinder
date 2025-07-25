@@ -7,6 +7,7 @@ export const tariffInputSchema = z.object({
   ENERGÍA_P1_kWh: z.number(),
   ENERGÍA_P2_kWh: z.number(),
   ENERGÍA_P3_kWh: z.number(),
+  importe_factura_actual: z.number().optional(),
 });
 
 export type TariffInput = z.infer<typeof tariffInputSchema>;
