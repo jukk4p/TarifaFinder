@@ -133,7 +133,7 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
 
     return (
         <Dialog>
-            <Card className={`group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 ${isBestOption ? 'border-primary' : 'border-transparent hover:border-primary'}`}>
+            <Card className="group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 border-transparent hover:border-primary">
                 <div className="flex flex-col flex-grow p-6 text-center">
                     <div className="flex-grow">
                          <div className="w-full min-w-[100px] h-20 relative mb-6">
@@ -629,4 +629,3 @@ export function TariffComparator() {
 }
 
     
-
