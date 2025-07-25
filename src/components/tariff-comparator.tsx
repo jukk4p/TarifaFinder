@@ -64,7 +64,7 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
 
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen} className={`w-full rounded-lg transition-all duration-300 ${isBestOption ? 'shadow-primary/20 shadow-2xl' : ''}`}>
-            <Card className={`relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl border-white/10 ${isBestOption ? 'border-primary' : ''}`}>
+            <Card className={`relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl border-white/10 h-full ${isBestOption ? 'border-primary' : ''}`}>
                 <CardHeader className="text-center items-center pb-4">
                     <div className="w-24 h-12 relative mb-4">
                         <Image 
@@ -76,7 +76,6 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
                         />
                     </div>
                     <CardTitle className="text-lg font-semibold">{tariff.name}</CardTitle>
-                    <CardDescription>{tariff.company}</CardDescription>
                 </CardHeader>
 
                 <CardContent className="flex-grow space-y-4 px-6">
@@ -98,7 +97,7 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
                     )}
                 </CardContent>
 
-                <CardFooter className="flex-col !p-0">
+                <CardFooter className="flex-col !p-0 mt-auto">
                     <CollapsibleContent className="w-full p-6 pt-0 space-y-4">
                          <Separator className="bg-white/10" />
                          <div className="space-y-2 text-sm">
@@ -157,7 +156,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
