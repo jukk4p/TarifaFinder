@@ -133,7 +133,7 @@ const TariffResultCard = ({ tariff, currentBill, isBestOption }: { tariff: Tarif
 
     return (
         <Dialog>
-             <Card className={`relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl border-white/10 h-full transition-all duration-300 ${isBestOption ? 'border-primary shadow-primary/20 shadow-2xl' : 'border-transparent'}`}>
+             <Card className={`group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 ${isBestOption ? 'border-primary shadow-primary/20 shadow-2xl' : 'border-transparent group-hover:border-primary'}`}>
                 <div className="flex flex-col flex-grow p-6 text-center">
                     <div className="flex-grow">
                          <div className="w-full min-w-[100px] h-20 relative mb-6">
@@ -196,7 +196,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
@@ -519,7 +519,7 @@ export function TariffComparator() {
   ] as const;
 
   return (
-    <div className="w-full max-w-4xl space-y-8 py-12">
+    <div className="w-full max-w-6xl space-y-8 py-12">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           {t('header')}

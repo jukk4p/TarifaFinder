@@ -67,14 +67,15 @@ const tariffFinderFlow = ai.defineFlow(
         energia_llano_precio: tariff.energia_llano_precio,
         energia_valle_precio: tariff.energia_valle_precio,
         periodos_energia: tariff.periodos_energia,
+        commitment: tariff.commitment,
       };
     });
 
     const sortedTariffs = calculatedCosts.sort((a, b) => a.cost - b.cost);
     
-    const top3 = sortedTariffs.slice(0, 3);
+    const top4 = sortedTariffs.slice(0, 4);
     
-    return top3;
+    return top4;
   }
 );
 
