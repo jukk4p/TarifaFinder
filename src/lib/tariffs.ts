@@ -1,3 +1,4 @@
+
 // @/lib/tariffs.ts
 
 export interface Tariff {
@@ -18,7 +19,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Octopus",
     name: "Relax",
-    logoUrl: "https://logo.clearbit.com/octopusenergy.es",
+    logoUrl: "/logos/octopus.png",
     potencia_punta_precio: 0.095,
     potencia_valle_precio: 0.027,
     periodos_energia: 1,
@@ -30,7 +31,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Imagina",
     name: "Plan Sin Horas Digital (enlace especial)",
-    logoUrl: "https://logo.clearbit.com/imaginaenergia.com",
+    logoUrl: "/logos/imagina.png",
     potencia_punta_precio: 0.111,
     potencia_valle_precio: 0.056,
     periodos_energia: 1,
@@ -42,7 +43,7 @@ export const tariffs: Tariff[] = [
    {
     company: "Imagina",
     name: "Plan Noches y Fines de Semana Digital (enlace especial)",
-    logoUrl: "https://logo.clearbit.com/imaginaenergia.com",
+    logoUrl: "/logos/imagina.png",
     potencia_punta_precio: 0.099,
     potencia_valle_precio: 0.020,
     periodos_energia: 3,
@@ -54,7 +55,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Doméstica - Visalia",
     name: "Especial Fijo 24h (enlace especial)",
-    logoUrl: "https://logo.clearbit.com/visalia.es",
+    logoUrl: "/logos/visalia.png",
     potencia_punta_precio: 0.06027,
     potencia_valle_precio: 0.06027,
     periodos_energia: 1,
@@ -66,7 +67,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Repsol",
     name: "Ahorro Plus",
-    logoUrl: "https://logo.clearbit.com/repsol.es",
+    logoUrl: "/logos/repsol.png",
     potencia_punta_precio: 0.0682,
     potencia_valle_precio: 0.0682,
     periodos_energia: 1,
@@ -79,7 +80,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Repsol",
     name: "Solar con Batería Virtual",
-    logoUrl: "https://logo.clearbit.com/repsol.es",
+    logoUrl: "/logos/repsol.png",
     potencia_punta_precio: 0.0682,
     potencia_valle_precio: 0.0682,
     periodos_energia: 1,
@@ -92,7 +93,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Energía Nufri",
     name: "Tarifa Tres Precios",
-    logoUrl: "https://logo.clearbit.com/energianufri.com",
+    logoUrl: "/logos/nufri.png",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 3,
@@ -104,7 +105,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Energía Nufri",
     name: "Tarifa Un Solo Precio 24h",
-    logoUrl: "https://logo.clearbit.com/energianufri.com",
+    logoUrl: "/logos/nufri.png",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 1,
@@ -116,7 +117,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Iberdrola",
     name: "Plan Online 3 Periodos",
-    logoUrl: "https://logo.clearbit.com/iberdrola.es",
+    logoUrl: "/logos/iberdrola.png",
     potencia_punta_precio: 0.086301,
     potencia_valle_precio: 0.013014,
     periodos_energia: 3,
@@ -128,7 +129,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Naturgy",
     name: "Tarifa Noche",
-    logoUrl: "https://logo.clearbit.com/naturgy.es",
+    logoUrl: "/logos/naturgy.png",
     potencia_punta_precio: 0.1082,
     potencia_valle_precio: 0.0334,
     periodos_energia: 3,
@@ -140,7 +141,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Endesa",
     name: "One Luz 12 Meses",
-    logoUrl: "https://logo.clearbit.com/endesa.com",
+    logoUrl: "/logos/endesa.png",
     potencia_punta_precio: 0.08214,
     potencia_valle_precio: 0.04027,
     periodos_energia: 1,
@@ -153,7 +154,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Energya VM",
     name: "Fórmula Fija 3 Periodos Luz",
-    logoUrl: "https://logo.clearbit.com/energyavm.es",
+    logoUrl: "/logos/energyavm.png",
     potencia_punta_precio: 0.083,
     potencia_valle_precio: 0.00274,
     periodos_energia: 3,
@@ -165,7 +166,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Total Energies",
     name: "A tu Aire Luz Programa tu Ahorro",
-    logoUrl: "https://logo.clearbit.com/totalenergies.es",
+    logoUrl: "/logos/totalenergies.png",
     potencia_punta_precio: 0.071918,
     potencia_valle_precio: 0.071890,
     periodos_energia: 3,
@@ -177,7 +178,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Total Energies",
     name: "A tu Aire Luz Siempre",
-    logoUrl: "https://logo.clearbit.com/totalenergies.es",
+    logoUrl: "/logos/totalenergies.png",
     potencia_punta_precio: 0.071918,
     potencia_valle_precio: 0.071890,
     periodos_energia: 1,
@@ -189,7 +190,7 @@ export const tariffs: Tariff[] = [
   {
     company: "CHC Energía",
     name: "Plan Vehículo Eléctrico",
-    logoUrl: "https://logo.clearbit.com/chcenergia.es",
+    logoUrl: "/logos/chc.png",
     potencia_punta_precio: 0.0884,
     potencia_valle_precio: 0.0884,
     periodos_energia: 3,
@@ -201,7 +202,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Comercializadoras de Referencia",
     name: "PVPC (Mercado Regulado)",
-    logoUrl: "https://assets.companiasdeluz.com/images/logos/pvpc.png",
+    logoUrl: "",
     potencia_punta_precio: 0.0823,
     potencia_valle_precio: 0.0019,
     periodos_energia: 3,
@@ -211,3 +212,5 @@ export const tariffs: Tariff[] = [
     url: "https://sede.cnmc.gob.es/listado/censo/10",
   },
 ];
+
+    

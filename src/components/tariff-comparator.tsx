@@ -70,15 +70,17 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
     return (
         <DialogContent className="sm:max-w-md bg-card/80 backdrop-blur-lg border-white/20">
             <DialogHeader className="items-center text-center pt-4">
-                 <div className="w-full h-20 relative mb-4">
-                    <Image 
-                        src={tariff.logoUrl} 
-                        alt={`Logo de ${tariff.company}`} 
-                        fill
-                        className="object-contain mix-blend-multiply"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                    />
-                </div>
+                 {tariff.logoUrl && (
+                    <div className="w-full h-20 relative mb-4">
+                        <Image 
+                            src={tariff.logoUrl} 
+                            alt={`Logo de ${tariff.company}`} 
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                    </div>
+                )}
                 <DialogTitle className="text-xl font-bold text-foreground">{tariff.name}</DialogTitle>
             </DialogHeader>
             <div className="py-6 px-4 sm:px-6 space-y-6">
@@ -144,13 +146,17 @@ const TariffResultCard = ({ tariff, currentBill }: { tariff: TariffOutput[0], cu
                     <div className="flex-grow flex flex-col">
                         <div className="flex-grow">
                             <div className="w-full min-w-[100px] h-20 relative mb-6">
-                                <Image 
-                                    src={tariff.logoUrl} 
-                                    alt={`Logo de ${tariff.company}`} 
-                                    fill
-                                    className="object-contain mix-blend-multiply"
-                                    sizes="(max-width: 768px) 30vw, 15vw"
-                                />
+                                {tariff.logoUrl ? (
+                                    <Image 
+                                        src={tariff.logoUrl} 
+                                        alt={`Logo de ${tariff.company}`} 
+                                        fill
+                                        className="object-contain"
+                                        sizes="(max-width: 768px) 30vw, 15vw"
+                                    />
+                                ): (
+                                    <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">{tariff.company}</div>
+                                )}
                             </div>
                             <p className="text-lg font-semibold text-foreground h-12 line-clamp-2">{tariff.name}</p>
                         </div>
@@ -636,3 +642,5 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    

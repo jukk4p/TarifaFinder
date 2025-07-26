@@ -20,17 +20,11 @@ const nextConfig: NextConfig = {
         hostname: 'placehold.co',
         port: '',
         pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'logo.clearbit.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'assets.companiasdeluz.com',
       }
     ],
   },
 };
 
 export default nextConfig;
+
+    
