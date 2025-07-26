@@ -582,7 +582,7 @@ export function TariffComparator() {
     <div className="w-full max-w-6xl space-y-8 py-12 px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-4">
         <div className="flex justify-center items-center gap-4">
-            <Image src="/favicon.svg" alt="TarifaFinder Logo" width={64} height={64} className="h-12 w-12 sm:h-16 sm:w-16" />
+            <Image src="/logo.png" alt="TarifaFinder Logo" width={64} height={64} className="h-12 w-12 sm:h-16 sm:w-16" />
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               {t('header')}
             </h1>
