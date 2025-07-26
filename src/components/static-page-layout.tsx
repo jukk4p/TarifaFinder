@@ -9,7 +9,7 @@ export function StaticPageLayout({ title, children }: { title: string; children:
       <div className="absolute -bottom-1/4 -right-1/4 w-[30rem] h-[30rem] bg-accent/20 rounded-full blur-[150px] opacity-40 animate-pulse-slow [animation-delay:-4s]"></div>
       <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
 
-      <main className="container mx-auto flex-grow flex-col items-center justify-start p-4 pt-16 sm:pt-24 relative z-10">
+      <main className="container mx-auto flex-grow flex-col items-center justify-start px-4 py-16 sm:px-6 sm:py-24 relative z-10">
         <div className="w-full max-w-4xl mx-auto">
           <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors">
             <ArrowLeft className="h-4 w-4" />

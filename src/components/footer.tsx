@@ -55,8 +55,12 @@ export function Footer() {
           </Button>
         </div>
         
-        <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {currentYear} TarifaFinder</p>
+        <div className="mt-8 pt-8 text-center text-sm text-muted-foreground md:flex md:justify-between md:items-center border-t border-white/10">
+          <p>&copy; {currentYear} TarifaFinder. Todos los derechos reservados.</p>
+           <div className="flex justify-center space-x-4 mt-4 md:mt-0">
+            <Link href="/politica-de-privacidad" className="text-sm text-muted-foreground hover:text-primary">Política de Privacidad</Link>
+            <Link href="/terminos-de-uso" className="text-sm text-muted-foreground hover:text-primary">Términos de Uso</Link>
+          </div>
         </div>
       </div>
     </footer>

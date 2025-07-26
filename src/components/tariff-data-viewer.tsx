@@ -23,10 +23,10 @@ export function TariffDataViewer() {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full max-w-6xl mt-8">
+    <div className="w-full max-w-6xl mt-8 px-4 sm:px-0">
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1" className="border-none bg-card/50 backdrop-blur-sm shadow-xl border-white/10 rounded-lg">
-          <AccordionTrigger className="w-full p-6 text-left hover:no-underline">
+          <AccordionTrigger className="w-full p-4 sm:p-6 text-left hover:no-underline">
             <div className="flex items-center gap-4">
               <Database className="h-6 w-6 text-primary shrink-0" />
               <div>
@@ -38,7 +38,7 @@ export function TariffDataViewer() {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="overflow-x-auto px-6 pb-6 pt-0">
+            <div className="overflow-x-auto px-4 sm:px-6 pb-6 pt-0">
               <Table>
                 <TableHeader>
                   <TableRow className="border-white/20">
@@ -57,15 +57,15 @@ export function TariffDataViewer() {
                 <TableBody>
                   {tariffs.map((tariff, index) => (
                     <TableRow key={index} className="border-white/10 last:border-b-0">
-                      <TableCell className="font-medium">{tariff.company}</TableCell>
-                      <TableCell>{tariff.name}</TableCell>
+                      <TableCell className="font-medium whitespace-nowrap">{tariff.company}</TableCell>
+                      <TableCell className="whitespace-nowrap">{tariff.name}</TableCell>
                       <TableCell>{tariff.commitment ? 'Sí' : 'No'}</TableCell>
-                      <TableCell className="text-right">{tariff.potencia_punta_precio.toFixed(5)}</TableCell>
-                      <TableCell className="text-right">{tariff.potencia_valle_precio.toFixed(5)}</TableCell>
+                      <TableCell className="text-right font-mono">{tariff.potencia_punta_precio.toFixed(5)}</TableCell>
+                      <TableCell className="text-right font-mono">{tariff.potencia_valle_precio.toFixed(5)}</TableCell>
                       <TableCell className="text-center">{tariff.periodos_energia}</TableCell>
-                      <TableCell className="text-right">{tariff.energia_punta_precio.toFixed(5)}</TableCell>
-                      <TableCell className="text-right">{tariff.energia_llano_precio.toFixed(5)}</TableCell>
-                      <TableCell className="text-right">{tariff.energia_valle_precio.toFixed(5)}</TableCell>
+                      <TableCell className="text-right font-mono">{tariff.energia_punta_precio.toFixed(5)}</TableCell>
+                      <TableCell className="text-right font-mono">{tariff.energia_llano_precio.toFixed(5)}</TableCell>
+                      <TableCell className="text-right font-mono">{tariff.energia_valle_precio.toFixed(5)}</TableCell>
                       <TableCell>
                         <a href={tariff.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline whitespace-nowrap">
                           {t('tariff_database.seeOffer')}

@@ -225,7 +225,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
           {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
@@ -579,7 +579,7 @@ export function TariffComparator() {
   } as const;
 
   return (
-    <div className="w-full max-w-6xl space-y-8 py-12">
+    <div className="w-full max-w-6xl space-y-8 py-12 px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           {t('header')}
@@ -743,5 +743,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    
