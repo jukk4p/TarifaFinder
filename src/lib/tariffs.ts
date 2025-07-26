@@ -19,7 +19,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Octopus",
     name: "Relax",
-    logoUrl: "/logos/octopus.png",
+    logoUrl: "/Octopus.png",
     potencia_punta_precio: 0.095,
     potencia_valle_precio: 0.027,
     periodos_energia: 1,
@@ -31,7 +31,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Imagina",
     name: "Plan Sin Horas Digital (enlace especial)",
-    logoUrl: "/logos/imagina.png",
+    logoUrl: "/Imaginaenergia.png",
     potencia_punta_precio: 0.111,
     potencia_valle_precio: 0.056,
     periodos_energia: 1,
@@ -43,7 +43,7 @@ export const tariffs: Tariff[] = [
    {
     company: "Imagina",
     name: "Plan Noches y Fines de Semana Digital (enlace especial)",
-    logoUrl: "/logos/imagina.png",
+    logoUrl: "/Imaginaenergia.png",
     potencia_punta_precio: 0.099,
     potencia_valle_precio: 0.020,
     periodos_energia: 3,
@@ -55,7 +55,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Doméstica - Visalia",
     name: "Especial Fijo 24h (enlace especial)",
-    logoUrl: "/logos/visalia.png",
+    logoUrl: "/Visalia.png",
     potencia_punta_precio: 0.06027,
     potencia_valle_precio: 0.06027,
     periodos_energia: 1,
@@ -67,7 +67,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Repsol",
     name: "Ahorro Plus",
-    logoUrl: "/logos/repsol.png",
+    logoUrl: "/Repsol.png",
     potencia_punta_precio: 0.0682,
     potencia_valle_precio: 0.0682,
     periodos_energia: 1,
@@ -80,7 +80,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Repsol",
     name: "Solar con Batería Virtual",
-    logoUrl: "/logos/repsol.png",
+    logoUrl: "/Repsol.png",
     potencia_punta_precio: 0.0682,
     potencia_valle_precio: 0.0682,
     periodos_energia: 1,
@@ -93,7 +93,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Energía Nufri",
     name: "Tarifa Tres Precios",
-    logoUrl: "/logos/nufri.png",
+    logoUrl: "/Energianufri.png",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 3,
@@ -105,7 +105,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Energía Nufri",
     name: "Tarifa Un Solo Precio 24h",
-    logoUrl: "/logos/nufri.png",
+    logoUrl: "/Energianufri.png",
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 1,
@@ -117,7 +117,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Iberdrola",
     name: "Plan Online 3 Periodos",
-    logoUrl: "/logos/iberdrola.png",
+    logoUrl: "/Iberdrola.png",
     potencia_punta_precio: 0.086301,
     potencia_valle_precio: 0.013014,
     periodos_energia: 3,
@@ -129,7 +129,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Naturgy",
     name: "Tarifa Noche",
-    logoUrl: "/logos/naturgy.png",
+    logoUrl: "/Naturgy.png",
     potencia_punta_precio: 0.1082,
     potencia_valle_precio: 0.0334,
     periodos_energia: 3,
@@ -141,7 +141,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Endesa",
     name: "One Luz 12 Meses",
-    logoUrl: "/logos/endesa.png",
+    logoUrl: "/Endesa.png",
     potencia_punta_precio: 0.08214,
     potencia_valle_precio: 0.04027,
     periodos_energia: 1,
@@ -154,7 +154,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Energya VM",
     name: "Fórmula Fija 3 Periodos Luz",
-    logoUrl: "/logos/energyavm.png",
+    logoUrl: "/Energiavm.png",
     potencia_punta_precio: 0.083,
     potencia_valle_precio: 0.00274,
     periodos_energia: 3,
@@ -166,7 +166,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Total Energies",
     name: "A tu Aire Luz Programa tu Ahorro",
-    logoUrl: "/logos/totalenergies.png",
+    logoUrl: "/TotalEnergies.png",
     potencia_punta_precio: 0.071918,
     potencia_valle_precio: 0.071890,
     periodos_energia: 3,
@@ -178,7 +178,7 @@ export const tariffs: Tariff[] = [
   {
     company: "Total Energies",
     name: "A tu Aire Luz Siempre",
-    logoUrl: "/logos/totalenergies.png",
+    logoUrl: "/TotalEnergies.png",
     potencia_punta_precio: 0.071918,
     potencia_valle_precio: 0.071890,
     periodos_energia: 1,
@@ -190,7 +190,7 @@ export const tariffs: Tariff[] = [
   {
     company: "CHC Energía",
     name: "Plan Vehículo Eléctrico",
-    logoUrl: "/logos/chc.png",
+    logoUrl: "/Chcenergia.png",
     potencia_punta_precio: 0.0884,
     potencia_valle_precio: 0.0884,
     periodos_energia: 3,
@@ -212,5 +212,3 @@ export const tariffs: Tariff[] = [
     url: "https://sede.cnmc.gob.es/listado/censo/10",
   },
 ];
-
-    
