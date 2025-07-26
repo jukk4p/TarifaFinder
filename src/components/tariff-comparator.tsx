@@ -88,13 +88,11 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                     <div className="space-y-3">
                         <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {tariff.periodos_energia === 3 ? t('results.energyPrices') : t('results.energyPrice')}</h3>
                         {tariff.periodos_energia === 3 ? (
-                            <table className="w-full text-sm">
-                                <tbody>
-                                    <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
-                                    <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyFlatPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_llano_precio.toFixed(5)}€</td></tr>
-                                    <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyOffPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_valle_precio.toFixed(5)}€</td></tr>
-                                </tbody>
-                            </table>
+                            <div className="text-sm space-y-1">
+                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyPeakPrice')}:</span><span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span></div>
+                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyFlatPrice')}:</span><span className="font-mono">{tariff.energia_llano_precio.toFixed(5)}€</span></div>
+                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyOffPeakPrice')}:</span><span className="font-mono">{tariff.energia_valle_precio.toFixed(5)}€</span></div>
+                            </div>
                         ) : (
                              <div className="text-sm">
                                 <div className="flex justify-between items-baseline">
@@ -106,12 +104,10 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                     </div>
                      <div className="space-y-3">
                         <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><PowerIcon className="h-5 w-5" /> {t('results.powerPrices')}</h3>
-                        <table className="w-full text-sm">
-                            <tbody>
-                                <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.powerPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.potencia_punta_precio.toFixed(5)}€</td></tr>
-                                <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.powerOffPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.potencia_valle_precio.toFixed(5)}€</td></tr>
-                            </tbody>
-                        </table>
+                        <div className="text-sm space-y-1">
+                            <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.powerPeakPrice')}:</span><span className="font-mono">{tariff.potencia_punta_precio.toFixed(5)}€</span></div>
+                            <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.powerOffPeakPrice')}:</span><span className="font-mono">{tariff.potencia_valle_precio.toFixed(5)}€</span></div>
+                        </div>
                     </div>
                 </div>
                 <Separator className="bg-white/10" />
@@ -649,4 +645,5 @@ export function TariffComparator() {
     
 
     
+
 
