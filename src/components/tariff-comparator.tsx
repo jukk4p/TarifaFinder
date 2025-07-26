@@ -84,35 +84,39 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                 <DialogTitle className="text-xl font-bold text-foreground">{tariff.name}</DialogTitle>
             </DialogHeader>
             <div className="py-6 px-4 sm:px-6 space-y-6">
-                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                    <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {tariff.periodos_energia === 3 ? t('results.energyPrices') : t('results.energyPrice')}</h3>
+
+                <div className="space-y-3">
+                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {tariff.periodos_energia === 3 ? t('results.energyPrices') : t('results.energyPrice')}</h3>
+                    <div className="text-sm space-y-1">
                         {tariff.periodos_energia === 3 ? (
-                            <div className="text-sm space-y-1">
-                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyPeakPrice')}:</span><span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span></div>
-                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyFlatPrice')}:</span><span className="font-mono">{tariff.energia_llano_precio.toFixed(5)}€</span></div>
-                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyOffPeakPrice')}:</span><span className="font-mono">{tariff.energia_valle_precio.toFixed(5)}€</span></div>
-                            </div>
+                            <>
+                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyPeakPrice')}:</span><span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€/kWh</span></div>
+                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyFlatPrice')}:</span><span className="font-mono">{tariff.energia_llano_precio.toFixed(5)}€/kWh</span></div>
+                                <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyOffPeakPrice')}:</span><span className="font-mono">{tariff.energia_valle_precio.toFixed(5)}€/kWh</span></div>
+                            </>
                         ) : (
-                             <div className="text-sm">
-                                <div className="flex justify-between items-baseline">
-                                    <span className="text-muted-foreground">{t('results.energyPrice')}:</span>
-                                    <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span>
-                                </div>
+                             <div className="flex justify-between items-baseline">
+                                <span className="text-muted-foreground">{t('results.energyPrice')}:</span>
+                                <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€/kWh</span>
                             </div>
                         )}
                     </div>
-                     <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><PowerIcon className="h-5 w-5" /> {t('results.powerPrices')}</h3>
-                        <div className="text-sm space-y-1">
-                            <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.powerPeakPrice')}:</span><span className="font-mono">{tariff.potencia_punta_precio.toFixed(5)}€</span></div>
-                            <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.powerOffPeakPrice')}:</span><span className="font-mono">{tariff.potencia_valle_precio.toFixed(5)}€</span></div>
-                        </div>
+                </div>
+
+                <Separator className="bg-white/10" />
+
+                 <div className="space-y-3">
+                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><PowerIcon className="h-5 w-5" /> {t('results.powerPrices')}</h3>
+                    <div className="text-sm space-y-1">
+                        <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.powerPeakPrice')}:</span><span className="font-mono">{tariff.potencia_punta_precio.toFixed(5)}€/kW día</span></div>
+                        <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.powerOffPeakPrice')}:</span><span className="font-mono">{tariff.potencia_valle_precio.toFixed(5)}€/kW día</span></div>
                     </div>
                 </div>
+                
                 <Separator className="bg-white/10" />
+
                 <div className="space-y-3">
-                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><DocumentTextIcon className="h-5 w-5" /> Condiciones</h3>
+                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><DocumentTextIcon className="h-5 w-5" /> {t('results.commitment')}</h3>
                     <p className="text-sm text-muted-foreground">
                         {tariff.commitment ? `Esta tarifa tiene un compromiso de permanencia.` : 'Esta tarifa no tiene compromiso de permanencia.'}
                         El precio final puede estar sujeto a otras condiciones. Visita la web de la compañía para más detalles.
@@ -645,6 +649,7 @@ export function TariffComparator() {
     
 
     
+
 
 
 
