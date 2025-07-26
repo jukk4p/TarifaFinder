@@ -45,6 +45,7 @@ export const en = {
     energyPeakPrice: 'Peak',
     energyFlatPrice: 'Flat',
     energyOffPeakPrice: 'Off-Peak',
+    bestOption: 'Best Option',
   },
   consumption_chart: {
     title: 'Your Consumption Distribution',

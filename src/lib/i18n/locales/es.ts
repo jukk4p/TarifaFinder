@@ -45,6 +45,7 @@ export const es = {
     energyPeakPrice: 'Punta',
     energyFlatPrice: 'Llano',
     energyOffPeakPrice: 'Valle',
+    bestOption: 'Mejor Opción',
   },
   consumption_chart: {
     title: 'Tu Distribución de Consumo',

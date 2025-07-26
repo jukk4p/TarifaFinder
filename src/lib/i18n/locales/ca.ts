@@ -45,6 +45,7 @@ export const ca = {
     energyPeakPrice: 'Energia Punta',
     energyFlatPrice: 'Energia Plana',
     energyOffPeakPrice: 'Energia Vall',
+    bestOption: 'Millor Opció',
   },
   consumption_chart: {
     title: 'La Teva Distribució de Consum',

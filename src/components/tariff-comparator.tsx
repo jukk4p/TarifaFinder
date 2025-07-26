@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon, DocumentTextIcon, ClockIcon, PowerIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon, DocumentTextIcon, ClockIcon, PowerIcon, StarIcon } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
@@ -46,6 +46,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Badge } from './ui/badge';
 
 
 const formSchema = z.object({
@@ -70,7 +71,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
     return (
         <DialogContent className="sm:max-w-md bg-card/80 backdrop-blur-lg border-white/20">
             <DialogHeader className="items-center text-center pt-4">
-                 {tariff.logoUrl && (
+                 {tariff.logoUrl ? (
                     <div className="w-full h-20 relative mb-4">
                         <Image 
                             src={tariff.logoUrl} 
@@ -80,13 +81,17 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                             sizes="(max-width: 768px) 50vw, 25vw"
                         />
                     </div>
+                ) : (
+                   <div className="h-20 flex items-center justify-center">
+                     <p className="text-lg font-semibold text-muted-foreground">{tariff.company}</p>
+                   </div>
                 )}
                 <DialogTitle className="text-xl font-bold text-foreground">{tariff.name}</DialogTitle>
             </DialogHeader>
             <div className="py-6 px-4 sm:px-6 space-y-6">
 
                 <div className="space-y-3">
-                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {tariff.periodos_energia === 3 ? t('results.energyPrices') : t('results.energyPrice')}</h3>
+                     <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {tariff.periodos_energia === 3 ? t('results.energyPrices') : t('results.energyPrice')}</h3>
                     <div className="text-sm space-y-1">
                         {tariff.periodos_energia === 3 ? (
                             <>
@@ -95,7 +100,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                                 <div className="flex justify-between items-baseline"><span className="text-muted-foreground">{t('results.energyOffPeakPrice')}:</span><span className="font-mono">{tariff.energia_valle_precio.toFixed(5)}€/kWh</span></div>
                             </>
                         ) : (
-                             <div className="flex justify-between items-baseline">
+                            <div className="flex justify-between items-baseline">
                                 <span className="text-muted-foreground">{t('results.energyPrice')}:</span>
                                 <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€/kWh</span>
                             </div>
@@ -138,59 +143,63 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
 }
 
 
-const TariffResultCard = ({ tariff, currentBill }: { tariff: TariffOutput[0], currentBill?: number }) => {
+const TariffResultCard = ({ tariff, currentBill, isBest }: { tariff: TariffOutput[0], currentBill?: number, isBest: boolean }) => {
     const { t } = useTranslation();
     const savings = currentBill && currentBill > 0 ? currentBill - tariff.cost : null;
 
     return (
         <Dialog>
-            <Card className="group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 border-transparent hover:border-primary">
-                <CardContent className="flex flex-col flex-grow p-6 text-center">
-                    <div className="flex-grow flex flex-col">
-                        <div className="flex-grow">
-                            <div className="w-full min-w-[100px] h-20 relative mb-6">
-                                {tariff.logoUrl ? (
-                                    <Image 
-                                        src={tariff.logoUrl} 
-                                        alt={`Logo de ${tariff.company}`} 
-                                        fill
-                                        className="object-contain"
-                                        sizes="(max-width: 768px) 30vw, 15vw"
-                                    />
-                                ): (
-                                    <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">{tariff.company}</div>
+            <Card className={`group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 ${isBest ? 'border-primary' : 'border-transparent'}`}>
+                {isBest && (
+                    <Badge variant="default" className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1">
+                        <StarIcon className="h-3 w-3" /> {t('results.bestOption')}
+                    </Badge>
+                )}
+                <CardHeader className="items-center text-center">
+                     <div className="w-full h-16 relative mb-2">
+                        {tariff.logoUrl ? (
+                            <Image 
+                                src={tariff.logoUrl} 
+                                alt={`Logo de ${tariff.company}`} 
+                                fill
+                                className="object-contain"
+                                sizes="(max-width: 768px) 30vw, 15vw"
+                            />
+                        ): (
+                            <div className="h-full w-full flex items-center justify-center text-muted-foreground font-semibold">{tariff.company}</div>
+                        )}
+                    </div>
+                    <CardTitle className="text-lg h-12 line-clamp-2">{tariff.name}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col flex-grow p-6 pt-0 text-center">
+                    <div className="flex-grow flex flex-col justify-center items-center">
+                        {savings !== null && savings > 0 ? (
+                            <div className="text-center my-4">
+                                <p className="text-accent text-sm font-semibold flex items-center justify-center gap-2">
+                                    <TrendingUp className="h-4 w-4" /> {t('results.estimatedSavings')}
+                                </p>
+                                <p className="text-4xl font-bold text-accent mt-1">{savings.toFixed(2)}€</p>
+                                <p className="text-sm text-muted-foreground mt-2">{t('results.estimatedCost')}: {tariff.cost.toFixed(2)}€</p>
+                            </div>
+                        ) : (
+                             <div className="text-center my-4">
+                                <p className="text-muted-foreground text-sm">{t('results.estimatedCost')}</p>
+                                <p className="text-4xl font-bold text-foreground mt-1">{tariff.cost.toFixed(2)}€</p>
+                                {savings !== null && savings <= 0 && (
+                                     <p className="text-sm text-destructive mt-2">{t('results.extraCost')}: {Math.abs(savings).toFixed(2)}€</p>
                                 )}
                             </div>
-                            <p className="text-lg font-semibold text-foreground h-12 line-clamp-2">{tariff.name}</p>
-                        </div>
-                        
-                        <div>
-                            <Separator className="bg-white/10 my-6" />
-                            <div className="flex justify-between items-baseline py-2">
-                                <p className="text-muted-foreground text-sm">{t('results.estimatedCost')}</p>
-                                <p className="font-bold text-3xl text-foreground">{tariff.cost.toFixed(2)}€</p>
-                            </div>
-                            {savings !== null && (
-                                <div className="flex justify-between items-baseline py-2">
-                                    <p className="text-accent text-sm font-semibold flex items-center gap-2">
-                                        <TrendingUp className="h-4 w-4" /> {t('results.estimatedSavings')}
-                                    </p>
-                                    <p className={`text-xl font-bold ${savings > 0 ? 'text-accent' : 'text-destructive'}`}>
-                                        {savings > 0 ? `${savings.toFixed(2)}€` : `${Math.abs(savings).toFixed(2)}€`}
-                                    </p>
-                                </div>
-                            )}
-                        </div>
+                        )}
                     </div>
-                     <CardFooter className="p-0 mt-6">
-                        <DialogTrigger asChild>
-                            <Button variant="subtle" className="w-full justify-center rounded-md !p-4 !h-auto text-sm font-semibold">
-                                {t('results.seeOffer')}
-                                <ArrowRightIcon className="ml-2 h-4 w-4" />
-                            </Button>
-                        </DialogTrigger>
-                    </CardFooter>
                 </CardContent>
+                <CardFooter className="p-4 pt-0">
+                    <DialogTrigger asChild>
+                        <Button variant="subtle" className="w-full">
+                            {t('results.seeOffer')}
+                            <ArrowRightIcon className="ml-2 h-4 w-4" />
+                        </Button>
+                    </DialogTrigger>
+                </CardFooter>
             </Card>
             <TariffDetailsDialog tariff={tariff} />
         </Dialog>
@@ -216,12 +225,13 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch max-w-7xl mx-auto">
           {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
                 tariff={tariff} 
                 currentBill={currentBill}
+                isBest={index === 0}
             />
           ))}
         </div>
@@ -645,11 +655,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    
-
-    
-
-
-
-
