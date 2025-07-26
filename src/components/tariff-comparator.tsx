@@ -214,7 +214,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
-          {results.slice(0, 4).map((tariff, index) => (
+          {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
                 tariff={tariff} 
@@ -628,7 +628,7 @@ export function TariffComparator() {
         </div>
       )}
 
-      {results && <ResultsCard results={results} currentBill={currentBill} />}
+      {results && <ResultsCard results={results.slice(0, 4)} currentBill={currentBill} />}
       
       {chartData && (chartData.reduce((acc, cv) => acc + cv.consumo, 0) > 0) && (
         <ConsumptionChart data={chartData} chartConfig={chartConfig} />
