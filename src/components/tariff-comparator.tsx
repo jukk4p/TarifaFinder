@@ -86,7 +86,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
             <div className="py-6 px-4 sm:px-6 space-y-6">
                 <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <div className="space-y-3">
-                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {t('results.energyPrices')}</h3>
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {tariff.periodos_energia === 3 ? t('results.energyPrices') : t('results.energyPrice')}</h3>
                         {tariff.periodos_energia === 3 ? (
                             <table className="w-full text-sm">
                                 <tbody>
@@ -96,7 +96,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                                 </tbody>
                             </table>
                         ) : (
-                            <div className="text-sm">
+                             <div className="text-sm">
                                 <div className="flex justify-between items-baseline">
                                     <span className="text-muted-foreground">{t('results.energyPrice')}:</span>
                                     <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span>
@@ -649,3 +649,4 @@ export function TariffComparator() {
     
 
     
+
