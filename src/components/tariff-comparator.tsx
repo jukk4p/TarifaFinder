@@ -87,19 +87,22 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                 <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <div className="space-y-3">
                         <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><ClockIcon className="h-5 w-5" /> {t('results.energyPrices')}</h3>
-                        <table className="w-full text-sm">
-                            <tbody>
-                                {tariff.periodos_energia === 3 ? (
-                                    <>
-                                        <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
-                                        <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyFlatPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_llano_precio.toFixed(5)}€</td></tr>
-                                        <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyOffPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_valle_precio.toFixed(5)}€</td></tr>
-                                    </>
-                                ) : (
-                                    <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
-                                )}
-                            </tbody>
-                        </table>
+                        {tariff.periodos_energia === 3 ? (
+                            <table className="w-full text-sm">
+                                <tbody>
+                                    <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_punta_precio.toFixed(5)}€</td></tr>
+                                    <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyFlatPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_llano_precio.toFixed(5)}€</td></tr>
+                                    <tr><td className="text-left text-muted-foreground pr-4 align-baseline">{t('results.energyOffPeakPrice')}:</td><td className="text-right font-mono align-baseline">{tariff.energia_valle_precio.toFixed(5)}€</td></tr>
+                                </tbody>
+                            </table>
+                        ) : (
+                            <div className="text-sm">
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">{t('results.energyPrice')}:</span>
+                                    <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span>
+                                </div>
+                            </div>
+                        )}
                     </div>
                      <div className="space-y-3">
                         <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><PowerIcon className="h-5 w-5" /> {t('results.powerPrices')}</h3>
@@ -642,5 +645,7 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    
 
     
