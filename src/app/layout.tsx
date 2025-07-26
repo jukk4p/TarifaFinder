@@ -10,9 +10,14 @@ export const metadata: Metadata = {
     template: '%s - TarifaFinder',
   },
   description: 'Comparador de tarifas eléctricas para ayudarte a ahorrar en tu factura de la luz.',
+  manifest: '/site.webmanifest',
   icons: {
-    icon: '/favicon.ico',
-  }
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
