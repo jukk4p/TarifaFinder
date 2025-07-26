@@ -97,7 +97,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                             </table>
                         ) : (
                             <div className="text-sm">
-                                <div className="flex justify-between">
+                                <div className="flex justify-between items-baseline">
                                     <span className="text-muted-foreground">{t('results.energyPrice')}:</span>
                                     <span className="font-mono">{tariff.energia_punta_precio.toFixed(5)}€</span>
                                 </div>
