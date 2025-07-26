@@ -25,6 +25,11 @@ export const ca = {
     extractButton: 'Extreure dades de factura',
     extractingButton: 'Extraient...',
     extractingProcess: 'L\'IA està analitzant la teva factura...',
+    group: {
+      billing: 'Període de Facturació',
+      power: 'Potència Contractada',
+      energy: 'Energia Consumida',
+    }
   },
   results: {
     title: 'Les Teves Millors Ofertes',

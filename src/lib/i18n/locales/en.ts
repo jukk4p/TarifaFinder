@@ -25,6 +25,11 @@ export const en = {
     extractButton: 'Extract data from bill',
     extractingButton: 'Extracting...',
     extractingProcess: 'The AI is analyzing your bill...',
+    group: {
+      billing: 'Billing Period',
+      power: 'Contracted Power',
+      energy: 'Consumed Energy',
+    }
   },
   results: {
     title: 'Your Best Offers',

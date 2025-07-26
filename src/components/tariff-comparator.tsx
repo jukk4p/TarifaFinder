@@ -540,15 +540,21 @@ export function TariffComparator() {
     fileInputRef.current?.click();
   };
   
-  const formFields = [
-    { name: "DÍAS_FACTURADOS", label: t('form.daysBilled'), icon: CalendarDaysIcon, placeholder: t('form.daysBilledPlaceholder') },
-    { name: "POTENCIA_P1_kW", label: t('form.powerPeak'), icon: BoltIcon, placeholder: t('form.powerPeakPlaceholder') },
-    { name: "POTENCIA_P2_kW", label: t('form.powerOffPeak'), icon: BoltIcon, placeholder: t('form.powerOffPeakPlaceholder') },
-    { name: "ENERGÍA_P1_kWh", label: t('form.energyPeak'), icon: LightBulbIcon, placeholder: t('form.energyPeakPlaceholder') },
-    { name: "ENERGÍA_P2_kWh", label: t('form.energyFlat'), icon: LightBulbIcon, placeholder: t('form.energyFlatPlaceholder') },
-    { name: "ENERGÍA_P3_kWh", label: t('form.energyOffPeak'), icon: LightBulbIcon, placeholder: t('form.energyOffPeakPlaceholder') },
-    { name: "importe_factura_actual", label: t('form.currentBill'), icon: CurrencyEuroIcon, placeholder: t('form.currentBillPlaceholder') },
-  ] as const;
+  const formFields = {
+    billing: [
+      { name: "DÍAS_FACTURADOS", label: t('form.daysBilled'), icon: CalendarDaysIcon, placeholder: t('form.daysBilledPlaceholder') },
+      { name: "importe_factura_actual", label: t('form.currentBill'), icon: CurrencyEuroIcon, placeholder: t('form.currentBillPlaceholder') },
+    ],
+    power: [
+      { name: "POTENCIA_P1_kW", label: t('form.powerPeak'), icon: BoltIcon, placeholder: t('form.powerPeakPlaceholder') },
+      { name: "POTENCIA_P2_kW", label: t('form.powerOffPeak'), icon: BoltIcon, placeholder: t('form.powerOffPeakPlaceholder') },
+    ],
+    energy: [
+      { name: "ENERGÍA_P1_kWh", label: t('form.energyPeak'), icon: LightBulbIcon, placeholder: t('form.energyPeakPlaceholder') },
+      { name: "ENERGÍA_P2_kWh", label: t('form.energyFlat'), icon: LightBulbIcon, placeholder: t('form.energyFlatPlaceholder') },
+      { name: "ENERGÍA_P3_kWh", label: t('form.energyOffPeak'), icon: LightBulbIcon, placeholder: t('form.energyOffPeakPlaceholder') },
+    ]
+  } as const;
 
   return (
     <div className="w-full max-w-6xl space-y-8 py-12">
@@ -563,7 +569,7 @@ export function TariffComparator() {
 
       <Card className="w-full shadow-lg border-white/10 bg-card/50 backdrop-blur-sm">
         <CardHeader>
-           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex-1">
                 <CardTitle>{t('form.title')}</CardTitle>
                 <CardDescription className="mt-1">
@@ -577,46 +583,103 @@ export function TariffComparator() {
                 className="hidden"
                 accept="image/*,application/pdf"
                 />
-              <div className="flex items-center gap-2 mt-4 sm:mt-0">
-                <Button
-                    variant="outline"
-                    onClick={triggerFileSelect}
-                    disabled={extracting}
-                >
-                    {extracting ? (
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    ) : (
-                    <UploadCloud className="mr-2 h-5 w-5" />
-                    )}
-                    {extracting ? t('form.extractingButton') : t('form.extractButton')}
-                </Button>
-              </div>
+              <Button
+                  variant="outline"
+                  onClick={triggerFileSelect}
+                  disabled={extracting}
+                  className="w-full sm:w-auto"
+              >
+                  {extracting ? (
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  ) : (
+                  <UploadCloud className="mr-2 h-5 w-5" />
+                  )}
+                  {extracting ? t('form.extractingButton') : t('form.extractButton')}
+              </Button>
            </div>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {formFields.map(item => (
-                  <FormField
-                    key={item.name}
-                    control={form.control}
-                    name={item.name}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2 text-muted-foreground">
-                          <item.icon className="h-4 w-4 text-primary" />
-                          {item.label}
-                        </FormLabel>
-                        <FormControl>
-                          <Input type="number" step="0.1" placeholder={item.placeholder} {...field} className="bg-background/80" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ))}
+            <CardContent className="space-y-8">
+              
+              {/* Billing Period Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">{t('form.group.billing')}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {formFields.billing.map(item => (
+                    <FormField
+                      key={item.name}
+                      control={form.control}
+                      name={item.name}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2 text-muted-foreground">
+                            <item.icon className="h-4 w-4" />
+                            {item.label}
+                          </FormLabel>
+                          <FormControl>
+                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} className="bg-background/80" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
               </div>
+
+              {/* Power Section */}
+               <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">{t('form.group.power')}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {formFields.power.map(item => (
+                    <FormField
+                      key={item.name}
+                      control={form.control}
+                      name={item.name}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2 text-muted-foreground">
+                            <item.icon className="h-4 w-4" />
+                            {item.label}
+                          </FormLabel>
+                          <FormControl>
+                            <Input type="number" step="0.1" placeholder={item.placeholder} {...field} className="bg-background/80" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
+
+               {/* Energy Section */}
+               <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">{t('form.group.energy')}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {formFields.energy.map(item => (
+                    <FormField
+                      key={item.name}
+                      control={form.control}
+                      name={item.name}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2 text-muted-foreground">
+                            <item.icon className="h-4 w-4" />
+                            {item.label}
+                          </FormLabel>
+                          <FormControl>
+                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} className="bg-background/80" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
+
             </CardContent>
             <CardFooter>
               <Button type="submit" disabled={loading || extracting} className="w-full" size="lg">
