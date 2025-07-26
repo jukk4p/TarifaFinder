@@ -225,7 +225,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
           {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
@@ -320,7 +320,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
               <Legend 
                 iconType="circle"
                 content={({ payload }) => (
-                  <ul className="flex flex-col gap-2 mt-4">
+                  <ul className="flex flex-col items-center gap-2 mt-4">
                     {payload?.map((entry, index) => (
                       <li key={`item-${index}`}>
                         {legendFormatter(entry.value, entry)}
