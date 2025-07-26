@@ -28,7 +28,7 @@ export const ca = {
   },
   results: {
     title: 'Les Teves Millors Ofertes',
-    subtitle: 'Segons les dades que has facilitat, aquestes són les tres ofertes més econòmiques:',
+    subtitle: 'Segons les dades que has facilitat, aquestes són les ofertes més econòmiques:',
     estimatedCost: 'Cost Estimat',
     estimatedSavings: 'Estalvi Estimat',
     extraCost: 'Cost extra',

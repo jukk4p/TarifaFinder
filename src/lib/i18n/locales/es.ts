@@ -28,7 +28,7 @@ export const es = {
   },
   results: {
     title: 'Tus Mejores Ofertas',
-    subtitle: 'Según los datos que has facilitado, estas son las tres ofertas más económicas:',
+    subtitle: 'Según los datos que has facilitado, estas son las ofertas más económicas:',
     estimatedCost: 'Coste Estimado',
     estimatedSavings: 'Ahorro Estimado',
     extraCost: 'Coste extra',

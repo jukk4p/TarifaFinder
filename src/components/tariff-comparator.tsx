@@ -213,8 +213,8 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
-          {results.slice(0, 2).map((tariff, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch max-w-7xl mx-auto">
+          {results.slice(0, 4).map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
                 tariff={tariff} 
