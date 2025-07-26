@@ -246,19 +246,41 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
 
 const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number; fill: string; }[], chartConfig: ChartConfig }) => {
   const { t } = useTranslation();
-  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
+
+  const processedData = useMemo(() => {
+    const totalConsumption = data.reduce((acc, curr) => acc + curr.consumo, 0);
+    if (totalConsumption === 0) return data.map(d => ({ ...d, percentage: 0 }));
+
+    let percentages = data.map(item => ({
+      ...item,
+      exactPercentage: (item.consumo / totalConsumption) * 100
+    }));
+
+    let flooredPercentages = percentages.map(p => ({ ...p, percentage: Math.floor(p.exactPercentage) }));
+    let sumOfFloored = flooredPercentages.reduce((acc, curr) => acc + curr.percentage, 0);
+    let remainder = 100 - sumOfFloored;
+
+    flooredPercentages.sort((a, b) => (b.exactPercentage % 1) - (a.exactPercentage % 1));
+
+    for (let i = 0; i < remainder; i++) {
+      flooredPercentages[i].percentage++;
+    }
+
+    return flooredPercentages;
+  }, [data]);
+  
   
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, payload }: any) => {
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, payload }: any) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
   
-    if (percent < 0.05) return null;
+    if (payload.percentage < 5) return null;
 
     return (
       <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" className="text-sm font-bold">
-        {`${Math.round(percent * 100)}%`}
+        {`${payload.percentage}%`}
       </text>
     );
   };
@@ -267,7 +289,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
   const legendFormatter = (value: string, entry: any) => {
     const { color, payload } = entry;
     const consumptionValue = payload.consumo;
-    const percentage = totalConsumption > 0 ? ((consumptionValue / totalConsumption) * 100).toFixed(1) : 0;
+    const percentage = payload.percentage;
     return (
       <div className="flex items-center gap-2">
         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></span>
@@ -302,7 +324,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 content={<ChartTooltipContent hideLabel />}
               />
               <Pie
-                data={data}
+                data={processedData}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
@@ -313,7 +335,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 dataKey="consumo"
                 nameKey="name"
               >
-                {data.map((entry) => (
+                {processedData.map((entry) => (
                   <Cell key={`cell-${entry.name}`} fill={entry.fill} stroke={entry.fill} />
                 ))}
               </Pie>
