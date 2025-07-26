@@ -258,7 +258,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
 
     return (
       <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" className="text-sm font-bold">
-        {`${(percent * 100).toFixed(0)}%`}
+        {`${Math.round(percent * 100)}%`}
       </text>
     );
   };
@@ -721,3 +721,5 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    
