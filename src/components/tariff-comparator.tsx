@@ -249,28 +249,17 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
   const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
   
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, payload }: any) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 1.3;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, payload }: any) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 20) * cos;
-    const my = cy + (outerRadius + 20) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 12;
-    const ey = my;
-    const textAnchor = cos >= 0 ? 'start' : 'end';
   
+    if (percent < 0.05) return null;
+
     return (
-      <g>
-        <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={payload.fill} fill="none" />
-        <circle cx={ex} cy={ey} r={2} fill={payload.fill} stroke="none" />
-        <text x={ex + (cos >= 0 ? 1 : -1) * 8} y={ey} textAnchor={textAnchor} fill="hsl(var(--foreground))" dominantBaseline="central" className="text-sm font-semibold">
-            {`${(percent * 100).toFixed(0)}%`}
-        </text>
-      </g>
+      <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" className="text-sm font-bold">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
     );
   };
   
@@ -280,10 +269,13 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
     const consumptionValue = payload.consumo;
     const percentage = totalConsumption > 0 ? ((consumptionValue / totalConsumption) * 100).toFixed(1) : 0;
     return (
-      <span className="text-muted-foreground">
-        <span style={{ color }} className="font-semibold">{chartConfig[value as keyof typeof chartConfig]?.label}</span>
-        : {consumptionValue} kWh ({percentage}%)
-      </span>
+      <div className="flex items-center gap-2">
+        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></span>
+        <span className="text-muted-foreground">
+          <span className="font-semibold text-foreground">{chartConfig[value as keyof typeof chartConfig]?.label}</span>
+          : {consumptionValue} kWh ({percentage}%)
+        </span>
+      </div>
     );
   };
 
@@ -301,10 +293,10 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-[350px]"
+          className="mx-auto aspect-square h-[300px]"
         >
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}>
+            <PieChart>
               <Tooltip
                 cursor={{ fill: "hsl(var(--muted))" }}
                 content={<ChartTooltipContent hideLabel />}
@@ -315,17 +307,28 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
-                innerRadius={60}
-                outerRadius={100}
+                innerRadius={70}
+                outerRadius={110}
                 paddingAngle={5}
                 dataKey="consumo"
                 nameKey="name"
               >
                 {data.map((entry) => (
-                  <Cell key={`cell-${entry.name}`} fill={entry.fill} />
+                  <Cell key={`cell-${entry.name}`} fill={entry.fill} stroke={entry.fill} />
                 ))}
               </Pie>
-              <Legend verticalAlign="bottom" height={36} formatter={legendFormatter}/>
+              <Legend 
+                iconType="circle"
+                content={({ payload }) => (
+                  <ul className="flex flex-col gap-2 mt-4">
+                    {payload?.map((entry, index) => (
+                      <li key={`item-${index}`}>
+                        {legendFormatter(entry.value, entry)}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
