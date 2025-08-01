@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -316,7 +316,9 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 content={({ payload }) => (
                   <div className="flex justify-around items-center w-full absolute bottom-4 px-4">
                     {payload?.map((entry) => (
-                      legendFormatter(entry.value, entry)
+                      <Fragment key={`item-${entry.value}`}>
+                        {legendFormatter(entry.value, entry)}
+                      </Fragment>
                     ))}
                   </div>
                 )}
