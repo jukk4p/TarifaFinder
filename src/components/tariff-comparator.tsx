@@ -243,11 +243,11 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   );
 };
 
-const SemiDonut = ({ data, config, total, periodKey }: { data: any, config: ChartConfig, total: number, periodKey: 'p1' | 'p2' | 'p3' }) => {
+const SemiDonut = ({ data, config, total, periodKey, percentage }: { data: any, config: ChartConfig, total: number, periodKey: 'p1' | 'p2' | 'p3', percentage: number }) => {
   const { t } = useTranslation();
   const periodConfig = config[periodKey];
   const value = data.consumo;
-  const percentage = total > 0 ? (value / total) * 100 : 0;
+  
   const pieData = [
     { name: 'value', value: value, color: periodConfig.color },
     { name: 'bg', value: total - value, color: 'hsl(var(--muted))' }
@@ -278,7 +278,7 @@ const SemiDonut = ({ data, config, total, periodKey }: { data: any, config: Char
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-center">
-            <p className="text-xl sm:text-2xl font-bold" style={{color: periodConfig.color}}>{percentage.toFixed(0)}%</p>
+            <p className="text-xl sm:text-2xl font-bold" style={{color: periodConfig.color}}>{percentage}%</p>
         </div>
       </div>
       <div className="text-center">
@@ -297,6 +297,29 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
   const p2Data = data.find(d => d.name === 'p2') || { name: 'p2', consumo: 0 };
   const p3Data = data.find(d => d.name === 'p3') || { name: 'p3', consumo: 0 };
 
+  let p1Percentage = 0;
+  let p2Percentage = 0;
+  let p3Percentage = 0;
+
+  if (totalConsumption > 0) {
+    p1Percentage = Math.round((p1Data.consumo / totalConsumption) * 100);
+    p2Percentage = Math.round((p2Data.consumo / totalConsumption) * 100);
+    p3Percentage = 100 - p1Percentage - p2Percentage;
+
+    // A small correction in case the sum is not exactly 100 due to rounding of the first two
+    const totalPercentage = p1Percentage + p2Percentage + p3Percentage;
+    if (totalPercentage !== 100) {
+        // This case should be rare, but we can adjust the largest percentage
+        const percentages = {p1: p1Percentage, p2: p2Percentage, p3: p3Percentage};
+        const diff = 100 - totalPercentage;
+        const maxKey = Object.keys(percentages).reduce((a, b) => percentages[a as keyof typeof percentages] > percentages[b as keyof typeof percentages] ? a : b) as keyof typeof percentages;
+        if (maxKey === 'p1') p1Percentage += diff;
+        else if (maxKey === 'p2') p2Percentage += diff;
+        else p3Percentage += diff;
+    }
+  }
+
+
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
@@ -310,9 +333,9 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4">
-            <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" />
-            <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" />
-            <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" />
+            <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
+            <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
+            <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
         </div>
       </CardContent>
     </Card>
