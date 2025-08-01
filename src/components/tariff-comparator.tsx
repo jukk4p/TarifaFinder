@@ -315,7 +315,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-[300px]"
+          className="mx-auto aspect-square h-[250px] sm:h-[300px]"
         >
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -329,8 +329,8 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
-                innerRadius={70}
-                outerRadius={110}
+                innerRadius={60}
+                outerRadius={100}
                 paddingAngle={5}
                 dataKey="consumo"
                 nameKey="name"
@@ -342,7 +342,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
               <Legend 
                 iconType="circle"
                 content={({ payload }) => (
-                  <ul className="flex flex-col items-center gap-2 mt-4">
+                  <ul className="flex flex-col items-center sm:items-start gap-2 mt-4">
                     {payload?.map((entry, index) => (
                       <li key={`item-${index}`}>
                         {legendFormatter(entry.value, entry)}
@@ -746,3 +746,5 @@ export function TariffComparator() {
     </div>
   );
 }
+
+    
