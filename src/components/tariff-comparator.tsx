@@ -341,9 +341,9 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
               <Legend 
                 iconType="circle"
                 content={({ payload }) => (
-                  <ul className="flex flex-col items-center sm:items-start gap-2 mt-4">
+                  <ul className="flex flex-col items-start gap-2 mt-4">
                     {payload?.map((entry, index) => (
-                      <li key={`item-${index}`} className="flex justify-center">
+                      <li key={`item-${index}`} className="flex justify-start">
                         {legendFormatter(entry.value, entry)}
                       </li>
                     ))}
