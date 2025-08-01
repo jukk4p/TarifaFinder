@@ -291,8 +291,8 @@ const AnalysisAndChartCard = ({
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
+                    innerRadius={60}
+                    outerRadius={90}
                     paddingAngle={2}
                     labelLine={true}
                     label={renderCustomizedLabel}
@@ -334,7 +334,7 @@ export function TariffComparator() {
       ENERGÍA_P1_kWh: 100,
       ENERGÍA_P2_kWh: 150,
       ENERGÍA_P3_kWh: 200,
-      importe_factura_actual: undefined,
+      importe_factura_actual: '',
     },
   });
 
@@ -430,7 +430,7 @@ export function TariffComparator() {
         // Populate form with extracted data
         form.reset({
           ...extractedData,
-          importe_factura_actual: extractedData.importe_factura_actual ?? undefined,
+          importe_factura_actual: extractedData.importe_factura_actual ? String(extractedData.importe_factura_actual) : '',
         });
         if (analytics) {
           logEvent(analytics, 'extract_bill_success');
@@ -558,7 +558,7 @@ export function TariffComparator() {
                             {item.label}
                           </FormLabel>
                           <FormControl>
-                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} value={field.value ?? ''} className="bg-background/80" />
+                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} className="bg-background/80" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

@@ -24,7 +24,7 @@ export const en = {
     searching: 'Searching for the best deals...',
     extractButton: 'Extract data from bill',
     extractingButton: 'Extracting...',
-    extractingProcess: 'The AI is analyzing your bill...',
+    extractingProcess: 'Analyzing your bill...',
     group: {
       billing: 'Billing Period',
       power: 'Contracted Power',
@@ -59,9 +59,9 @@ export const en = {
   },
   analysis: {
     title: 'Consumption Analysis',
-    description: 'The chart shows how your consumption is distributed, and the AI offers personalized tips for saving.',
+    description: 'The chart shows how your consumption is distributed, and we offer personalized tips for saving.',
     loading: 'Generating analysis...',
-    subtitle: 'The AI is analyzing your consumption to give you a personalized recommendation...',
+    subtitle: 'We are analyzing your consumption to give you a personalized recommendation...',
     error: 'Could not generate the personalized analysis at this time.',
   },
   donation: {

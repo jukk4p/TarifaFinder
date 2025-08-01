@@ -24,7 +24,7 @@ export const es = {
     searching: 'Buscando las mejores ofertas...',
     extractButton: 'Extraer datos de factura',
     extractingButton: 'Extrayendo...',
-    extractingProcess: 'La IA está analizando tu factura...',
+    extractingProcess: 'Analizando tu factura...',
     group: {
       billing: 'Periodo de Facturación',
       power: 'Potencia Contratada',
@@ -59,9 +59,9 @@ export const es = {
   },
   analysis: {
     title: 'Análisis de tu Consumo',
-    description: 'El gráfico muestra cómo se reparte tu consumo, y la IA te ofrece consejos personalizados para ahorrar.',
+    description: 'El gráfico muestra cómo se reparte tu consumo y te ofrecemos consejos personalizados para ahorrar.',
     loading: 'Generando análisis...',
-    subtitle: 'La IA está analizando tu consumo para darte una recomendación personalizada...',
+    subtitle: 'Estamos analizando tu consumo para darte una recomendación personalizada...',
     error: 'No se pudo generar el análisis personalizado en este momento.',
   },
   donation: {

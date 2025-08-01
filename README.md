@@ -1,14 +1,14 @@
 # TarifaFinder 💡
 
-**Encuentra la mejor tarifa de luz para ti con el poder de la Inteligencia Artificial.**
+**Encuentra la mejor tarifa de luz para ti con el poder de nuestro análisis inteligente.**
 
 TarifaFinder es una aplicación web de código abierto construida con Next.js y Genkit que te ayuda a comparar tarifas eléctricas en España para encontrar la opción más económica según tus hábitos de consumo.
 
 ## ✨ Características Principales
 
 *   **Comparador de Tarifas Avanzado**: Introduce tus datos de consumo y obtén una comparativa precisa entre las principales tarifas del mercado.
-*   **Extracción de Datos con IA**: Sube una foto o PDF de tu factura y nuestra IA extraerá los datos de consumo automáticamente.
-*   **Análisis Personalizado con IA**: Recibe una explicación detallada y consejos de ahorro generados por IA basados en tu perfil de consumo.
+*   **Extracción de Datos Automática**: Sube una foto o PDF de tu factura y nuestra tecnología extraerá los datos de consumo automáticamente.
+*   **Análisis Personalizado**: Recibe una explicación detallada y consejos de ahorro generados por nuestro sistema basados en tu perfil de consumo.
 *   **Visualización de Datos**: Un gráfico interactivo te muestra cómo se distribuye tu consumo energético.
 *   **Soporte Multilingüe**: Disponible en Español, Inglés y Catalán.
 *   **Diseño Moderno y Responsivo**: Una interfaz limpia y fácil de usar, construida con Tailwind CSS y Shadcn UI.

@@ -24,7 +24,7 @@ export const ca = {
     searching: 'Buscant les millors ofertes...',
     extractButton: 'Extreure dades de factura',
     extractingButton: 'Extraient...',
-    extractingProcess: 'L\'IA està analitzant la teva factura...',
+    extractingProcess: 'Analitzant la teva factura...',
     group: {
       billing: 'Període de Facturació',
       power: 'Potència Contractada',
@@ -59,9 +59,9 @@ export const ca = {
   },
   analysis: {
     title: 'Anàlisi del teu Consum',
-    description: 'El gràfic mostra com es reparteix el teu consum, i la IA t\'ofereix consells personalitzats per estalviar.',
+    description: 'El gràfic mostra com es reparteix el teu consum i t\'oferim consells personalitzats per estalviar.',
     loading: 'Generant anàlisi...',
-    subtitle: 'La IA està analitzant el teu consum per donar-te una recomanació personalitzada...',
+    subtitle: 'Estem analitzant el teu consum per donar-te una recomanació personalitzada...',
     error: 'No s\'ha pogut generar l\'anàlisi personalitzada en aquest moment.',
   },
   donation: {

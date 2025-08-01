@@ -54,7 +54,7 @@ Analiza los datos de consumo del usuario y las tarifas recomendadas para generar
 - {{name}} ({{company}}): Coste {{cost}}€
 {{/each}}
 
-Genera la respuesta en el campo 'explanation'.`,
+Genera la respuesta en el campo 'explanation'. No te presentes como una IA.`,
 });
 
 const explainTariffFlow = ai.defineFlow(
