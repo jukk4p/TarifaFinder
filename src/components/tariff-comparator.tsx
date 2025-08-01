@@ -335,7 +335,7 @@ export function TariffComparator() {
       ENERGÍA_P1_kWh: 100,
       ENERGÍA_P2_kWh: 150,
       ENERGÍA_P3_kWh: 200,
-      importe_factura_actual: undefined,
+      importe_factura_actual: '',
     },
   });
 
@@ -446,7 +446,10 @@ export function TariffComparator() {
         const extractedData = await extractBillData({ billDocument: base64Data });
         
         // Populate form with extracted data
-        form.reset(extractedData);
+        form.reset({
+          ...extractedData,
+          importe_factura_actual: extractedData.importe_factura_actual ?? '',
+        });
         if (analytics) {
           logEvent(analytics, 'extract_bill_success');
         }
@@ -662,7 +665,7 @@ export function TariffComparator() {
         </div>
       )}
 
-      {results && <ResultsCard results={results.slice(0, 4)} currentBill={currentBill} />}
+      {results && <ResultsCard results={results.slice(0, 4)} currentBill={typeof currentBill === 'number' ? currentBill : undefined} />}
       
       {chartData && !explanationLoading && explanation && (
         <AnalysisAndChartCard 
