@@ -331,6 +331,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 label={renderCustomizedLabel}
                 innerRadius={window.innerWidth < 640 ? 35 : 70}
                 outerRadius={window.innerWidth < 640 ? 65 : 110}
+                paddingAngle={2}
                 dataKey="consumo"
                 nameKey="name"
               >
