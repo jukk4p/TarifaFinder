@@ -56,7 +56,7 @@ const formSchema = z.object({
   ENERGÍA_P2_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   ENERGÍA_P3_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   importe_factura_actual: z.preprocess(
-    (val) => (val === "" ? "" : val),
+    (val) => (val === "" ? undefined : val),
     z.coerce.number().positive("Debe ser un número positivo").optional()
   ),
 });
@@ -334,7 +334,7 @@ export function TariffComparator() {
       ENERGÍA_P1_kWh: 100,
       ENERGÍA_P2_kWh: 150,
       ENERGÍA_P3_kWh: 200,
-      importe_factura_actual: '',
+      importe_factura_actual: undefined,
     },
   });
 
@@ -430,7 +430,7 @@ export function TariffComparator() {
         // Populate form with extracted data
         form.reset({
           ...extractedData,
-          importe_factura_actual: extractedData.importe_factura_actual ?? '',
+          importe_factura_actual: extractedData.importe_factura_actual ?? undefined,
         });
         if (analytics) {
           logEvent(analytics, 'extract_bill_success');
@@ -558,7 +558,7 @@ export function TariffComparator() {
                             {item.label}
                           </FormLabel>
                           <FormControl>
-                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} className="bg-background/80" />
+                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} value={field.value ?? ''} className="bg-background/80" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
