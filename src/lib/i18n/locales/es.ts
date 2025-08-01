@@ -61,6 +61,7 @@ export const es = {
     title: 'Análisis de tu Consumo',
     description: 'El gráfico muestra cómo se reparte tu consumo, y la IA te ofrece consejos personalizados para ahorrar.',
     loading: 'Generando análisis...',
+    subtitle: 'La IA está analizando tu consumo para darte una recomendación personalizada...',
     error: 'No se pudo generar el análisis personalizado en este momento.',
   },
   donation: {

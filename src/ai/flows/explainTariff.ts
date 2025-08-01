@@ -39,7 +39,7 @@ Analiza los datos de consumo del usuario y las tarifas recomendadas para generar
 
 **Formato de respuesta (explanation):**
 1.  **Análisis del Consumo (1-2 frases):** Empieza analizando el perfil de consumo del usuario. Identifica en qué periodo (Punta, Llano o Valle) tiene el mayor consumo y menciónalo.
-2.  **Justificación de las Tarifas (1-2 frases):** Explica por qué las tarifas recomendadas son una buena opción para ese perfil. Por ejemplo, "Dado que tu mayor consumo es en horas valle, las tarifas recomendadas te benefician con precios muy bajos en ese periodo". Si las tarifas son de precio fijo, explica la ventaja de la estabilidad.
+2.  **Justificación de las Tarifas (1-2 frases):** Explica por qué las tarifas recomendadas son una buena opción para ese perfil. Por ejemplo, "Dado que tu mayor consumo es en horas valle, la tarifa '{{recommendations.[0].name}}' de {{recommendations.[0].company}} te beneficia con precios muy bajos en ese periodo". Si las tarifas son de precio fijo, explica la ventaja de la estabilidad.
 3.  **Consejo de Optimización (1-2 frases):** Ofrece un consejo práctico y accionable para que el usuario pueda ahorrar aún más. Por ejemplo, "Para maximizar tu ahorro, intenta programar electrodomésticos como la lavadora o el lavavajillas durante las horas valle (de 00h a 08h)".
 4.  **Tono:** Usa un tono cercano, positivo y alentador.
 

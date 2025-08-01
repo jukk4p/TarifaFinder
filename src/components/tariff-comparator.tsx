@@ -30,7 +30,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, ChartBarIcon as TrendingUp } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, LabelList } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
@@ -56,7 +56,7 @@ const formSchema = z.object({
   ENERGÍA_P2_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   ENERGÍA_P3_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   importe_factura_actual: z.preprocess(
-    (val) => (val === "" ? undefined : val),
+    (val) => (val === "" ? "" : val),
     z.coerce.number().positive("Debe ser un número positivo").optional()
   ),
 });
@@ -318,7 +318,6 @@ const AnalysisAndChartCard = ({
 export function TariffComparator() {
   const [loading, setLoading] = useState(false);
   const [extracting, setExtracting] = useState(false);
-  const [explanationLoading, setExplanationLoading] = useState(false);
   const [results, setResults] = useState<TariffResults | null>(null);
   const [chartData, setChartData] = useState<any[] | null>(null);
   const [explanation, setExplanation] = useState<string | null>(null);
@@ -358,7 +357,6 @@ export function TariffComparator() {
     setResults(null);
     setChartData(null);
     setExplanation(null);
-    setExplanationLoading(true);
 
     if (analytics) {
       const { importe_factura_actual, ...analyticsValues } = values;
@@ -376,42 +374,27 @@ export function TariffComparator() {
       const result = await findTariffs(tariffValues);
       findTariffsTrace?.stop();
       
-      setResults(result);
-
       const consumptionDataForChart = [
         { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: chartConfig.p1.color },
         { name: 'p2', consumo: values.ENERGÍA_P2_kWh, fill: chartConfig.p2.color },
         { name: 'p3', consumo: values.ENERGÍA_P3_kWh, fill: chartConfig.p3.color },
       ];
 
-      setChartData(consumptionDataForChart);
-
       const explainTariffTrace = performance ? trace(performance, 'explainTariff_flow') : null;
       explainTariffTrace?.start();
-      explainTariff({ consumption: tariffValues, recommendations: result, language: languageMap[locale] })
-        .then(explanationResult => {
-          setExplanation(explanationResult.explanation);
-        })
-        .catch(err => {
-          console.error("Failed to get tariff explanation:", err);
-          if (analytics) {
-            logEvent(analytics, 'exception', {
-              description: 'explainTariff_failed',
-              fatal: false,
-            });
-          }
-          setExplanation(t('explanation.error'));
-        })
-        .finally(() => {
-          explainTariffTrace?.stop();
-          setExplanationLoading(false);
-        });
+      const explanationResult = await explainTariff({ consumption: tariffValues, recommendations: result, language: languageMap[locale] });
+      
+      setResults(result);
+      setChartData(consumptionDataForChart);
+      setExplanation(explanationResult.explanation);
+      
+      explainTariffTrace?.stop();
 
     } catch (error) {
       console.error(error);
       if (analytics) {
         logEvent(analytics, 'exception', {
-          description: 'findTariffs_failed',
+          description: 'findTariffs_or_explain_failed',
           fatal: true,
         });
       }
@@ -420,7 +403,6 @@ export function TariffComparator() {
         title: t('error.title'),
         description: t('error.description'),
       });
-      setExplanationLoading(false);
     } finally {
       setLoading(false);
     }
@@ -544,7 +526,7 @@ export function TariffComparator() {
               <Button
                   variant="outline"
                   onClick={triggerFileSelect}
-                  disabled={extracting}
+                  disabled={extracting || loading}
                   className="w-full sm:w-auto"
               >
                   {extracting ? (
@@ -658,21 +640,25 @@ export function TariffComparator() {
         </Form>
       </Card>
       
-      {(loading || extracting) && (
-        <div className="flex items-center justify-center gap-2 text-muted-foreground animate-pulse pt-4">
-            <Loader2 className="h-5 w-5 animate-spin"/>
-            <span>{extracting ? t('form.extractingProcess') : t('form.searching')}</span>
+      {loading && (
+        <div className="flex flex-col items-center justify-center gap-4 text-muted-foreground pt-8 text-center animate-in fade-in-50 duration-500">
+            <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin"/>
+                <p className="font-semibold">{t('analysis.loading')}</p>
+            </div>
+            <p className="text-sm max-w-md">{t('analysis.subtitle')}</p>
         </div>
       )}
 
-      {results && <ResultsCard results={results.slice(0, 4)} currentBill={typeof currentBill === 'number' ? currentBill : undefined} />}
-      
-      {chartData && !explanationLoading && explanation && (
-        <AnalysisAndChartCard 
-            chartData={chartData} 
-            chartConfig={chartConfig}
-            explanation={explanation}
-        />
+      {!loading && results && chartData && explanation && (
+        <>
+            <ResultsCard results={results.slice(0, 4)} currentBill={typeof currentBill === 'number' ? currentBill : undefined} />
+            <AnalysisAndChartCard 
+                chartData={chartData} 
+                chartConfig={chartConfig}
+                explanation={explanation}
+            />
+        </>
       )}
     </div>
   );

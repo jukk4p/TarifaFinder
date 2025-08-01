@@ -61,6 +61,7 @@ export const ca = {
     title: 'Anàlisi del teu Consum',
     description: 'El gràfic mostra com es reparteix el teu consum, i la IA t\'ofereix consells personalitzats per estalviar.',
     loading: 'Generant anàlisi...',
+    subtitle: 'La IA està analitzant el teu consum per donar-te una recomanació personalitzada...',
     error: 'No s\'ha pogut generar l\'anàlisi personalitzada en aquest moment.',
   },
   donation: {
