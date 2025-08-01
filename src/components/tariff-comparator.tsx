@@ -307,7 +307,7 @@ const AnalysisAndChartCard = ({
   const p1Data = chartData.find((d) => d.name === 'p1') || { name: 'p1', consumo: 0 };
   const p2Data = chartData.find((d) => d.name === 'p2') || { name: 'p2', consumo: 0 };
   const p3Data = chartData.find((d) => d.name === 'p3') || { name: 'p3', consumo: 0 };
-
+  
   let p1Percentage = 0;
   let p2Percentage = 0;
   let p3Percentage = 0;
@@ -320,42 +320,39 @@ const AnalysisAndChartCard = ({
 
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
-      <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2">
-          <ChartPieIcon className="h-6 w-6" />
-          {t('consumption_chart.title')}
-        </CardTitle>
-        <CardDescription>{t('consumption_chart.description')}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4">
-          <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
-          <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
-          <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
+      <div className="grid grid-cols-1 md:grid-cols-2">
+        {/* Left column for Charts */}
+        <div className="p-6">
+          <CardTitle className="text-primary flex items-center gap-2 mb-2">
+            <ChartPieIcon className="h-6 w-6" />
+            {t('consumption_chart.title')}
+          </CardTitle>
+          <CardDescription>{t('consumption_chart.description')}</CardDescription>
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 mt-6">
+            <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
+            <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
+            <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
+          </div>
         </div>
-      </CardContent>
 
-      {(explanation || explanationLoading) && (
-        <>
-          <Separator className="my-6 bg-white/10" />
-          <CardHeader className="pt-0">
-            <CardTitle className="text-primary flex items-center gap-2">
-              <MessageSquareHeart className="h-6 w-6" />
-              {t('explanation.title')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+        {/* Right column for Analysis */}
+        <div className="p-6 border-t md:border-t-0 md:border-l border-white/10">
+          <CardTitle className="text-primary flex items-center gap-2 mb-2">
+            <MessageSquareHeart className="h-6 w-6" />
+            {t('explanation.title')}
+          </CardTitle>
+          <div className="mt-4 min-h-[150px]">
             {explanationLoading ? (
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />
                 <span>{t('explanation.loading')}</span>
               </div>
-            ) : (
+            ) : explanation ? (
               <p className="text-muted-foreground whitespace-pre-wrap">{explanation}</p>
-            )}
-          </CardContent>
-        </>
-      )}
+            ) : null}
+          </div>
+        </div>
+      </div>
     </Card>
   );
 };
