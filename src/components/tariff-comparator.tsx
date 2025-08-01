@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -30,13 +30,12 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon, DocumentTextIcon, ClockIcon, PowerIcon, StarIcon } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { RadialBarChart, RadialBar, Legend, Tooltip, ResponsiveContainer, PolarGrid, PolarAngleAxis } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
 import { trace } from 'firebase/performance';
-import { useMemo } from 'react';
 import Image from 'next/image';
 import { Separator } from './ui/separator';
 import {
@@ -247,56 +246,16 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
 const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number; fill: string; }[], chartConfig: ChartConfig }) => {
   const { t } = useTranslation();
 
-  const processedData = useMemo(() => {
-    const totalConsumption = data.reduce((acc, curr) => acc + curr.consumo, 0);
-    if (totalConsumption === 0) return data.map(d => ({ ...d, percentage: 0 }));
+  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
 
-    let percentages = data.map(item => ({
-      ...item,
-      exactPercentage: (item.consumo / totalConsumption) * 100
-    }));
-
-    let flooredPercentages = percentages.map(p => ({ ...p, percentage: Math.floor(p.exactPercentage) }));
-    let sumOfFloored = flooredPercentages.reduce((acc, curr) => acc + curr.percentage, 0);
-    let remainder = 100 - sumOfFloored;
-
-    flooredPercentages.sort((a, b) => (b.exactPercentage % 1) - (a.exactPercentage % 1));
-
-    for (let i = 0; i < remainder; i++) {
-      flooredPercentages[i].percentage++;
-    }
-
-    return flooredPercentages;
-  }, [data]);
-  
-  
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, payload }: any) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-  
-    if (payload.percentage < 5) return null;
-
-    return (
-      <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" className="text-sm font-bold">
-        {`${payload.percentage}%`}
-      </text>
-    );
-  };
-  
-  
   const legendFormatter = (value: string, entry: any) => {
-    const { color, payload } = entry;
-    const consumptionValue = payload.consumo;
-    const percentage = payload.percentage;
+    const { payload } = entry;
+    const itemConfig = chartConfig[value as keyof typeof chartConfig];
+    const percentage = totalConsumption > 0 ? Math.round((payload.consumo / totalConsumption) * 100) : 0;
     return (
-      <div className="flex items-center gap-2">
-        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></span>
-        <span className="text-muted-foreground text-left">
-          <span className="font-semibold text-foreground">{chartConfig[value as keyof typeof chartConfig]?.label}</span>
-          : {consumptionValue} kWh ({percentage}%)
-        </span>
+      <div className="flex flex-col gap-0.5 items-center">
+        <div className="text-lg font-bold" style={{ color: payload.fill }}>{payload.consumo} <span className="text-sm font-normal text-muted-foreground">kWh</span></div>
+        <div className="text-xs text-muted-foreground">{itemConfig?.label} ({percentage}%)</div>
       </div>
     );
   };
@@ -315,43 +274,54 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-[220px] sm:h-[300px]"
+          className="mx-auto aspect-square h-[250px] sm:h-[350px]"
         >
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Tooltip
-                cursor={{ fill: "hsl(var(--muted))" }}
-                content={<ChartTooltipContent hideLabel />}
+            <RadialBarChart
+              data={data}
+              innerRadius="30%"
+              outerRadius="100%"
+              startAngle={90}
+              endAngle={-270}
+              barSize={20}
+            >
+              <PolarGrid gridType="circle"
+                radialLines={false}
+                stroke="hsl(var(--muted))"
               />
-              <Pie
-                data={processedData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                innerRadius={window.innerWidth < 640 ? 35 : 70}
-                outerRadius={window.innerWidth < 640 ? 65 : 110}
-                paddingAngle={2}
+              <PolarAngleAxis type="number" domain={[0, totalConsumption]} dataKey="consumo" tick={false} />
+              <Tooltip
+                cursor={{ strokeDasharray: '4 4' }}
+                content={
+                  <ChartTooltipContent
+                    formatter={(value, name, props) => {
+                      const percentage = totalConsumption > 0 ? Math.round((props.payload.consumo / totalConsumption) * 100) : 0;
+                      return (
+                        <div className="flex flex-col">
+                            <span>{chartConfig[name as keyof typeof chartConfig]?.label}</span>
+                            <span className="font-bold">{value} kWh ({percentage}%)</span>
+                        </div>
+                      )
+                    }}
+                  />
+                }
+              />
+              <RadialBar
+                background
                 dataKey="consumo"
-                nameKey="name"
-              >
-                {processedData.map((entry) => (
-                  <Cell key={`cell-${entry.name}`} fill={entry.fill} stroke={entry.fill} />
-                ))}
-              </Pie>
-              <Legend 
-                iconType="circle"
+                cornerRadius={10}
+              />
+              <Legend
+                iconSize={0}
                 content={({ payload }) => (
-                  <ul className="flex flex-col items-center gap-2 mt-4">
-                    {payload?.map((entry, index) => (
-                      <li key={`item-${index}`} className="flex justify-start">
-                        {legendFormatter(entry.value, entry)}
-                      </li>
+                  <div className="flex justify-around items-center w-full absolute bottom-4 px-4">
+                    {payload?.map((entry) => (
+                      legendFormatter(entry.value, entry)
                     ))}
-                  </ul>
+                  </div>
                 )}
               />
-            </PieChart>
+            </RadialBarChart>
           </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
@@ -449,10 +419,10 @@ export function TariffComparator() {
       setResults(result);
 
       const consumptionDataForChart = [
-        { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: "var(--color-p1)" },
-        { name: 'p2', consumo: values.ENERGÍA_P2_kWh, fill: "var(--color-p2)" },
-        { name: 'p3', consumo: values.ENERGÍA_P3_kWh, fill: "var(--color-p3)" },
-      ];
+        { name: 'p3', consumo: values.ENERGÍA_P3_kWh, fill: "hsl(var(--chart-3))" },
+        { name: 'p2', consumo: values.ENERGÍA_P2_kWh, fill: "hsl(var(--chart-2))" },
+        { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: "hsl(var(--chart-1))" },
+      ].sort((a,b) => b.consumo - a.consumo); // Sort to stack largest bar first
 
       setChartData(consumptionDataForChart);
 
