@@ -315,7 +315,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-[250px] sm:h-[300px]"
+          className="mx-auto aspect-square h-[220px] sm:h-[300px]"
         >
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -329,9 +329,8 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={5}
+                innerRadius={50}
+                outerRadius={80}
                 dataKey="consumo"
                 nameKey="name"
               >
