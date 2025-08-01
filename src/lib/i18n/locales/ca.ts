@@ -1,3 +1,4 @@
+
 export const ca = {
   htmlLang: 'ca',
   header: 'TarifaFinder',
@@ -51,6 +52,8 @@ export const ca = {
     energyFlatPrice: 'Energia Plana',
     energyOffPeakPrice: 'Energia Vall',
     bestOption: 'Millor Opció',
+    noBetterTariffTitle: 'Ja tens una tarifa excel·lent!',
+    noBetterTariffSubtitle: 'No hem trobat cap oferta a la nostra base de dades que millori el preu de la teva factura actual. Enhorabona!',
   },
   consumption_chart: {
     peak: 'Punta',
@@ -91,3 +94,5 @@ export const ca = {
     title: 'Èxit',
   }
 };
+
+    

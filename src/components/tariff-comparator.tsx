@@ -28,9 +28,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, ChartBarIcon as TrendingUp } from '@heroicons/react/24/outline';
+import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, ChartBarIcon as TrendingUp, CheckCircleIcon } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, LabelList } from 'recharts';
 import { ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
@@ -56,7 +56,7 @@ const formSchema = z.object({
   ENERGÍA_P2_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   ENERGÍA_P3_kWh: z.coerce.number().positive("Debe ser un número positivo"),
   importe_factura_actual: z.preprocess(
-    (val) => (val === "" ? undefined : val),
+    (val) => (String(val).trim() === "" ? undefined : val),
     z.coerce.number().positive("Debe ser un número positivo").optional()
   ),
 });
@@ -208,10 +208,6 @@ const TariffResultCard = ({ tariff, currentBill, isBest }: { tariff: TariffOutpu
 const ResultsCard = ({ results, currentBill }: { results: TariffResults, currentBill?: number }) => {
   const { t } = useTranslation();
 
-  if (results.length === 0) {
-    return null;
-  }
-
   return (
     <div className="w-full animate-in fade-in-50 duration-500">
       <div className="space-y-4">
@@ -224,7 +220,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch max-w-5xl mx-auto">
           {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
@@ -242,6 +238,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
     </div>
   );
 };
+
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, payload }: any) => {
@@ -314,6 +311,23 @@ const AnalysisAndChartCard = ({
   );
 };
 
+const NoBetterTariffCard = () => {
+    const { t } = useTranslation();
+    return (
+        <div className="w-full animate-in fade-in-50 duration-500">
+            <Card className="max-w-2xl mx-auto bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
+                <CardHeader className="items-center text-center">
+                    <CheckCircleIcon className="h-12 w-12 text-accent" />
+                    <CardTitle className="text-2xl pt-2">{t('results.noBetterTariffTitle')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-center text-muted-foreground">{t('results.noBetterTariffSubtitle')}</p>
+                </CardContent>
+            </Card>
+        </div>
+    );
+};
+
 
 export function TariffComparator() {
   const [loading, setLoading] = useState(false);
@@ -371,8 +385,16 @@ export function TariffComparator() {
       
       const findTariffsTrace = performance ? trace(performance, 'findTariffs_flow') : null;
       findTariffsTrace?.start();
-      const result = await findTariffs(tariffValues);
+      let allResults = await findTariffs(tariffValues);
       findTariffsTrace?.stop();
+
+      let finalResults = allResults;
+      if (importe_factura_actual && importe_factura_actual > 0) {
+        finalResults = allResults.filter(tariff => tariff.cost < importe_factura_actual);
+      }
+      
+      // Limit to top 3 cheapest if more than 3
+      finalResults = finalResults.slice(0, 3);
       
       const consumptionDataForChart = [
         { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: chartConfig.p1.color },
@@ -380,15 +402,18 @@ export function TariffComparator() {
         { name: 'p3', consumo: values.ENERGÍA_P3_kWh, fill: chartConfig.p3.color },
       ];
 
-      const explainTariffTrace = performance ? trace(performance, 'explainTariff_flow') : null;
-      explainTariffTrace?.start();
-      const explanationResult = await explainTariff({ consumption: tariffValues, recommendations: result, language: languageMap[locale] });
-      
-      setResults(result);
+      setResults(finalResults);
       setChartData(consumptionDataForChart);
-      setExplanation(explanationResult.explanation);
       
-      explainTariffTrace?.stop();
+      // Only generate explanation if there are tariffs to recommend
+      if (finalResults.length > 0) {
+        const explainTariffTrace = performance ? trace(performance, 'explainTariff_flow') : null;
+        explainTariffTrace?.start();
+        const explanationResult = await explainTariff({ consumption: tariffValues, recommendations: finalResults, language: languageMap[locale] });
+        setExplanation(explanationResult.explanation);
+        explainTariffTrace?.stop();
+      }
+
 
     } catch (error) {
       console.error(error);
@@ -430,7 +455,7 @@ export function TariffComparator() {
         // Populate form with extracted data
         form.reset({
           ...extractedData,
-          importe_factura_actual: extractedData.importe_factura_actual ? String(extractedData.importe_factura_actual) : '',
+          importe_factura_actual: extractedData.importe_factura_actual || '',
         });
         if (analytics) {
           logEvent(analytics, 'extract_bill_success');
@@ -492,6 +517,8 @@ export function TariffComparator() {
       { name: "ENERGÍA_P3_kWh", label: t('form.energyOffPeak'), icon: LightBulbIcon, placeholder: t('form.energyOffPeakPlaceholder') },
     ]
   } as const;
+  
+  const showNoBetterTariffMessage = !loading && results && results.length === 0 && currentBill;
 
   return (
     <div className="w-full max-w-6xl space-y-8 py-12 px-4 sm:px-6 lg:px-8">
@@ -558,7 +585,7 @@ export function TariffComparator() {
                             {item.label}
                           </FormLabel>
                           <FormControl>
-                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} className="bg-background/80" />
+                            <Input type="number" step="0.01" placeholder={item.placeholder} {...field} value={field.value ?? ''} className="bg-background/80" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -650,16 +677,21 @@ export function TariffComparator() {
         </div>
       )}
 
-      {!loading && results && chartData && explanation && (
-        <>
-            <ResultsCard results={results.slice(0, 4)} currentBill={typeof currentBill === 'number' ? currentBill : undefined} />
+      {!loading && results && results.length > 0 && chartData && explanation && (
+        <div className="space-y-8">
+            <ResultsCard results={results} currentBill={typeof currentBill === 'number' ? currentBill : undefined} />
             <AnalysisAndChartCard 
                 chartData={chartData} 
                 chartConfig={chartConfig}
                 explanation={explanation}
             />
-        </>
+        </div>
       )}
+
+      {showNoBetterTariffMessage && <NoBetterTariffCard />}
+
     </div>
   );
 }
+
+    

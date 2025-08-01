@@ -1,3 +1,4 @@
+
 export const en = {
   htmlLang: 'en',
   header: 'TariffFinder',
@@ -51,6 +52,8 @@ export const en = {
     energyFlatPrice: 'Flat',
     energyOffPeakPrice: 'Off-Peak',
     bestOption: 'Best Option',
+    noBetterTariffTitle: 'You already have a great tariff!',
+    noBetterTariffSubtitle: 'We couldn\'t find any offers in our database that beat your current bill price. Congratulations!',
   },
   consumption_chart: {
     peak: 'Peak',
@@ -91,3 +94,5 @@ export const en = {
     title: 'Success',
   }
 };
+
+    

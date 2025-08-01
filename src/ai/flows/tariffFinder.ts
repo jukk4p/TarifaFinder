@@ -1,3 +1,4 @@
+
 'use server';
 
 import { ai } from '@/ai/genkit';
@@ -73,12 +74,12 @@ const tariffFinderFlow = ai.defineFlow(
 
     const sortedTariffs = calculatedCosts.sort((a, b) => a.cost - b.cost);
     
-    const top4 = sortedTariffs.slice(0, 4);
-    
-    return top4;
+    return sortedTariffs;
   }
 );
 
 export async function findTariffs(input: TariffInput): Promise<TariffOutput> {
   return tariffFinderFlow(input);
 }
+
+    
