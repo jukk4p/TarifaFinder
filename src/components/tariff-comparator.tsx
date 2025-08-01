@@ -289,13 +289,24 @@ const SemiDonut = ({ data, config, total, periodKey, percentage }: { data: any, 
   );
 };
 
-const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number; }[], chartConfig: ChartConfig }) => {
+
+const AnalysisAndChartCard = ({
+  chartData,
+  chartConfig,
+  explanation,
+  explanationLoading,
+}: {
+  chartData: { name: string; consumo: number }[];
+  chartConfig: ChartConfig;
+  explanation: string | null;
+  explanationLoading: boolean;
+}) => {
   const { t } = useTranslation();
-  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
-  
-  const p1Data = data.find(d => d.name === 'p1') || { name: 'p1', consumo: 0 };
-  const p2Data = data.find(d => d.name === 'p2') || { name: 'p2', consumo: 0 };
-  const p3Data = data.find(d => d.name === 'p3') || { name: 'p3', consumo: 0 };
+  const totalConsumption = useMemo(() => chartData.reduce((acc, curr) => acc + curr.consumo, 0), [chartData]);
+
+  const p1Data = chartData.find((d) => d.name === 'p1') || { name: 'p1', consumo: 0 };
+  const p2Data = chartData.find((d) => d.name === 'p2') || { name: 'p2', consumo: 0 };
+  const p3Data = chartData.find((d) => d.name === 'p3') || { name: 'p3', consumo: 0 };
 
   let p1Percentage = 0;
   let p2Percentage = 0;
@@ -305,20 +316,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
     p1Percentage = Math.round((p1Data.consumo / totalConsumption) * 100);
     p2Percentage = Math.round((p2Data.consumo / totalConsumption) * 100);
     p3Percentage = 100 - p1Percentage - p2Percentage;
-
-    // A small correction in case the sum is not exactly 100 due to rounding of the first two
-    const totalPercentage = p1Percentage + p2Percentage + p3Percentage;
-    if (totalPercentage !== 100) {
-        // This case should be rare, but we can adjust the largest percentage
-        const percentages = {p1: p1Percentage, p2: p2Percentage, p3: p3Percentage};
-        const diff = 100 - totalPercentage;
-        const maxKey = Object.keys(percentages).reduce((a, b) => percentages[a as keyof typeof percentages] > percentages[b as keyof typeof percentages] ? a : b) as keyof typeof percentages;
-        if (maxKey === 'p1') p1Percentage += diff;
-        else if (maxKey === 'p2') p2Percentage += diff;
-        else p3Percentage += diff;
-    }
   }
-
 
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
@@ -327,41 +325,37 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
           <ChartPieIcon className="h-6 w-6" />
           {t('consumption_chart.title')}
         </CardTitle>
-        <CardDescription>
-          {t('consumption_chart.description')}
-        </CardDescription>
+        <CardDescription>{t('consumption_chart.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4">
-            <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
-            <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
-            <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
+          <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
+          <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
+          <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
         </div>
       </CardContent>
-    </Card>
-  );
-};
 
-const ExplanationCard = ({ explanation, loading }: { explanation: string, loading: boolean }) => {
-  const { t } = useTranslation();
-  return (
-    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
-      <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2">
-          <MessageSquareHeart className="h-6 w-6" />
-          {t('explanation.title')}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {loading ? (
-           <div className="flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="h-5 w-5 animate-spin"/>
-              <span>{t('explanation.loading')}</span>
-           </div>
-        ) : (
-          <p className="text-muted-foreground whitespace-pre-wrap">{explanation}</p>
-        )}
-      </CardContent>
+      {(explanation || explanationLoading) && (
+        <>
+          <Separator className="my-6 bg-white/10" />
+          <CardHeader className="pt-0">
+            <CardTitle className="text-primary flex items-center gap-2">
+              <MessageSquareHeart className="h-6 w-6" />
+              {t('explanation.title')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {explanationLoading ? (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>{t('explanation.loading')}</span>
+              </div>
+            ) : (
+              <p className="text-muted-foreground whitespace-pre-wrap">{explanation}</p>
+            )}
+          </CardContent>
+        </>
+      )}
     </Card>
   );
 };
@@ -717,13 +711,12 @@ export function TariffComparator() {
       {results && <ResultsCard results={results.slice(0, 4)} currentBill={currentBill} />}
       
       {chartData && (chartData.reduce((acc, cv) => acc + cv.consumo, 0) > 0) && (
-        <ConsumptionChart data={chartData} chartConfig={chartConfig} />
-      )}
-
-      {(explanation || explanationLoading) && (
-        <div className="pt-2 w-full">
-          <ExplanationCard explanation={explanation!} loading={explanationLoading} />
-        </div>
+        <AnalysisAndChartCard 
+            chartData={chartData} 
+            chartConfig={chartConfig}
+            explanation={explanation}
+            explanationLoading={explanationLoading}
+        />
       )}
     </div>
   );
