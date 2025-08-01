@@ -325,8 +325,8 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
               />
               <Pie
                 data={processedData}
-                cx="45%"
-                cy="55%"
+                cx="50%"
+                cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
                 innerRadius={window.innerWidth < 640 ? 35 : 50}
@@ -341,7 +341,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
               <Legend 
                 iconType="circle"
                 content={({ payload }) => (
-                  <ul className="flex flex-col items-start gap-2 mt-8">
+                  <ul className="flex flex-col items-center gap-2 mt-8">
                     {payload?.map((entry, index) => (
                       <li key={`item-${index}`} className="flex justify-start">
                         {legendFormatter(entry.value, entry)}
