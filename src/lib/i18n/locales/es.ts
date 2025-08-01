@@ -53,14 +53,13 @@ export const es = {
     bestOption: 'Mejor Opción',
   },
   consumption_chart: {
-    title: 'Tu Distribución de Consumo',
-    description: 'Este gráfico muestra cómo se reparte tu consumo en los diferentes periodos.',
     peak: 'Punta',
     flat: 'Llano',
     offpeak: 'Valle',
   },
-  explanation: {
-    title: 'Análisis Personalizado',
+  analysis: {
+    title: 'Análisis de tu Consumo',
+    description: 'El gráfico muestra cómo se reparte tu consumo, y la IA te ofrece consejos personalizados para ahorrar.',
     loading: 'Generando análisis...',
     error: 'No se pudo generar el análisis personalizado en este momento.',
   },

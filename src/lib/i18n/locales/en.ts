@@ -53,14 +53,13 @@ export const en = {
     bestOption: 'Best Option',
   },
   consumption_chart: {
-    title: 'Your Consumption Distribution',
-    description: 'This chart shows how your consumption is distributed across different periods.',
     peak: 'Peak',
     flat: 'Flat',
     offpeak: 'Off-Peak',
   },
-  explanation: {
-    title: 'Personalized Analysis',
+  analysis: {
+    title: 'Consumption Analysis',
+    description: 'The chart shows how your consumption is distributed, and the AI offers personalized tips for saving.',
     loading: 'Generating analysis...',
     error: 'Could not generate the personalized analysis at this time.',
   },

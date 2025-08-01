@@ -53,14 +53,13 @@ export const ca = {
     bestOption: 'Millor Opció',
   },
   consumption_chart: {
-    title: 'La Teva Distribució de Consum',
-    description: 'Aquest gràfic mostra com es reparteix el teu consum en els diferents períodes.',
     peak: 'Punta',
     flat: 'Plana',
     offpeak: 'Vall',
   },
-  explanation: {
-    title: 'Anàlisi Personalitzada',
+  analysis: {
+    title: 'Anàlisi del teu Consum',
+    description: 'El gràfic mostra com es reparteix el teu consum, i la IA t\'ofereix consells personalitzats per estalviar.',
     loading: 'Generant anàlisi...',
     error: 'No s\'ha pogut generar l\'anàlisi personalitzada en aquest moment.',
   },

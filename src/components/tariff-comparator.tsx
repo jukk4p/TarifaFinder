@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon, DocumentTextIcon, ClockIcon, PowerIcon, StarIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, ChartBarIcon as TrendingUp } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { ChartConfig } from "@/components/ui/chart";
@@ -294,12 +294,10 @@ const AnalysisAndChartCard = ({
   chartData,
   chartConfig,
   explanation,
-  explanationLoading,
 }: {
   chartData: { name: string; consumo: number }[];
   chartConfig: ChartConfig;
-  explanation: string | null;
-  explanationLoading: boolean;
+  explanation: string;
 }) => {
   const { t } = useTranslation();
   const totalConsumption = useMemo(() => chartData.reduce((acc, curr) => acc + curr.consumo, 0), [chartData]);
@@ -320,39 +318,25 @@ const AnalysisAndChartCard = ({
 
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        {/* Left column for Charts */}
-        <div className="p-6">
-          <CardTitle className="text-primary flex items-center gap-2 mb-2">
+      <CardHeader>
+        <CardTitle className="text-primary flex items-center gap-2">
             <ChartPieIcon className="h-6 w-6" />
-            {t('consumption_chart.title')}
+            {t('analysis.title')}
           </CardTitle>
-          <CardDescription>{t('consumption_chart.description')}</CardDescription>
-          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 mt-6">
-            <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
-            <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
-            <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
-          </div>
-        </div>
-
-        {/* Right column for Analysis */}
-        <div className="p-6 border-t md:border-t-0 md:border-l border-white/10">
-          <CardTitle className="text-primary flex items-center gap-2 mb-2">
-            <MessageSquareHeart className="h-6 w-6" />
-            {t('explanation.title')}
-          </CardTitle>
-          <div className="mt-4 min-h-[150px]">
-            {explanationLoading ? (
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Loader2 className="h-5 w-5 animate-spin" />
-                <span>{t('explanation.loading')}</span>
-              </div>
-            ) : explanation ? (
+          <CardDescription>{t('analysis.description')}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
+              <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
+              <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
+              <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
+            </div>
+            <div>
               <p className="text-muted-foreground whitespace-pre-wrap">{explanation}</p>
-            ) : null}
-          </div>
+            </div>
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 };
@@ -707,12 +691,11 @@ export function TariffComparator() {
 
       {results && <ResultsCard results={results.slice(0, 4)} currentBill={currentBill} />}
       
-      {chartData && (chartData.reduce((acc, cv) => acc + cv.consumo, 0) > 0) && (
+      {chartData && !explanationLoading && explanation && (
         <AnalysisAndChartCard 
             chartData={chartData} 
             chartConfig={chartConfig}
             explanation={explanation}
-            explanationLoading={explanationLoading}
         />
       )}
     </div>
