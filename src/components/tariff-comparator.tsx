@@ -30,7 +30,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, ChartBarIcon as TrendingUp } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
@@ -243,78 +243,17 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   );
 };
 
-const SemiDonut = ({ data, config, total, periodKey, percentage }: { data: any, config: ChartConfig, total: number, periodKey: 'p1' | 'p2' | 'p3', percentage: number }) => {
-  const { t } = useTranslation();
-  const periodConfig = config[periodKey];
-  const value = data.consumo;
-  
-  const pieData = [
-    { name: 'value', value: value, color: periodConfig.color },
-    { name: 'bg', value: total - value, color: 'hsl(var(--muted))' }
-  ];
-
-  return (
-    <div className="flex flex-col items-center gap-2 w-full">
-      <div className="w-full h-24 sm:h-32 relative">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="100%"
-              startAngle={180}
-              endAngle={0}
-              innerRadius="70%"
-              outerRadius="100%"
-              paddingAngle={0}
-              stroke="none"
-            >
-              {pieData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-center">
-            <p className="text-xl sm:text-2xl font-bold" style={{color: periodConfig.color}}>{percentage}%</p>
-        </div>
-      </div>
-      <div className="text-center">
-          <p className="font-semibold text-foreground">{periodConfig.label}</p>
-          <p className="text-sm text-muted-foreground">{value} kWh</p>
-      </div>
-    </div>
-  );
-};
-
 
 const AnalysisAndChartCard = ({
   chartData,
   chartConfig,
   explanation,
 }: {
-  chartData: { name: string; consumo: number }[];
+  chartData: { name: string; consumo: number; fill: string; }[];
   chartConfig: ChartConfig;
   explanation: string;
 }) => {
   const { t } = useTranslation();
-  const totalConsumption = useMemo(() => chartData.reduce((acc, curr) => acc + curr.consumo, 0), [chartData]);
-
-  const p1Data = chartData.find((d) => d.name === 'p1') || { name: 'p1', consumo: 0 };
-  const p2Data = chartData.find((d) => d.name === 'p2') || { name: 'p2', consumo: 0 };
-  const p3Data = chartData.find((d) => d.name === 'p3') || { name: 'p3', consumo: 0 };
-  
-  let p1Percentage = 0;
-  let p2Percentage = 0;
-  let p3Percentage = 0;
-
-  if (totalConsumption > 0) {
-    p1Percentage = Math.round((p1Data.consumo / totalConsumption) * 100);
-    p2Percentage = Math.round((p2Data.consumo / totalConsumption) * 100);
-    p3Percentage = 100 - p1Percentage - p2Percentage;
-  }
 
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
@@ -327,10 +266,37 @@ const AnalysisAndChartCard = ({
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
-              <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" percentage={p1Percentage} />
-              <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" percentage={p2Percentage} />
-              <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" percentage={p3Percentage} />
+            <div className="w-full h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    dataKey="consumo"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={2}
+                    labelLine={false}
+                    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+                        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                        const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
+                        const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
+                        return (
+                          <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                            {`${(percent * 100).toFixed(0)}%`}
+                          </text>
+                        );
+                    }}
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Pie>
+                  <Legend formatter={(value, entry) => <span className="text-muted-foreground">{chartConfig[value as keyof typeof chartConfig]?.label}</span>} />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
             <div>
               <p className="text-muted-foreground whitespace-pre-wrap">{explanation}</p>
@@ -406,9 +372,9 @@ export function TariffComparator() {
       setResults(result);
 
       const consumptionDataForChart = [
-        { name: 'p1', consumo: values.ENERGÍA_P1_kWh },
-        { name: 'p2', consumo: values.ENERGÍA_P2_kWh },
-        { name: 'p3', consumo: values.ENERGÍA_P3_kWh },
+        { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: chartConfig.p1.color },
+        { name: 'p2', consumo: values.ENERGÍA_P2_kWh, fill: chartConfig.p2.color },
+        { name: 'p3', consumo: values.ENERGÍA_P3_kWh, fill: chartConfig.p3.color },
       ];
 
       setChartData(consumptionDataForChart);
