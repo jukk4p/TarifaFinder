@@ -293,7 +293,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
     return (
       <div className="flex items-center gap-2">
         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></span>
-        <span className="text-muted-foreground">
+        <span className="text-muted-foreground text-left">
           <span className="font-semibold text-foreground">{chartConfig[value as keyof typeof chartConfig]?.label}</span>
           : {consumptionValue} kWh ({percentage}%)
         </span>
@@ -343,7 +343,7 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
                 content={({ payload }) => (
                   <ul className="flex flex-col items-center sm:items-start gap-2 mt-4">
                     {payload?.map((entry, index) => (
-                      <li key={`item-${index}`}>
+                      <li key={`item-${index}`} className="flex justify-center">
                         {legendFormatter(entry.value, entry)}
                       </li>
                     ))}
@@ -745,5 +745,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    
