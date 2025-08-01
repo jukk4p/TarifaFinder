@@ -30,7 +30,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, ChartBarIcon as TrendingUp } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, LabelList } from 'recharts';
 import { ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
@@ -243,6 +243,22 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   );
 };
 
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, payload }: any) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <g>
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+        <tspan x={x} dy="0" className="font-bold">{`${payload.consumo.toFixed(0)} kWh`}</tspan>
+        <tspan x={x} dy="1.2em" className="text-muted-foreground fill-current">{`(${(percent * 100).toFixed(0)}%)`}</tspan>
+      </text>
+    </g>
+  );
+};
+
 
 const AnalysisAndChartCard = ({
   chartData,
@@ -266,7 +282,7 @@ const AnalysisAndChartCard = ({
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="w-full h-64">
+            <div className="w-full h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -275,20 +291,11 @@ const AnalysisAndChartCard = ({
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
+                    innerRadius={50}
                     outerRadius={80}
                     paddingAngle={2}
-                    labelLine={false}
-                    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-                        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                        const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
-                        const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
-                        return (
-                          <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-                            {`${(percent * 100).toFixed(0)}%`}
-                          </text>
-                        );
-                    }}
+                    labelLine={true}
+                    label={renderCustomizedLabel}
                   >
                     {chartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.fill} />
