@@ -30,8 +30,8 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, HeartIcon as MessageSquareHeart, ChartPieIcon, BanknotesIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, ChevronDownIcon, ChartBarIcon as TrendingUp, InformationCircleIcon as Info, ArrowRightIcon, DocumentTextIcon, ClockIcon, PowerIcon, StarIcon } from '@heroicons/react/24/outline';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
-import { RadialBarChart, RadialBar, Legend, Tooltip, ResponsiveContainer, PolarGrid, PolarAngleAxis } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { ChartConfig } from "@/components/ui/chart";
 import { useTranslation } from '@/lib/i18n';
 import { analytics, performance } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
@@ -243,22 +243,59 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   );
 };
 
-const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number; fill: string; }[], chartConfig: ChartConfig }) => {
+const SemiDonut = ({ data, config, total, periodKey }: { data: any, config: ChartConfig, total: number, periodKey: 'p1' | 'p2' | 'p3' }) => {
   const { t } = useTranslation();
+  const periodConfig = config[periodKey];
+  const value = data.consumo;
+  const percentage = total > 0 ? (value / total) * 100 : 0;
+  const pieData = [
+    { name: 'value', value: value, color: periodConfig.color },
+    { name: 'bg', value: total - value, color: 'hsl(var(--muted))' }
+  ];
 
-  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
-
-  const legendFormatter = (value: string, entry: any) => {
-    const { payload } = entry;
-    const itemConfig = chartConfig[value as keyof typeof chartConfig];
-    const percentage = totalConsumption > 0 ? Math.round((payload.consumo / totalConsumption) * 100) : 0;
-    return (
-      <div className="flex flex-col gap-0.5 items-center">
-        <div className="text-lg font-bold" style={{ color: payload.fill }}>{payload.consumo} <span className="text-sm font-normal text-muted-foreground">kWh</span></div>
-        <div className="text-xs text-muted-foreground">{itemConfig?.label} ({percentage}%)</div>
+  return (
+    <div className="flex flex-col items-center gap-2 w-full">
+      <div className="w-full h-24 sm:h-32 relative">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={pieData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="100%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius="70%"
+              outerRadius="100%"
+              paddingAngle={0}
+              stroke="none"
+            >
+              {pieData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-center">
+            <p className="text-xl sm:text-2xl font-bold" style={{color: periodConfig.color}}>{percentage.toFixed(0)}%</p>
+        </div>
       </div>
-    );
-  };
+      <div className="text-center">
+          <p className="font-semibold text-foreground">{periodConfig.label}</p>
+          <p className="text-sm text-muted-foreground">{value} kWh</p>
+      </div>
+    </div>
+  );
+};
+
+const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo: number; }[], chartConfig: ChartConfig }) => {
+  const { t } = useTranslation();
+  const totalConsumption = useMemo(() => data.reduce((acc, curr) => acc + curr.consumo, 0), [data]);
+  
+  const p1Data = data.find(d => d.name === 'p1') || { name: 'p1', consumo: 0 };
+  const p2Data = data.find(d => d.name === 'p2') || { name: 'p2', consumo: 0 };
+  const p3Data = data.find(d => d.name === 'p3') || { name: 'p3', consumo: 0 };
 
   return (
     <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
@@ -272,65 +309,15 @@ const ConsumptionChart = ({ data, chartConfig }: { data: { name: string; consumo
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square h-[250px] sm:h-[350px]"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <RadialBarChart
-              data={data}
-              innerRadius="30%"
-              outerRadius="100%"
-              startAngle={90}
-              endAngle={-270}
-              barSize={20}
-            >
-              <PolarGrid gridType="circle"
-                radialLines={false}
-                stroke="hsl(var(--muted))"
-              />
-              <PolarAngleAxis type="number" domain={[0, totalConsumption]} dataKey="consumo" tick={false} />
-              <Tooltip
-                cursor={{ strokeDasharray: '4 4' }}
-                content={
-                  <ChartTooltipContent
-                    formatter={(value, name, props) => {
-                      const percentage = totalConsumption > 0 ? Math.round((props.payload.consumo / totalConsumption) * 100) : 0;
-                      return (
-                        <div className="flex flex-col">
-                            <span>{chartConfig[name as keyof typeof chartConfig]?.label}</span>
-                            <span className="font-bold">{value} kWh ({percentage}%)</span>
-                        </div>
-                      )
-                    }}
-                  />
-                }
-              />
-              <RadialBar
-                background
-                dataKey="consumo"
-                cornerRadius={10}
-              />
-              <Legend
-                iconSize={0}
-                content={({ payload }) => (
-                  <div className="flex justify-around items-center w-full absolute bottom-4 px-4">
-                    {payload?.map((entry) => (
-                      <Fragment key={`item-${entry.value}`}>
-                        {legendFormatter(entry.value, entry)}
-                      </Fragment>
-                    ))}
-                  </div>
-                )}
-              />
-            </RadialBarChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4">
+            <SemiDonut data={p1Data} config={chartConfig} total={totalConsumption} periodKey="p1" />
+            <SemiDonut data={p2Data} config={chartConfig} total={totalConsumption} periodKey="p2" />
+            <SemiDonut data={p3Data} config={chartConfig} total={totalConsumption} periodKey="p3" />
+        </div>
       </CardContent>
     </Card>
   );
 };
-
 
 const ExplanationCard = ({ explanation, loading }: { explanation: string, loading: boolean }) => {
   const { t } = useTranslation();
@@ -421,10 +408,10 @@ export function TariffComparator() {
       setResults(result);
 
       const consumptionDataForChart = [
-        { name: 'p3', consumo: values.ENERGÍA_P3_kWh, fill: "hsl(var(--chart-3))" },
-        { name: 'p2', consumo: values.ENERGÍA_P2_kWh, fill: "hsl(var(--chart-2))" },
-        { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: "hsl(var(--chart-1))" },
-      ].sort((a,b) => b.consumo - a.consumo); // Sort to stack largest bar first
+        { name: 'p1', consumo: values.ENERGÍA_P1_kWh },
+        { name: 'p2', consumo: values.ENERGÍA_P2_kWh },
+        { name: 'p3', consumo: values.ENERGÍA_P3_kWh },
+      ];
 
       setChartData(consumptionDataForChart);
 
