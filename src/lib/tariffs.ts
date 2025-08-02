@@ -1,3 +1,4 @@
+
 // @/lib/tariffs.ts
 
 export interface Tariff {
@@ -67,8 +68,8 @@ export const tariffs: Tariff[] = [
     company: "Repsol",
     name: "Ahorro Plus",
     logoUrl: "/Repsol.png",
-    potencia_punta_precio: 0.0682,
-    potencia_valle_precio: 0.0682,
+    potencia_punta_precio: 0.068219,
+    potencia_valle_precio: 0.068219,
     periodos_energia: 1,
     energia_punta_precio: 0.1299,
     energia_llano_precio: 0.1299,
