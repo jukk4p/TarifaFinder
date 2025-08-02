@@ -58,9 +58,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.06027,
     potencia_valle_precio: 0.06027,
     periodos_energia: 1,
-    energia_punta_precio: 0.208995,
-    energia_llano_precio: 0.208995,
-    energia_valle_precio: 0.208995,
+    energia_punta_precio: 0.108995,
+    energia_llano_precio: 0.108995,
+    energia_valle_precio: 0.108995,
     url: "https://visalia.es/luz/fijo24horas/",
   },
   {
