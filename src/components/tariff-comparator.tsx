@@ -667,7 +667,7 @@ export function TariffComparator() {
                   </>
                 ) : (
                   <>
-                    <CalculatorIcon className="mr-2 h-5 w-5" />
+                    <SparklesIcon className="mr-2 h-5 w-5" />
                     {t('form.compareButton')}
                   </>
                 )}
