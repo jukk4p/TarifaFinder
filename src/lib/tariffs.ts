@@ -96,9 +96,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.0842,
     potencia_valle_precio: 0.0326,
     periodos_energia: 3,
-    energia_punta_precio: 0.1761,
-    energia_llano_precio: 0.1063,
-    energia_valle_precio: 0.0747,
+    energia_punta_precio: 0.187208,
+    energia_llano_precio: 0.117442,
+    energia_valle_precio: 0.086459,
     url: "https://www.energianufri.com/tarifa-especial-luz",
   },
   {
