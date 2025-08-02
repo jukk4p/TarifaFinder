@@ -82,7 +82,10 @@ export function TariffDataViewer() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handleDownloadCSV}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    handleDownloadCSV();
+                }}
                 className="w-full sm:w-auto shrink-0"
               >
                 <ArrowDownTrayIcon className="mr-2 h-4 w-4" />
@@ -97,8 +100,8 @@ export function TariffDataViewer() {
                     <TableHead>{t('tariff_database.company')}</TableHead>
                     <TableHead>{t('tariff_database.name')}</TableHead>
                     <TableHead>{t('tariff_database.commitment')}</TableHead>
-                    <TableHead>{t('tariff_database.powerPrice')}</TableHead>
-                    <TableHead>{t('tariff_database.energyPrice')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.powerPrice')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.energyPrice')}</TableHead>
                     <TableHead>{t('tariff_database.url')}</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -112,16 +115,18 @@ export function TariffDataViewer() {
                         <div>P1: {tariff.potencia_punta_precio.toFixed(5)}</div>
                         <div>P2: {tariff.potencia_valle_precio.toFixed(5)}</div>
                       </TableCell>
-                       <TableCell className="text-right font-mono text-xs space-y-1">
-                        {tariff.periodos_energia === 1 ? (
-                          <span>{tariff.energia_punta_precio.toFixed(5)}</span>
-                        ) : (
-                          <>
-                            <div>P1: {tariff.energia_punta_precio.toFixed(5)}</div>
-                            <div>P2: {tariff.energia_llano_precio.toFixed(5)}</div>
-                            <div>P3: {tariff.energia_valle_precio.toFixed(5)}</div>
-                          </>
-                        )}
+                       <TableCell className="text-right font-mono text-xs">
+                         <div className="space-y-1">
+                            {tariff.periodos_energia === 1 ? (
+                              <span>{tariff.energia_punta_precio.toFixed(5)}</span>
+                            ) : (
+                              <>
+                                <div>P1: {tariff.energia_punta_precio.toFixed(5)}</div>
+                                <div>P2: {tariff.energia_llano_precio.toFixed(5)}</div>
+                                <div>P3: {tariff.energia_valle_precio.toFixed(5)}</div>
+                              </>
+                            )}
+                         </div>
                       </TableCell>
                       <TableCell>
                         <a href={tariff.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline whitespace-nowrap">
