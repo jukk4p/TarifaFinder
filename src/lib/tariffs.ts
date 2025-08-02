@@ -1,4 +1,3 @@
-
 // @/lib/tariffs.ts
 
 export interface Tariff {
