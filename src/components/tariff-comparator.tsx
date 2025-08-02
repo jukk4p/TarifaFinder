@@ -679,7 +679,7 @@ export function TariffComparator() {
 
       {!loading && results && results.length > 0 && chartData && explanation && (
         <div className="space-y-8">
-            <ResultsCard results={results} currentBill={typeof currentBill === 'number' ? currentBill : undefined} />
+            <ResultsCard results={results} currentBill={currentBill ? Number(currentBill) : undefined} />
             <AnalysisAndChartCard 
                 chartData={chartData} 
                 chartConfig={chartConfig}
