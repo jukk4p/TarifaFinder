@@ -1,4 +1,3 @@
-
 // @/lib/tariffs.ts
 
 export interface Tariff {
@@ -23,9 +22,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.095,
     potencia_valle_precio: 0.027,
     periodos_energia: 1,
-    energia_punta_precio: 0.222,
-    energia_llano_precio: 0.222,
-    energia_valle_precio: 0.222,
+    energia_punta_precio: 0.122,
+    energia_llano_precio: 0.122,
+    energia_valle_precio: 0.122,
     url: "https://octopusenergy.es/precios",
   },
   {
