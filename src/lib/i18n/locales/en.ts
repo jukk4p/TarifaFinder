@@ -85,6 +85,7 @@ export const en = {
     url: 'URL',
     seeOffer: 'See offer',
     commitment: 'Commitment',
+    downloadCsv: 'Download CSV',
   },
   error: {
     title: 'Error',

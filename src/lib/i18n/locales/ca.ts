@@ -85,6 +85,7 @@ export const ca = {
     url: 'URL',
     seeOffer: 'Veure oferta',
     commitment: 'Compromís',
+    downloadCsv: 'Descarregar CSV',
   },
   error: {
     title: 'Error',
