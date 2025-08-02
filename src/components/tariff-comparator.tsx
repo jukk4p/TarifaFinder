@@ -28,7 +28,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, CalculatorIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, ChartBarIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon as Loader2, BoltIcon, LightBulbIcon, CalendarDaysIcon, SparklesIcon, CurrencyEuroIcon, ChartPieIcon, ArrowTopRightOnSquareIcon as ExternalLink, ArrowUpTrayIcon as UploadCloud, StarIcon, DocumentTextIcon, ClockIcon, PowerIcon, ArrowRightIcon, InformationCircleIcon as Info, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { ReceiptEuro } from 'lucide-react';
 import type { TariffInput, TariffOutput } from '@/ai/flows/schemas';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, LabelList } from 'recharts';
 import { ChartConfig } from "@/components/ui/chart";
@@ -187,7 +188,7 @@ const TariffResultCard = ({ tariff, currentBill, isBest }: { tariff: TariffOutpu
                              <div className="text-center my-4 space-y-4">
                                 <div>
                                     <p className="text-accent text-sm font-semibold flex items-center justify-center gap-2">
-                                        <ChartBarIcon className="h-4 w-4" /> {t('results.estimatedMonthlySavings')}
+                                        <ReceiptEuro className="h-4 w-4" /> {t('results.estimatedMonthlySavings')}
                                     </p>
                                     <p className="text-4xl font-bold text-accent mt-1">{savings.toFixed(2)}€</p>
                                 </div>
