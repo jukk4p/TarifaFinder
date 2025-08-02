@@ -44,6 +44,7 @@ export const en = {
     footnote: 'Calculations are estimates and include taxes. Always check the final offer on the company\'s website.',
     commitment: 'Commitment',
     commitmentYes: 'This tariff has a commitment period.',
+    commitmentNo: 'This tariff does not have a commitment period.',
     priceDetails: 'Price Details',
     powerPrices: 'Power Prices',
     powerPeakPrice: 'Peak',

@@ -44,6 +44,7 @@ export const es = {
     footnote: 'Los cálculos son estimaciones e incluyen impuestos. Revisa siempre la oferta final en la web de la compañía.',
     commitment: 'Compromiso',
     commitmentYes: 'Esta tarifa tiene un compromiso de permanencia.',
+    commitmentNo: 'Esta tarifa no tiene compromiso de permanencia.',
     priceDetails: 'Detalles de Precios',
     powerPrices: 'Precios Potencia',
     powerPeakPrice: 'Punta',

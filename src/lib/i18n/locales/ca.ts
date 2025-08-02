@@ -44,6 +44,7 @@ export const ca = {
     footnote: 'Els càlculs són estimacions i inclouen impostos. Revisa sempre l\'oferta final a la web de la companyia.',
     commitment: 'Compromís',
     commitmentYes: 'Aquesta tarifa té un compromís de permanència.',
+    commitmentNo: 'Aquesta tarifa no té compromís de permanència.',
     priceDetails: 'Detalls de Preus',
     powerPrices: 'Preus Potència',
     powerPeakPrice: 'Potència Punta',
