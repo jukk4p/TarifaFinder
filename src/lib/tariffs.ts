@@ -55,7 +55,7 @@ export const tariffs: Tariff[] = [
   },
   {
     company: "Imagina",
-    name: "Plan Sin Horas Digital (enlace especial)",
+    name: "Plan Sin Horas Digital",
     logoUrl: "/Imaginaenergia.png",
     potencia_punta_precio: 0.087606,
     potencia_valle_precio: 0.044264,
@@ -64,10 +64,11 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.11381,
     energia_valle_precio: 0.11381,
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
+    conditions: "Oferta disponible a través de enlace especial."
   },
    {
     company: "Imagina",
-    name: "Plan Noches y Fines de Semana Digital (enlace especial)",
+    name: "Plan Noches y Fines de Semana Digital",
     logoUrl: "/Imaginaenergia.png",
     potencia_punta_precio: 0.099840,
     potencia_valle_precio: 0.020498,
@@ -76,10 +77,11 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.116359,
     energia_valle_precio: 0.081962,
     url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=11690&TelefonoImagina=900+81+54+04&UsuarioVenta=&utm_source=&gclid=&utm_content=&utm_campaign=PrecioEspecialCNMC&utm_medium=&utm_term=&c=&coupon=",
+    conditions: "Oferta disponible a través de enlace especial."
   },
   {
     company: "Doméstica - Visalia",
-    name: "Especial Fijo 24h (enlace especial)",
+    name: "Especial Fijo 24h",
     logoUrl: "/Visalia.png",
     potencia_punta_precio: 0.06027,
     potencia_valle_precio: 0.06027,
@@ -88,6 +90,7 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.108995,
     energia_valle_precio: 0.108995,
     url: "https://visalia.es/luz/fijo24horas/",
+    conditions: "Oferta disponible a través de enlace especial."
   },
   {
     company: "Repsol",
