@@ -5,7 +5,7 @@ export const es = {
   subtitle: 'Introduce tu consumo y encuentra la tarifa eléctrica más barata para ti.',
   form: {
     title: 'Introduce tus datos de consumo',
-    description: 'Rellena los campos manually o sube una factura para extraer los datos automáticamente.',
+    description: 'Rellena los campos manualmente o sube una factura para extraer los datos automáticamente.',
     daysBilled: 'Días facturados',
     daysBilledPlaceholder: 'e.g., 30',
     powerPeak: 'Potencia Punta (kW) P1',
