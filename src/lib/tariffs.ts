@@ -195,9 +195,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.071918,
     potencia_valle_precio: 0.071890,
     periodos_energia: 1,
-    energia_punta_precio: 0.129,
-    energia_llano_precio: 0.129,
-    energia_valle_precio: 0.129,
+    energia_punta_precio: 0.124,
+    energia_llano_precio: 0.124,
+    energia_valle_precio: 0.124,
     url: "https://www.totalenergies.es/es/hogares/tarifas-luz/a-tu-aire-siempre",
   },
   {
