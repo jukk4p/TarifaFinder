@@ -186,20 +186,20 @@ const TariffResultCard = ({ tariff, currentBill, isBest }: { tariff: TariffOutpu
                     <div className="flex-grow flex flex-col justify-center items-center">
                         {savings !== null && savings > 0 ? (
                              <div className="text-center my-4 space-y-4">
-                                <div>
-                                    <p className="text-accent text-sm font-semibold flex items-center justify-center gap-2">
-                                        <ReceiptEuro className="h-4 w-4" /> {t('results.estimatedMonthlySavings')}
-                                    </p>
-                                    <p className="text-4xl font-bold text-accent mt-1">{savings.toFixed(2)}€</p>
-                                </div>
                                 {annualSavings !== null && (
                                      <div>
-                                        <p className="text-accent/80 text-xs font-semibold flex items-center justify-center gap-2">
-                                            {t('results.estimatedAnnualSavings')}
+                                        <p className="text-accent text-sm font-semibold flex items-center justify-center gap-2">
+                                            <ReceiptEuro className="h-4 w-4" /> {t('results.estimatedAnnualSavings')}
                                         </p>
-                                        <p className="text-2xl font-bold text-accent/80 mt-1">{annualSavings.toFixed(2)}€</p>
+                                        <p className="text-4xl font-bold text-accent mt-1">{annualSavings.toFixed(2)}€</p>
                                     </div>
                                 )}
+                                 <div>
+                                    <p className="text-accent/80 text-xs font-semibold flex items-center justify-center gap-2">
+                                        {t('results.estimatedMonthlySavings')}
+                                    </p>
+                                    <p className="text-2xl font-bold text-accent/80 mt-1">{savings.toFixed(2)}€</p>
+                                </div>
                                 <p className="text-sm text-muted-foreground pt-2">{t('results.estimatedCost')}: {tariff.cost.toFixed(2)}€</p>
                             </div>
                         ) : (
