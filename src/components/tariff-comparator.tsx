@@ -155,6 +155,7 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
 const TariffResultCard = ({ tariff, currentBill, isBest }: { tariff: TariffOutput[0], currentBill?: number, isBest: boolean }) => {
     const { t } = useTranslation();
     const savings = currentBill && currentBill > 0 ? currentBill - tariff.cost : null;
+    const annualSavings = savings ? savings * 12 : null;
 
     return (
         <Dialog>
@@ -183,12 +184,22 @@ const TariffResultCard = ({ tariff, currentBill, isBest }: { tariff: TariffOutpu
                 <CardContent className="flex flex-col flex-grow p-6 pt-0 text-center">
                     <div className="flex-grow flex flex-col justify-center items-center">
                         {savings !== null && savings > 0 ? (
-                            <div className="text-center my-4">
-                                <p className="text-accent text-sm font-semibold flex items-center justify-center gap-2">
-                                    <TrendingUp className="h-4 w-4" /> {t('results.estimatedSavings')}
-                                </p>
-                                <p className="text-4xl font-bold text-accent mt-1">{savings.toFixed(2)}€</p>
-                                <p className="text-sm text-muted-foreground mt-2">{t('results.estimatedCost')}: {tariff.cost.toFixed(2)}€</p>
+                             <div className="text-center my-4 space-y-4">
+                                <div>
+                                    <p className="text-accent text-sm font-semibold flex items-center justify-center gap-2">
+                                        <TrendingUp className="h-4 w-4" /> {t('results.estimatedMonthlySavings')}
+                                    </p>
+                                    <p className="text-4xl font-bold text-accent mt-1">{savings.toFixed(2)}€</p>
+                                </div>
+                                {annualSavings !== null && (
+                                     <div>
+                                        <p className="text-accent/80 text-xs font-semibold flex items-center justify-center gap-2">
+                                            {t('results.estimatedAnnualSavings')}
+                                        </p>
+                                        <p className="text-2xl font-bold text-accent/80 mt-1">{annualSavings.toFixed(2)}€</p>
+                                    </div>
+                                )}
+                                <p className="text-sm text-muted-foreground pt-2">{t('results.estimatedCost')}: {tariff.cost.toFixed(2)}€</p>
                             </div>
                         ) : (
                              <div className="text-center my-4">
@@ -703,5 +714,3 @@ export function TariffComparator() {
     </div>
   );
 }
-
-    
