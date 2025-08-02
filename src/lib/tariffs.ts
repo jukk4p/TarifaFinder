@@ -19,6 +19,18 @@ export interface Tariff {
 export const tariffs: Tariff[] = [
   {
     company: "Niba",
+    name: "Zen",
+    logoUrl: "/Niba.png",
+    potencia_punta_precio: 0.10,
+    potencia_valle_precio: 0.05,
+    periodos_energia: 1,
+    energia_punta_precio: 0.14,
+    energia_llano_precio: 0.14,
+    energia_valle_precio: 0.14,
+    url: "https://clientes.niba.es/checkout/1?prod=FL_PRECIO_FIJO",
+  },
+  {
+    company: "Niba",
     name: "Tres",
     logoUrl: "/Niba.png",
     potencia_punta_precio: 0.095,
