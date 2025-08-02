@@ -207,9 +207,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.0884,
     potencia_valle_precio: 0.0884,
     periodos_energia: 3,
-    energia_punta_precio: 0.1985,
-    energia_llano_precio: 0.1985,
-    energia_valle_precio: 0.0290,
+    energia_punta_precio: 0.2190,
+    energia_llano_precio: 0.2190,
+    energia_valle_precio: 0.0590,
     url: "https://chcenergia.es/tarifa-luz/vehiculo-electrico/",
   },
   {
