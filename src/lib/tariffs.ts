@@ -183,9 +183,9 @@ export const tariffs: Tariff[] = [
     potencia_punta_precio: 0.071918,
     potencia_valle_precio: 0.071890,
     periodos_energia: 3,
-    energia_punta_precio: 0.19497,
-    energia_llano_precio: 0.12644,
-    energia_valle_precio: 0.09209,
+    energia_punta_precio: 0.191345,
+    energia_llano_precio: 0.121294,
+    energia_valle_precio: 0.086371,
     url: "https://www.totalenergies.es/particulares/contrata/identificar-cups-factura/luz?Producto=2tp3te&p=1&type=luz",
   },
   {
