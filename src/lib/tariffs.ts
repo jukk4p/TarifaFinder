@@ -125,6 +125,18 @@ export const tariffs: Tariff[] = [
     energia_valle_precio: 0.099904,
     url: "https://www.iberdrola.es/luz/plan-online-tres-periodos",
   },
+    {
+    company: "Endesa",
+    name: "Tarifa Conecta",
+    logoUrl: "/Endesa.png",
+    potencia_punta_precio: 0.11214,
+    potencia_valle_precio: 0.04027,
+    periodos_energia: 1,
+    energia_punta_precio: 0.115500,
+    energia_llano_precio: 0.115500,
+    energia_valle_precio: 0.115500,
+    url: "https://www.endesa.com/es/luz-y-gas/luz/conecta",
+  },
   {
     company: "Naturgy",
     name: "Tarifa Noche",
