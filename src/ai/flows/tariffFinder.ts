@@ -69,6 +69,7 @@ const tariffFinderFlow = ai.defineFlow(
         energia_valle_precio: tariff.energia_valle_precio,
         periodos_energia: tariff.periodos_energia,
         commitment: tariff.commitment,
+        conditions: tariff.conditions,
       };
     });
 

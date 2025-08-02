@@ -117,15 +117,25 @@ const TariffDetailsDialog = ({ tariff }: { tariff: TariffOutput[0] }) => {
                     </div>
                 </div>
                 
-                <Separator className="bg-white/10" />
+                {(tariff.commitment || tariff.conditions) && <Separator className="bg-white/10" />}
 
-                <div className="space-y-3">
-                    <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><DocumentTextIcon className="h-5 w-5" /> {t('results.commitment')}</h3>
-                    <p className="text-sm text-muted-foreground">
-                        {tariff.commitment ? `Esta tarifa tiene un compromiso de permanencia.` : 'Esta tarifa no tiene compromiso de permanencia.'}
-                        El precio final puede estar sujeto a otras condiciones. Visita la web de la compañía para más detalles.
-                    </p>
-                </div>
+                {tariff.commitment && (
+                    <div className="space-y-3">
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><DocumentTextIcon className="h-5 w-5" /> {t('results.commitment')}</h3>
+                        <p className="text-sm text-muted-foreground">
+                           {t('results.commitmentYes')}
+                        </p>
+                    </div>
+                )}
+                
+                {tariff.conditions && (
+                    <div className="space-y-3">
+                        <h3 className="text-md font-semibold flex items-center gap-2 text-primary"><Info className="h-5 w-5" /> {t('results.conditions')}</h3>
+                        <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                           {tariff.conditions}
+                        </p>
+                    </div>
+                )}
             </div>
             <div className="px-6 pb-6">
                 <Button asChild className="w-full" variant="secondary">

@@ -42,6 +42,7 @@ export const ca = {
     seeOfferOnWeb: 'Veure oferta al seu web',
     footnote: 'Els càlculs són estimacions i inclouen impostos. Revisa sempre l\'oferta final a la web de la companyia.',
     commitment: 'Compromís',
+    commitmentYes: 'Aquesta tarifa té un compromís de permanència.',
     priceDetails: 'Detalls de Preus',
     powerPrices: 'Preus Potència',
     powerPeakPrice: 'Potència Punta',
@@ -54,6 +55,7 @@ export const ca = {
     bestOption: 'Millor Opció',
     noBetterTariffTitle: 'Ja tens una tarifa excel·lent!',
     noBetterTariffSubtitle: 'No hem trobat cap oferta a la nostra base de dades que millori el preu de la teva factura actual. Enhorabona!',
+    conditions: 'Condicions de l\'Oferta',
   },
   consumption_chart: {
     peak: 'Punta',

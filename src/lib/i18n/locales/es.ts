@@ -42,6 +42,7 @@ export const es = {
     seeOfferOnWeb: 'Ver oferta en su web',
     footnote: 'Los cálculos son estimaciones e incluyen impuestos. Revisa siempre la oferta final en la web de la compañía.',
     commitment: 'Compromiso',
+    commitmentYes: 'Esta tarifa tiene un compromiso de permanencia.',
     priceDetails: 'Detalles de Precios',
     powerPrices: 'Precios Potencia',
     powerPeakPrice: 'Punta',
@@ -54,6 +55,7 @@ export const es = {
     bestOption: 'Mejor Opción',
     noBetterTariffTitle: '¡Ya tienes una tarifa excelente!',
     noBetterTariffSubtitle: 'No hemos encontrado ninguna oferta en nuestra base de datos que mejore el precio de tu factura actual. ¡Enhorabuena!',
+    conditions: 'Condiciones de la Oferta',
   },
   consumption_chart: {
     peak: 'Punta',

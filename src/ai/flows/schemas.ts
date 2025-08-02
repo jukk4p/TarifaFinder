@@ -24,6 +24,8 @@ export const tariffOutputSchema = z.array(z.object({
   energia_llano_precio: z.number(),
   energia_valle_precio: z.number(),
   periodos_energia: z.number(),
+  commitment: z.boolean().optional(),
+  conditions: z.string().optional(),
 }));
 
 export type TariffOutput = z.infer<typeof tariffOutputSchema>;

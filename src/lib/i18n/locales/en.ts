@@ -42,6 +42,7 @@ export const en = {
     seeOfferOnWeb: 'See offer on their website',
     footnote: 'Calculations are estimates and include taxes. Always check the final offer on the company\'s website.',
     commitment: 'Commitment',
+    commitmentYes: 'This tariff has a commitment period.',
     priceDetails: 'Price Details',
     powerPrices: 'Power Prices',
     powerPeakPrice: 'Peak',
@@ -54,6 +55,7 @@ export const en = {
     bestOption: 'Best Option',
     noBetterTariffTitle: 'You already have a great tariff!',
     noBetterTariffSubtitle: 'We couldn\'t find any offers in our database that beat your current bill price. Congratulations!',
+    conditions: 'Offer Conditions',
   },
   consumption_chart: {
     peak: 'Peak',

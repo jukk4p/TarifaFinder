@@ -11,7 +11,8 @@ export interface Tariff {
   energia_llano_precio: number; // €/kWh
   energia_valle_precio: number; // €/kWh
   url: string;
-  commitment?: boolean; // Optional: true if there's a commitment period
+  commitment?: boolean;
+  conditions?: string;
 }
 
 export const tariffs: Tariff[] = [
@@ -153,14 +154,15 @@ export const tariffs: Tariff[] = [
     company: "Endesa",
     name: "One Luz 12 Meses",
     logoUrl: "/Endesa.png",
-    potencia_punta_precio: 0.08214,
+    potencia_punta_precio: 0.11369,
     potencia_valle_precio: 0.04027,
     periodos_energia: 1,
-    energia_punta_precio: 0.1232,
-    energia_llano_precio: 0.1232,
-    energia_valle_precio: 0.1232,
+    energia_punta_precio: 0.1057,
+    energia_llano_precio: 0.1057,
+    energia_valle_precio: 0.1057,
     url: "https://www.endesa.com/es/luz-y-gas/luz/one/tarifa-one-luz-12-meses",
     commitment: true,
+    conditions: "Precio en promoción (0,1057€/kWh) hasta 30/11/2025, después 0,1151€/kWh. Permanencia de 12 meses."
   },
   {
     company: "Energya VM",
