@@ -230,7 +230,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
             {t('results.subtitle')}
             </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch max-w-7xl mx-auto">
           {results.map((tariff, index) => (
             <TariffResultCard 
                 key={index} 
@@ -403,8 +403,8 @@ export function TariffComparator() {
         finalResults = allResults.filter(tariff => tariff.cost < importe_factura_actual);
       }
       
-      // Limit to top 3 cheapest if more than 3
-      finalResults = finalResults.slice(0, 3);
+      // Limit to top 4 cheapest if more than 4
+      finalResults = finalResults.slice(0, 4);
       
       const consumptionDataForChart = [
         { name: 'p1', consumo: values.ENERGÍA_P1_kWh, fill: chartConfig.p1.color },
