@@ -13,9 +13,48 @@ export interface Tariff {
   url: string;
   commitment?: boolean;
   conditions?: string;
+  fee?: number; // €/mes
 }
 
 export const tariffs: Tariff[] = [
+  {
+    company: "niba",
+    name: "Zen",
+    logoUrl: "/Niba.png",
+    potencia_punta_precio: 0.095,
+    potencia_valle_precio: 0.040,
+    periodos_energia: 1,
+    energia_punta_precio: 0.118,
+    energia_llano_precio: 0.118,
+    energia_valle_precio: 0.118,
+    url: "https://nibaenergy.com/tarifas/",
+  },
+  {
+    company: "niba",
+    name: "Tres",
+    logoUrl: "/Niba.png",
+    potencia_punta_precio: 0.095,
+    potencia_valle_precio: 0.040,
+    periodos_energia: 3,
+    energia_punta_precio: 0.195,
+    energia_llano_precio: 0.117,
+    energia_valle_precio: 0.074,
+    url: "https://nibaenergy.com/tarifas/",
+  },
+  {
+    company: "niba",
+    name: "Flex",
+    logoUrl: "/Niba.png",
+    potencia_punta_precio: 0.074,
+    potencia_valle_precio: 0.002,
+    periodos_energia: 3,
+    energia_punta_precio: 0.195, // Using values from "Tres" as placeholder for "Precio de mercado"
+    energia_llano_precio: 0.117,  // Using values from "Tres" as placeholder for "Precio de mercado"
+    energia_valle_precio: 0.074,  // Using values from "Tres" as placeholder for "Precio de mercado"
+    url: "https://nibaenergy.com/tarifas/",
+    conditions: "Precio de energía indexado al mercado mayorista (OMIE). Se usan los valores de la tarifa 'Tres' como referencia para la simulación. El coste real variará.",
+    fee: 4.60,
+  },
   {
     company: "Octopus",
     name: "Relax",

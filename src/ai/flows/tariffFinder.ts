@@ -27,6 +27,9 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   // 2. Subtotal de energía
   const subtotalEnergia = (ENERGÍA_P1_kWh * TARIFA_EP1 + ENERGÍA_P2_kWh * TARIFA_EP2 + ENERGÍA_P3_kWh * TARIFA_EP3);
   
+  // 2.5 Coste fijo mensual (Fee)
+  const feeMensual = tariff.fee ? (tariff.fee / 30) * DÍAS_FACTURADOS : 0;
+
   // 3. Impuesto eléctrico
   const impuestoElectrico = (subtotalPotencia + subtotalEnergia) * 0.05113;
 
@@ -37,7 +40,7 @@ function calculateTariffCost(tariff: Tariff, input: TariffInput): number {
   const financiacionBonoSocial = 0.012742 * DÍAS_FACTURADOS;
   
   // 6. Cálculo del IVA
-  const baseImponibleIVA = subtotalPotencia + subtotalEnergia + impuestoElectrico + alquilerContador + financiacionBonoSocial;
+  const baseImponibleIVA = subtotalPotencia + subtotalEnergia + feeMensual + impuestoElectrico + alquilerContador + financiacionBonoSocial;
   const iva = baseImponibleIVA * 0.21;
   
   // 7. Total de la factura
