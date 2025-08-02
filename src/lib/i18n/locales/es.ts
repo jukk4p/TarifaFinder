@@ -5,7 +5,7 @@ export const es = {
   subtitle: 'Introduce tu consumo y encuentra la tarifa eléctrica más barata para ti.',
   form: {
     title: 'Introduce tus datos de consumo',
-    description: 'Rellena los campos manualmente o sube una factura para extraer los datos automáticamente.',
+    description: 'Rellena los campos manually o sube una factura para extraer los datos automáticamente.',
     daysBilled: 'Días facturados',
     daysBilledPlaceholder: 'e.g., 30',
     powerPeak: 'Potencia Punta (kW) P1',
@@ -76,15 +76,11 @@ export const es = {
     description: 'Aquí se muestran las tarifas disponibles para la comparación.',
     company: 'Compañía',
     name: 'Nombre',
-    powerPeakPrice: 'Pot. Punta (€/kW/día)',
-    powerOffPeakPrice: 'Pot. Valle (€/kW/día)',
-    periods: 'Periodos',
-    energyPeakPrice: 'Energía Punta (€/kWh)',
-    energyFlatPrice: 'Energía Llano (€/kWh)',
-    energyOffPeakPrice: 'Energía Valle (€/kWh)',
-    url: 'URL',
+    commitment: 'Permanencia',
+    powerPrice: 'Potencia (€/kW/día)',
+    energyPrice: 'Energía (€/kWh)',
+    url: 'Enlace',
     seeOffer: 'Ver oferta',
-    commitment: 'Compromiso',
     downloadCsv: 'Descargar CSV',
   },
   error: {
@@ -93,5 +89,9 @@ export const es = {
   },
   success: {
     title: 'Éxito',
+  },
+  common: {
+    yes: 'Sí',
+    no: 'No',
   }
 };

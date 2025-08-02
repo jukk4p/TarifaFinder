@@ -76,15 +76,11 @@ export const en = {
     description: 'The tariffs available for comparison are shown here.',
     company: 'Company',
     name: 'Name',
-    powerPeakPrice: 'Peak Power (€/kW/day)',
-    powerOffPeakPrice: 'Off-Peak Power (€/kW/day)',
-    periods: 'Periods',
-    energyPeakPrice: 'Peak Energy (€/kWh)',
-    energyFlatPrice: 'Flat Energy (€/kWh)',
-    energyOffPeakPrice: 'Off-Peak Energy (€/kWh)',
-    url: 'URL',
-    seeOffer: 'See offer',
     commitment: 'Commitment',
+    powerPrice: 'Power (€/kW/day)',
+    energyPrice: 'Energy (€/kWh)',
+    url: 'Link',
+    seeOffer: 'See offer',
     downloadCsv: 'Download CSV',
   },
   error: {
@@ -93,5 +89,9 @@ export const en = {
   },
   success: {
     title: 'Success',
+  },
+  common: {
+    yes: 'Yes',
+    no: 'No',
   }
 };

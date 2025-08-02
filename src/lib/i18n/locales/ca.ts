@@ -76,15 +76,11 @@ export const ca = {
     description: 'Aquí es mostren les tarifes disponibles per a la comparació.',
     company: 'Companyia',
     name: 'Nom',
-    powerPeakPrice: 'Pot. Punta (€/kW/dia)',
-    powerOffPeakPrice: 'Pot. Vall (€/kW/dia)',
-    periods: 'Períodes',
-    energyPeakPrice: 'Energia Punta (€/kWh)',
-    energyFlatPrice: 'Energia Plana (€/kWh)',
-    energyOffPeakPrice: 'Energia Vall (€/kWh)',
-    url: 'URL',
+    commitment: 'Permanència',
+    powerPrice: 'Potència (€/kW/dia)',
+    energyPrice: 'Energia (€/kWh)',
+    url: 'Enllaç',
     seeOffer: 'Veure oferta',
-    commitment: 'Compromís',
     downloadCsv: 'Descarregar CSV',
   },
   error: {
@@ -93,5 +89,9 @@ export const ca = {
   },
   success: {
     title: 'Èxit',
+  },
+  common: {
+    yes: 'Sí',
+    no: 'No',
   }
 };

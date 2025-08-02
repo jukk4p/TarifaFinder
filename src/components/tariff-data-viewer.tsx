@@ -19,6 +19,7 @@ import {
 import { CircleStackIcon as Database, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 export function TariffDataViewer() {
   const { t } = useTranslation();
@@ -101,27 +102,32 @@ export function TariffDataViewer() {
                     <TableHead>{t('tariff_database.company')}</TableHead>
                     <TableHead>{t('tariff_database.name')}</TableHead>
                     <TableHead>{t('tariff_database.commitment')}</TableHead>
-                    <TableHead className="text-right">{t('tariff_database.powerPeakPrice')}</TableHead>
-                    <TableHead className="text-right">{t('tariff_database.powerOffPeakPrice')}</TableHead>
-                    <TableHead className="text-center">{t('tariff_database.periods')}</TableHead>
-                    <TableHead className="text-right">{t('tariff_database.energyPeakPrice')}</TableHead>
-                    <TableHead className="text-right">{t('tariff_database.energyFlatPrice')}</TableHead>
-                    <TableHead className="text-right">{t('tariff_database.energyOffPeakPrice')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.powerPrice')}</TableHead>
+                    <TableHead className="text-right">{t('tariff_database.energyPrice')}</TableHead>
                     <TableHead>{t('tariff_database.url')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {tariffs.map((tariff, index) => (
                     <TableRow key={index} className="border-white/10 last:border-b-0">
-                      <TableCell className="font-medium whitespace-nowrap">{tariff.company}</TableCell>
-                      <TableCell className="whitespace-nowrap">{tariff.name}</TableCell>
-                      <TableCell>{tariff.commitment ? 'Sí' : 'No'}</TableCell>
-                      <TableCell className="text-right font-mono">{tariff.potencia_punta_precio.toFixed(5)}</TableCell>
-                      <TableCell className="text-right font-mono">{tariff.potencia_valle_precio.toFixed(5)}</TableCell>
-                      <TableCell className="text-center">{tariff.periodos_energia}</TableCell>
-                      <TableCell className="text-right font-mono">{tariff.energia_punta_precio.toFixed(5)}</TableCell>
-                      <TableCell className="text-right font-mono">{tariff.energia_llano_precio.toFixed(5)}</TableCell>
-                      <TableCell className="text-right font-mono">{tariff.energia_valle_precio.toFixed(5)}</TableCell>
+                      <TableCell className="font-medium">{tariff.company}</TableCell>
+                      <TableCell>{tariff.name}</TableCell>
+                      <TableCell>{tariff.commitment ? t('common.yes') : t('common.no')}</TableCell>
+                      <TableCell className="text-right font-mono text-xs">
+                        <div>P1: {tariff.potencia_punta_precio.toFixed(5)}</div>
+                        <div>P2: {tariff.potencia_valle_precio.toFixed(5)}</div>
+                      </TableCell>
+                      <TableCell className={cn("text-right font-mono text-xs", { "space-y-1": tariff.periodos_energia === 3 })}>
+                        {tariff.periodos_energia === 1 ? (
+                          <span>{tariff.energia_punta_precio.toFixed(5)}</span>
+                        ) : (
+                          <>
+                            <div>P1: {tariff.energia_punta_precio.toFixed(5)}</div>
+                            <div>P2: {tariff.energia_llano_precio.toFixed(5)}</div>
+                            <div>P3: {tariff.energia_valle_precio.toFixed(5)}</div>
+                          </>
+                        )}
+                      </TableCell>
                       <TableCell>
                         <a href={tariff.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline whitespace-nowrap">
                           {t('tariff_database.seeOffer')}
