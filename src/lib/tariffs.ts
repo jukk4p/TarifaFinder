@@ -49,7 +49,7 @@ export const tariffs: Tariff[] = [
     energia_punta_precio: 0.190180,
     energia_llano_precio: 0.116359,
     energia_valle_precio: 0.081962,
-    url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=10343",
+    url: "https://contrataonline.imaginaenergia.com/link/Tarifa?TarifaGrupoCod=11690&TelefonoImagina=900+81+54+04&UsuarioVenta=&utm_source=&gclid=&utm_content=&utm_campaign=PrecioEspecialCNMC&utm_medium=&utm_term=&c=&coupon=",
   },
   {
     company: "Doméstica - Visalia",
