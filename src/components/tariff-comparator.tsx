@@ -160,7 +160,7 @@ const TariffResultCard = ({ tariff, currentBill, isBest }: { tariff: TariffOutpu
 
     return (
         <Dialog>
-            <Card className={`group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 border-2 ${isBest ? 'border-primary' : 'border-transparent'}`}>
+            <Card className={`group relative flex flex-col bg-card/50 backdrop-blur-sm shadow-xl h-full transition-all duration-300 hover:scale-105 border-2 ${isBest ? 'border-primary' : 'border-transparent'}`}>
                 {isBest && (
                     <Badge variant="default" className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1">
                         <StarIcon className="h-3 w-3" /> {t('results.bestOption')}
@@ -231,7 +231,7 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
   const { t } = useTranslation();
 
   return (
-    <div className="w-full animate-in fade-in-50 duration-500">
+    <div className="w-full animate-in fade-in-50 slide-in-from-bottom-10 duration-500">
       <div className="space-y-4">
         <div className="text-center mb-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent flex items-center justify-center gap-2">
@@ -291,7 +291,7 @@ const AnalysisAndChartCard = ({
   const { t } = useTranslation();
 
   return (
-    <Card className="w-full animate-in fade-in-50 duration-500 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
+    <Card className="w-full animate-in fade-in-50 slide-in-from-bottom-10 duration-700 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2">
             <ChartPieIcon className="h-6 w-6" />
@@ -336,7 +336,7 @@ const AnalysisAndChartCard = ({
 const NoBetterTariffCard = () => {
     const { t } = useTranslation();
     return (
-        <div className="w-full animate-in fade-in-50 duration-500">
+        <div className="w-full animate-in fade-in-50 slide-in-from-bottom-10 duration-500">
             <Card className="max-w-2xl mx-auto bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
                 <CardHeader className="items-center text-center">
                     <CheckCircleIcon className="h-12 w-12 text-accent" />
@@ -415,7 +415,6 @@ export function TariffComparator() {
         finalResults = allResults.filter(tariff => tariff.cost < importe_factura_actual);
       }
       
-      // Limit to top 4 cheapest if more than 4
       finalResults = finalResults.slice(0, 4);
       
       const consumptionDataForChart = [
@@ -427,7 +426,6 @@ export function TariffComparator() {
       setResults(finalResults);
       setChartData(consumptionDataForChart);
       
-      // Only generate explanation if there are tariffs to recommend
       if (finalResults.length > 0) {
         const explainTariffTrace = performance ? trace(performance, 'explainTariff_flow') : null;
         explainTariffTrace?.start();
@@ -474,7 +472,6 @@ export function TariffComparator() {
         }
         const extractedData = await extractBillData({ billDocument: base64Data });
         
-        // Populate form with extracted data
         form.reset({
           ...extractedData,
           importe_factura_actual: extractedData.importe_factura_actual || '',
@@ -503,7 +500,6 @@ export function TariffComparator() {
         });
       } finally {
         setExtracting(false);
-         // Reset file input value to allow re-uploading the same file
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -544,7 +540,7 @@ export function TariffComparator() {
 
   return (
     <div className="w-full max-w-6xl space-y-8 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-4 animate-in fade-in slide-in-from-top-10 duration-500">
         <div className="flex justify-center items-center gap-4">
             <Image src="/logo.png" alt="TarifaFinder Logo" width={64} height={64} className="h-12 w-12 sm:h-16 sm:w-16" />
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -556,7 +552,7 @@ export function TariffComparator() {
         </p>
       </div>
 
-      <Card className="w-full shadow-lg border-white/10 bg-card/50 backdrop-blur-sm">
+      <Card className="w-full shadow-lg border-white/10 bg-card/50 backdrop-blur-sm animate-in fade-in-50 slide-in-from-bottom-10 duration-500">
         <CardHeader>
            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex-1">
@@ -591,7 +587,6 @@ export function TariffComparator() {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardContent className="space-y-8">
               
-              {/* Billing Period Section */}
               <div>
                 <h3 className="text-lg font-semibold text-primary mb-4">{t('form.group.billing')}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -617,7 +612,6 @@ export function TariffComparator() {
                 </div>
               </div>
 
-              {/* Power Section */}
                <div>
                 <h3 className="text-lg font-semibold text-primary mb-4">{t('form.group.power')}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -643,7 +637,6 @@ export function TariffComparator() {
                 </div>
               </div>
 
-               {/* Energy Section */}
                <div>
                 <h3 className="text-lg font-semibold text-primary mb-4">{t('form.group.energy')}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
