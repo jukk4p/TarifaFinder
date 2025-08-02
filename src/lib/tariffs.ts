@@ -135,7 +135,7 @@ export const tariffs: Tariff[] = [
     energia_punta_precio: 0.115500,
     energia_llano_precio: 0.115500,
     energia_valle_precio: 0.115500,
-    url: "https://www.endesa.com/es/luz-y-gas/luz/conecta",
+    url: "https://www.endesa.com/es/luz-y-gas/luz/conecta-de-endesa",
   },
   {
     company: "Naturgy",
