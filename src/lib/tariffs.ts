@@ -27,7 +27,7 @@ export const tariffs: Tariff[] = [
     energia_punta_precio: 0.118,
     energia_llano_precio: 0.118,
     energia_valle_precio: 0.118,
-    url: "https://nibaenergy.com/tarifas/",
+    url: "https://clientes.niba.es/checkout/1?prod=FL_PRECIO_FIJO",
   },
   {
     company: "niba",
@@ -39,7 +39,7 @@ export const tariffs: Tariff[] = [
     energia_punta_precio: 0.195,
     energia_llano_precio: 0.117,
     energia_valle_precio: 0.074,
-    url: "https://nibaenergy.com/tarifas/",
+    url: "https://clientes.niba.es/checkout/1?prod=FL_PRECIO_FIJO",
   },
   {
     company: "niba",
@@ -51,7 +51,7 @@ export const tariffs: Tariff[] = [
     energia_punta_precio: 0.195, // Using values from "Tres" as placeholder for "Precio de mercado"
     energia_llano_precio: 0.117,  // Using values from "Tres" as placeholder for "Precio de mercado"
     energia_valle_precio: 0.074,  // Using values from "Tres" as placeholder for "Precio de mercado"
-    url: "https://nibaenergy.com/tarifas/",
+    url: "https://clientes.niba.es/checkout/1?prod=FL_PRECIO_FIJO",
     conditions: "Precio de energía indexado al mercado mayorista (OMIE). Se usan los valores de la tarifa 'Tres' como referencia para la simulación. El coste real variará.",
     fee: 4.60,
   },
