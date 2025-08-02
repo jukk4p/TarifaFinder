@@ -18,19 +18,7 @@ export interface Tariff {
 
 export const tariffs: Tariff[] = [
   {
-    company: "niba",
-    name: "Zen",
-    logoUrl: "/Niba.png",
-    potencia_punta_precio: 0.095,
-    potencia_valle_precio: 0.040,
-    periodos_energia: 1,
-    energia_punta_precio: 0.118,
-    energia_llano_precio: 0.118,
-    energia_valle_precio: 0.118,
-    url: "https://clientes.niba.es/checkout/1?prod=FL_PRECIO_FIJO",
-  },
-  {
-    company: "niba",
+    company: "Niba",
     name: "Tres",
     logoUrl: "/Niba.png",
     potencia_punta_precio: 0.095,
@@ -40,20 +28,6 @@ export const tariffs: Tariff[] = [
     energia_llano_precio: 0.117,
     energia_valle_precio: 0.074,
     url: "https://clientes.niba.es/checkout/1?prod=FL_PRECIO_FIJO",
-  },
-  {
-    company: "niba",
-    name: "Flex",
-    logoUrl: "/Niba.png",
-    potencia_punta_precio: 0.074,
-    potencia_valle_precio: 0.002,
-    periodos_energia: 3,
-    energia_punta_precio: 0.195, // Using values from "Tres" as placeholder for "Precio de mercado"
-    energia_llano_precio: 0.117,  // Using values from "Tres" as placeholder for "Precio de mercado"
-    energia_valle_precio: 0.074,  // Using values from "Tres" as placeholder for "Precio de mercado"
-    url: "https://clientes.niba.es/checkout/1?prod=FL_PRECIO_FIJO",
-    conditions: "Precio de energía indexado al mercado mayorista (OMIE). Se usan los valores de la tarifa 'Tres' como referencia para la simulación. El coste real variará.",
-    fee: 4.60,
   },
   {
     company: "Octopus",
