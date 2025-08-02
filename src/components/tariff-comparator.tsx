@@ -263,23 +263,6 @@ const ResultsCard = ({ results, currentBill }: { results: TariffResults, current
 };
 
 
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, payload }: any) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <g>
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        <tspan x={x} dy="0" className="font-bold">{`${payload.consumo.toFixed(0)} kWh`}</tspan>
-        <tspan x={x} dy="1.2em" className="text-muted-foreground fill-current">{`(${(percent * 100).toFixed(0)}%)`}</tspan>
-      </text>
-    </g>
-  );
-};
-
-
 const AnalysisAndChartCard = ({
   chartData,
   chartConfig,
@@ -290,6 +273,37 @@ const AnalysisAndChartCard = ({
   explanation: string;
 }) => {
   const { t } = useTranslation();
+
+  const RADIAN = Math.PI / 180;
+  
+  const totalConsumo = useMemo(() => chartData.reduce((sum, entry) => sum + entry.consumo, 0), [chartData]);
+  
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, payload, index }: any) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    let displayPercent;
+    if (index === chartData.length - 1) {
+      // Last slice: calculate percentage based on what's left to ensure it sums to 100
+      const sumOfPreviousPercentages = chartData.slice(0, -1).reduce((sum, entry) => {
+        return sum + Math.round(entry.consumo / totalConsumo * 100);
+      }, 0);
+      displayPercent = 100 - sumOfPreviousPercentages;
+    } else {
+      displayPercent = Math.round(percent * 100);
+    }
+
+    return (
+      <g>
+        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+          <tspan x={x} dy="0" className="font-bold">{`${payload.consumo.toFixed(0)} kWh`}</tspan>
+          <tspan x={x} dy="1.2em" className="text-muted-foreground fill-current">{`(${displayPercent}%)`}</tspan>
+        </text>
+      </g>
+    );
+  };
+
 
   return (
     <Card className="w-full animate-in fade-in-50 slide-in-from-bottom-10 duration-700 bg-card/50 backdrop-blur-sm shadow-xl border-white/10">
