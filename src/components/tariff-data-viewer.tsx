@@ -99,6 +99,7 @@ export function TariffDataViewer() {
                   <TableRow className="border-white/20">
                     <TableHead>{t('tariff_database.company')}</TableHead>
                     <TableHead>{t('tariff_database.name')}</TableHead>
+                    <TableHead>{t('tariff_database.periods')}</TableHead>
                     <TableHead>{t('tariff_database.commitment')}</TableHead>
                     <TableHead className="text-right">{t('tariff_database.powerPrice')}</TableHead>
                     <TableHead className="text-right">{t('tariff_database.energyPrice')}</TableHead>
@@ -110,6 +111,7 @@ export function TariffDataViewer() {
                     <TableRow key={index} className="border-white/10 last:border-b-0">
                       <TableCell className="font-medium">{tariff.company}</TableCell>
                       <TableCell>{tariff.name}</TableCell>
+                      <TableCell>{tariff.periodos_energia}</TableCell>
                       <TableCell>{tariff.commitment ? t('common.yes') : t('common.no')}</TableCell>
                       <TableCell className="text-right font-mono text-xs">
                         <div>P1: {tariff.potencia_punta_precio.toFixed(5)}</div>
